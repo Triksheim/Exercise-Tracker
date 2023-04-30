@@ -12,4 +12,7 @@
     <string name="registrer_ny_bruker">Registrer ny bruker</string>
     <string name="first_name">Fornavn</string>
     <string name="register_text">Registrer deg for å komme i gang med din treningsplan:</string>
+    <string name="last_name">Etternavn</string>
+    <string name="phone_number">Mobilnummer</string>
+    <string name="helper_text_required">Påkrevd felt*</string>
 </resources>
