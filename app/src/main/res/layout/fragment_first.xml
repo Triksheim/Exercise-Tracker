@@ -10,17 +10,46 @@
         android:id="@+id/textview_first"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_first_fragment"
-        app:layout_constraintBottom_toTopOf="@id/button_first"
+        android:text="@string/klar_kom_i_form"
+        android:layout_margin="@dimen/side_margin"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="id/tv_register" />
 
-    <Button
-        android:id="@+id/button_first"
+    <TextView
+        android:id="@+id/tv_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/next"
+        android:text="@string/register_text"
+        android:layout_marginStart="@dimen/side_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textview_first" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/first_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/side_margin"
+        android:hint="@string/first_name"
+        app:errorEnabled="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_register">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/first_name_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"/>
+            <!--android:afterTextChanged=""-->
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/button_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/registrer_ny_bruker"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

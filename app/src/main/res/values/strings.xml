@@ -7,6 +7,9 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="klar_kom_i_form">Gjør deg klar til å komme i form!</string>
+    <string name="registrer_ny_bruker">Registrer ny bruker</string>
+    <string name="first_name">Fornavn</string>
+    <string name="register_text">Registrer deg for å komme i gang med din treningsplan:</string>
 </resources>

@@ -1,3 +1,5 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="side_margin">16dp</dimen>
+    <dimen name="margin_between_elements">4dp</dimen>
 </resources>
