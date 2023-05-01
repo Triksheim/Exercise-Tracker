@@ -1,8 +1,6 @@
 package com.example.exercisetracker.repository
-import com.example.exercisetracker.db.TrainingDao
 import com.example.exercisetracker.db.User
 import com.example.exercisetracker.db.UserJSON
-import com.example.exercisetracker.utils.LocalDataSource
 import com.example.exercisetracker.utils.RemoteDataSource
 import kotlinx.coroutines.flow.Flow
 
@@ -25,7 +23,7 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
     suspend fun getUser(id: Int): UserJSON {
         return remoteDataSource.getUser(id)
     }
-    suspend fun createUser(user: User) {
+    suspend fun createUser(user: User): Result<UserJSON> {
         return remoteDataSource.createUser(user)
     }
 

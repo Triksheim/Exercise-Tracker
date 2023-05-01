@@ -1,8 +1,8 @@
-package com.example.exercisetracker.utils
+package com.example.exercisetracker.repository
 
 import android.content.Context
 import com.example.exercisetracker.db.TrainingDatabase
-import com.example.exercisetracker.repository.TrainingRepository
+import com.example.exercisetracker.utils.remoteDataSource
 
 object ServiceLocator {
 
@@ -22,7 +22,7 @@ object ServiceLocator {
         return newRepository
     }
 
-    private fun createLocalDataSource(context: Context): LocalDataSource{
+    private fun createLocalDataSource(context: Context): LocalDataSource {
         val database: TrainingDatabase by lazy { TrainingDatabase.getDatabase(context)}
         return LocalDataSource(database.trainingDao())
     }

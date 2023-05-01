@@ -1,6 +1,7 @@
-package com.example.exercisetracker.utils
+package com.example.exercisetracker.repository
 
 import android.app.Application
+import com.example.exercisetracker.repository.ServiceLocator
 import com.example.exercisetracker.repository.TrainingRepository
 
 

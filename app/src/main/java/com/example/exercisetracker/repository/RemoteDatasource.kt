@@ -14,6 +14,9 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import kotlin.Result
+import retrofit2.HttpException
+import retrofit2.Response
 
 
 private const val BASE_URL = "https://wfa-media.com/exercise23/v3/api.php/"
@@ -49,14 +52,29 @@ interface ApiService {
     suspend fun getUser(@Path("id") id: Int): UserJSON
 
     @POST("users")
-    suspend fun createUser(@Body user: User)
+    suspend fun createUser(@Body user: User): Response<UserJSON>
 
 }
 
 
 class RemoteDataSource(private val apiService: ApiService) {
+
     suspend fun getUser(id: Int) = apiService.getUser(id)
-    suspend fun createUser(user: User) = apiService.createUser(user)
+
+    suspend fun createUser(user: User): Result<UserJSON> {
+        return try {
+            val response = apiService.createUser(user)
+            if (response.isSuccessful) {
+                Result.success(response.body()!!)
+            } else {
+                Result.failure(Exception("HTTP error ${response.code()}"))
+            }
+        } catch (e: HttpException) {
+            Result.failure(Exception("HTTP error ${e.code()}"))
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 
 }
 

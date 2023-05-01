@@ -6,14 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.exercisetracker.databinding.FragmentSecondBinding
-import com.example.exercisetracker.db.TrainingDatabase
-import com.example.exercisetracker.repository.TrainingRepository
-import com.example.exercisetracker.utils.LocalDataSource
-import com.example.exercisetracker.utils.RemoteDataSource
-import com.example.exercisetracker.utils.TrainingApplication
+import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 

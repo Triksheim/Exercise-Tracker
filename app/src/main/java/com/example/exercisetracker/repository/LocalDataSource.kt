@@ -1,4 +1,4 @@
-package com.example.exercisetracker.utils
+package com.example.exercisetracker.repository
 import com.example.exercisetracker.db.TrainingDao
 import com.example.exercisetracker.db.User
 import kotlinx.coroutines.flow.Flow

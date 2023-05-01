@@ -12,9 +12,6 @@ import android.view.MenuItem
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.exercisetracker.databinding.ActivityMainBinding
-import com.example.exercisetracker.repository.TrainingRepository
-import com.example.exercisetracker.utils.ServiceLocator
-import com.example.exercisetracker.viewmodel.SharedViewModel
 
 class MainActivity : AppCompatActivity() {
 
