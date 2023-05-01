@@ -36,5 +36,17 @@
         <action
             android:id="@+id/action_programTypeFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_programTypeFragment_to_newProgramFragment"
+            app:destination="@id/newProgramFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newProgramFragment"
+        android:name="com.example.exercisetracker.NewProgramFragment"
+        android:label="fragment_new_program"
+        tools:layout="@layout/fragment_new_program" >
+        <action
+            android:id="@+id/action_newProgramFragment_to_programTypeFragment"
+            app:destination="@id/programTypeFragment" />
     </fragment>
 </navigation>

@@ -15,6 +15,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/button_back"
+
         tools:itemCount="15"
         tools:listItem="@layout/program_type_item"/>
 
@@ -35,6 +36,17 @@
         android:text="@string/button_back"
         android:layout_marginBottom="@dimen/side_margin"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <Button
+        android:id="@+id/button_temp_next"
+        android:layout_width="@dimen/button_size_medium"
+        android:layout_height="wrap_content"
+        android:text="(Temp) Neste"
+        android:layout_marginBottom="@dimen/side_margin"
+        app:layout_constraintBottom_toTopOf="@id/button_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
