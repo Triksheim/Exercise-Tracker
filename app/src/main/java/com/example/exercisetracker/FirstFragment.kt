@@ -45,13 +45,12 @@ class FirstFragment : Fragment() {
 
         }
 
-        binding?.buttonFirst?.setOnClickListener {
-            sharedViewModel.test()
-        binding.buttonRegister.setOnClickListener {
+
+        binding?.buttonRegister?.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
 
-        binding.buttonLogin.setOnClickListener {
+        binding?.buttonLogin?.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
 
         }
