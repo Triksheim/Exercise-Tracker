@@ -21,4 +21,11 @@
     <string name="textview_indoor">Innendørsaktivitet</string>
     <string name="textview_outdoor">Utendørsaktivitet</string>
     <string name="button_back">Tilbake</string>
+    <string name="register_new_program">Registrer nytt treningsprogram:</string>
+    <string name="description">Beskrivelse</string>
+    <string name="program_name">Programnavn</string>
+    <string name="use_timer">Bruke tidtaker?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nei</string>
+    <string name="add_exercises">Legg til øvelser</string>
 </resources>

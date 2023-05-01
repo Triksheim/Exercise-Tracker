@@ -79,3 +79,10 @@ data class UserProgramSessionPhoto(
     @ColumnInfo(name = "user_program_session_id") val user_program_session_id: Int,
     @ColumnInfo(name = "photo_url") val photo_url: String
 )
+
+data class ProgramType(
+    val id: Int,
+    val description: String,
+    val icon: String,
+    val back_color: String
+)

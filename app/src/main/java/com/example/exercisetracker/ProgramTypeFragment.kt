@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.exercisetracker.adapters.ProgramTypeAdapter
 import com.example.exercisetracker.databinding.FragmentProgramTypeBinding
 
 class ProgramTypeFragment: Fragment() {
@@ -23,10 +24,17 @@ class ProgramTypeFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+         // Midlertidig navigering. Skal videre til newProgramFragment!!
+        val adapter = ProgramTypeAdapter {programType -> findNavController().navigate(R.id.action_programTypeFragment_to_SecondFragment)}
 
         binding.buttonBack.setOnClickListener {
             findNavController().navigate(R.id.action_programTypeFragment_to_SecondFragment)
         }
+        //TEMPORARY NAVIGATION TO NEW PROGRAM FRAGMENT
+        binding.buttonTempNext.setOnClickListener {
+            findNavController().navigate(R.id.action_programTypeFragment_to_newProgramFragment)
+        }
+
     }
 
     override fun onDestroyView() {
