@@ -15,4 +15,9 @@
     <string name="last_name">Etternavn</string>
     <string name="phone_number">Mobilnummer</string>
     <string name="helper_text_required">Påkrevd felt*</string>
+    <string name="btn_outdoor">Utendørs</string>
+    <string name="btn_indoor">Innendørs</string>
+    <string name="text_choose_activity">Velg type aktivitet du vil registrere</string>
+    <string name="textview_indoor">Innendørsaktivitet</string>
+    <string name="textview_outdoor">Utendørsaktivitet</string>
 </resources>
