@@ -1,9 +1,9 @@
-package com.example.exercisetracker.utils
+package com.example.exercisetracker.repository
 
 
 
 import com.example.exercisetracker.db.User
-import com.example.exercisetracker.db.UserJSON
+import com.example.exercisetracker.network.UserJSON
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.Interceptor
@@ -48,6 +48,9 @@ private class ApiKeyInterceptor : Interceptor {
 
 
 interface ApiService {
+    @GET("users")
+    suspend fun getUsers(): List<UserJSON>
+
     @GET("users/{id}")
     suspend fun getUser(@Path("id") id: Int): UserJSON
 
@@ -58,6 +61,8 @@ interface ApiService {
 
 
 class RemoteDataSource(private val apiService: ApiService) {
+
+    suspend fun getUsers() = apiService.getUsers()
 
     suspend fun getUser(id: Int) = apiService.getUser(id)
 

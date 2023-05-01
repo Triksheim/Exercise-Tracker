@@ -14,6 +14,7 @@ import com.example.exercisetracker.db.UserProgramSessionPhoto
 
 @Database(
     entities = [
+        ActiveUser::class,
         AppProgramType::class,
         User::class,
         UserProgram::class,
@@ -23,7 +24,7 @@ import com.example.exercisetracker.db.UserProgramSessionPhoto
         UserProgramSessionData::class,
         UserProgramSessionPhoto::class,
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class TrainingDatabase : RoomDatabase() {

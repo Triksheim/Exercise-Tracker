@@ -4,6 +4,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
+@Entity(tableName = "active_user")
+data class ActiveUser(
+    @PrimaryKey()
+    @ColumnInfo(name = "id", ) val id: Int,
+    @ColumnInfo(name = "phone") val phone: String,
+)
 
 
 @Entity(tableName = "app_program_type")

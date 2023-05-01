@@ -1,7 +1,7 @@
 package com.example.exercisetracker.repository
+import com.example.exercisetracker.db.ActiveUser
 import com.example.exercisetracker.db.User
-import com.example.exercisetracker.db.UserJSON
-import com.example.exercisetracker.utils.RemoteDataSource
+import com.example.exercisetracker.network.UserJSON
 import kotlinx.coroutines.flow.Flow
 
 
@@ -16,10 +16,24 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
         return localDataSource.insertUser(user)
     }
 
+    suspend fun addActiveUser(activeUser: ActiveUser) {
+        return localDataSource.addActiveUser(activeUser)
+    }
+
+    suspend fun getActiveUser(): Result<ActiveUser> {
+        return localDataSource.getActiveUser()
+    }
+
+    suspend fun removeActiveUser() {
+        return localDataSource.removeActiveUser()
+    }
 
 
 
     // Remote data source methods
+    suspend fun getUsers(): List<UserJSON> {
+        return remoteDataSource.getUsers()
+    }
     suspend fun getUser(id: Int): UserJSON {
         return remoteDataSource.getUser(id)
     }

@@ -2,73 +2,82 @@ package com.example.exercisetracker.viewmodel
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.exercisetracker.db.User
-import com.example.exercisetracker.db.UserJSON
 import com.example.exercisetracker.repository.TrainingRepository
 import kotlinx.coroutines.launch
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.example.exercisetracker.db.ActiveUser
+import com.example.exercisetracker.network.UserJSON
 
 
 class SharedViewModel(private val repository: TrainingRepository) : ViewModel() {
 
-    var current_id = 1
+    private val _activeUserId = MutableLiveData<Int>()
+    val activeUserId: LiveData<Int> = _activeUserId
 
-    fun dbTest() {
-        val user = User(id = current_id, phone = "47380174", email = "tri032@uit.no", name = "Martin", birth_year = 1993)
-        insertUserToDb(user)
-        current_id += 1
+    private val _users = MutableLiveData<List<UserJSON>>()
+    val users: LiveData<List<UserJSON>> = _users
+
+
+
+
+
+    init {
+        restart()
     }
 
-    fun apiTest() {
-        val id = 86
-        viewModelScope.launch {
-            val user = repository.getUser(id)
-            Log.d("User", user.name)
-        }
-    }
-
-    fun apiTestCreate() {
-        val user = User(id = 0, phone = "12345678", email = "test@uit.no", name = "Testersen", birth_year = 2000)
+    fun createUser(user: User)  {
         viewModelScope.launch {
 
             val result = repository.createUser(user)
             if (result.isSuccess) {
                 val newUser = result.getOrNull()
-                Log.d("userid", newUser?.id.toString())
+                if (newUser != null) {
+                    setActiveUser(newUser.id, newUser.phone)
+                }
             }
             else {
                 val errorMessage = result.exceptionOrNull()?.message ?: "Unknown error"
                 Log.e("TAG", "Error creating user: $errorMessage")
-
             }
         }
     }
 
-    fun createUser(user: User) {
+
+
+    fun login(phone: String): Boolean {
+        for (user in users.value!!) {
+            if (user.phone == phone) {
+                setActiveUser(user.id, user.phone)
+                return true
+            }
+        }
+        return false
+    }
+
+
+    fun setActiveUser(id: Int, phone: String) {
+        val activeUser = ActiveUser(id, phone)
+        _activeUserId.value = id
         viewModelScope.launch {
-
-            val result = repository.createUser(user)
-            if (result.isSuccess) {
-                val newUser = result.getOrNull()
-                Log.d("New userid", newUser?.id.toString())
-            }
-            else {
-                val errorMessage = result.exceptionOrNull()?.message ?: "Unknown error"
-                Log.e("TAG", "Error creating user: $errorMessage")
-
-            }
+            repository.removeActiveUser()
+            repository.addActiveUser(activeUser)
+            Log.d("Active userid", id.toString())
         }
     }
 
 
-
-    private fun insertUserToDb(user: User) {
+    fun restart() {
+        _activeUserId.value = 0
         viewModelScope.launch {
-            repository.insertUserToDatabase(user)
+            _users.value = repository.getUsers()
+            val resultActiveUser = repository.getActiveUser()
+            if (resultActiveUser.isSuccess) {
+                resultActiveUser.getOrNull()?.let { login(it.phone) }
+            }
         }
     }
-
-
-
-
 
 }
 class SharedViewModelFactory(private val trainingRepository: TrainingRepository) : ViewModelProvider.Factory {

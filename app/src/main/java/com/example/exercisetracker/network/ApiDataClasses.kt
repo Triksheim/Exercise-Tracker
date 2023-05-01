@@ -1,4 +1,4 @@
-package com.example.exercisetracker.db
+package com.example.exercisetracker.network
 
 import com.squareup.moshi.Json
 

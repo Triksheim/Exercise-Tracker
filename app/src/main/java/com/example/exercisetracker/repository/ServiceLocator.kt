@@ -2,7 +2,6 @@ package com.example.exercisetracker.repository
 
 import android.content.Context
 import com.example.exercisetracker.db.TrainingDatabase
-import com.example.exercisetracker.utils.remoteDataSource
 
 object ServiceLocator {
 
