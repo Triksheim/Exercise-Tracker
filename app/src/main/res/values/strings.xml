@@ -20,4 +20,5 @@
     <string name="text_choose_activity">Velg type aktivitet du vil registrere</string>
     <string name="textview_indoor">Innendørsaktivitet</string>
     <string name="textview_outdoor">Utendørsaktivitet</string>
+    <string name="button_back">Tilbake</string>
 </resources>

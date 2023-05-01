@@ -32,12 +32,13 @@ class SecondFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Dersom indoor image er trykket, må innendørs program-typer vises i recyclerView
         binding.indoorImage.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+            findNavController().navigate(R.id.action_SecondFragment_to_programTypeFragment)
         }
-
+        // Dersom outdoor image er trykket, må utendørs program-typer vises i recyclerView
         binding.outdoorImage.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+            findNavController().navigate(R.id.action_SecondFragment_to_programTypeFragment)
         }
     }
 
