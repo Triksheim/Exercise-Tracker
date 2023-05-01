@@ -17,7 +17,6 @@ object ServiceLocator {
 
     private fun createTrainingRepository(context: Context): TrainingRepository {
         val localDatasource = createLocalDataSource(context)
-        val remoteDataSource = createRemoteDataSource(context)
         val newRepository = TrainingRepository(localDatasource, remoteDataSource)
         trainingRepository = newRepository
         return newRepository
@@ -28,9 +27,6 @@ object ServiceLocator {
         return LocalDataSource(database.trainingDao())
     }
 
-    private fun createRemoteDataSource(context: Context): RemoteDataSource{
-        val database: TrainingDatabase by lazy { TrainingDatabase.getDatabase(context)}
-        return RemoteDataSource()
-    }
+
 
 }

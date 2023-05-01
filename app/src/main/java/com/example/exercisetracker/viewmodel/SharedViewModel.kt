@@ -1,4 +1,5 @@
 package com.example.exercisetracker.viewmodel
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.exercisetracker.db.User
 import com.example.exercisetracker.repository.TrainingRepository
@@ -9,10 +10,25 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
     var current_id = 1
 
-    fun test() {
+    fun dbTest() {
         val user = User(id = current_id, phone = "47380174", email = "tri032@uit.no", name = "Martin", birth_year = 1993)
         insertUserToDb(user)
         current_id += 1
+    }
+
+    fun apiTest() {
+        val id = 86
+        viewModelScope.launch {
+            val user = repository.getUser(id)
+            Log.d("User", user.name)
+        }
+    }
+
+    fun apiTestCreate() {
+        val user = User(id = 0, phone = "0000000", email = "test@uit.no", name = "Testersen", birth_year = 2000)
+        viewModelScope.launch {
+            repository.createUser(user)
+        }
     }
 
     private fun insertUserToDb(user: User) {
