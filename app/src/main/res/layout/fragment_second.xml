@@ -7,21 +7,65 @@
     tools:context=".SecondFragment">
 
     <TextView
-        android:id="@+id/textview_second"
+        android:id="@+id/textview_activity_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/button_second"
+        android:text="@string/text_choose_activity"
+        android:layout_marginTop="@dimen/side_margin"
+        android:layout_marginBottom="@dimen/side_margin"
+        android:textSize="@dimen/header_text"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/indoor_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+         />
 
-    <Button
-        android:id="@+id/button_second"
+    <ImageView
+        android:id="@+id/indoor_image"
+        android:layout_width="255dp"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_marginBottom="@dimen/margin_between_elements"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textview_activity_type"
+        app:layout_constraintBottom_toTopOf="@id/outdoor_image"
+        app:srcCompat="@drawable/img_indoor_gym" />
+
+    <TextView
+        android:id="@+id/indoor_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/previous"
+        android:text="@string/textview_indoor"
+        android:layout_marginTop="@dimen/margin_between_elements"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/indoor_image" />
+
+    <ImageView
+        android:id="@+id/outdoor_image"
+        android:layout_width="255dp"
+        android:layout_height="170dp"
+        android:layout_marginTop="@dimen/margin_between_elements"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_second" />
+        app:layout_constraintTop_toBottomOf="@id/indoor_image"
+        app:srcCompat="@drawable/img_outdoor_runner" />
+
+    <TextView
+        android:id="@+id/outdoor_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/textview_outdoor"
+        android:layout_marginTop="@dimen/margin_between_elements"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/outdoor_image" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
