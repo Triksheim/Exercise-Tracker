@@ -92,3 +92,21 @@ data class ProgramType(
     val icon: String,
     val back_color: String
 )
+
+data class Exercise(
+    val id: Int,
+    val user_id: Int,
+    val name: String,
+    val photo_url: String,
+    val description: String,
+    val icon: String,
+    val infobox_color: String)
+
+data class Program(
+    val id: Int,
+    val user_id: Int,
+    val app_program_type_id: Int,
+    val name: String,
+    val description: String,
+    val use_timing: Int,
+    val icon: String)

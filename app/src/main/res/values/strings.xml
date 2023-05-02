@@ -11,6 +11,8 @@
     <string name="klar_kom_i_form">Gjør deg klar til å komme i form!</string>
     <string name="registrer_ny_bruker">Registrer ny bruker</string>
     <string name="first_name">Fornavn</string>
+    <string name="birth_year">Fødselsår</string>
+    <string name="email">Epost</string>
     <string name="register_text">Registrer deg for å komme i gang med din treningsplan:</string>
     <string name="last_name">Etternavn</string>
     <string name="phone_number">Mobilnummer</string>
@@ -28,4 +30,6 @@
     <string name="yes">Ja</string>
     <string name="no">Nei</string>
     <string name="add_exercises">Legg til øvelser</string>
+    <string name="create_new_exercise">Opprett ny øvelse</string>
+    <string name="no_registered_exercises">Du har ikke lagret noen øvelser. Opprett ny øvelse</string>
 </resources>

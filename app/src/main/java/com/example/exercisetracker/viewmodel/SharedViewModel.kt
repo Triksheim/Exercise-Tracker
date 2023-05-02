@@ -71,6 +71,12 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
+    fun logout() {
+        _activeUserId.value = 0
+        viewModelScope.launch {
+            repository.removeActiveUser()
+        }
+    }
 
     fun restart() {
         _activeUserId.value = 0

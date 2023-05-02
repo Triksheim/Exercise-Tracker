@@ -54,12 +54,13 @@ class FirstFragment : Fragment() {
 
         binding?.buttonRegister?.setOnClickListener {
             val nameInput: TextInputEditText = view.findViewById(R.id.first_name_input)
+            val birthInput: TextInputEditText = view.findViewById(R.id.birth_year_input)
             val emailInput: TextInputEditText = view.findViewById(R.id.email_name_input)
             val phoneInput: TextInputEditText = view.findViewById(R.id.phone_number_input)
             val name = nameInput.text.toString()
+            val birthYear = birthInput.text.toString().toInt()
             val email = emailInput.text.toString()
             val phone = phoneInput.text.toString()
-            val birthYear = 2000
             val user = User(0, phone, email, name, birthYear)
             sharedViewModel.createUser(user)
 
