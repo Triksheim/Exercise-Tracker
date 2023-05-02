@@ -9,6 +9,9 @@ data class ActiveUser(
     @PrimaryKey()
     @ColumnInfo(name = "id", ) val id: Int,
     @ColumnInfo(name = "phone") val phone: String,
+    @ColumnInfo(name = "email") val email: String,
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "birth_year") val birth_year: Int
 )
 
 

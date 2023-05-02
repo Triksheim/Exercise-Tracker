@@ -24,7 +24,7 @@ import com.example.exercisetracker.db.UserProgramSessionPhoto
         UserProgramSessionData::class,
         UserProgramSessionPhoto::class,
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 abstract class TrainingDatabase : RoomDatabase() {

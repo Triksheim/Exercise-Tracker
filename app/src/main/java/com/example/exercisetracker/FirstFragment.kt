@@ -63,9 +63,10 @@ class FirstFragment : Fragment() {
             }
         }
 
-        sharedViewModel.activeUserId.observe(viewLifecycleOwner, Observer {
-            Log.d("Active user", it.toString())
-            if (it != 0) {
+        sharedViewModel.activeUser.observe(viewLifecycleOwner, Observer {
+            Log.d("Active user", it.id.toString())
+            if (it.id != 0) {
+                Toast.makeText(context, "Velkommen, ${it.name}", Toast.LENGTH_SHORT).show()
                 navigateToNextFragment()
             }
         })
@@ -84,7 +85,6 @@ class FirstFragment : Fragment() {
                 view.findViewById<TextInputEditText>(R.id.email_name_input).text.toString()
             val phone =
                 view.findViewById<TextInputEditText>(R.id.phone_number_input).text.toString()
-            val user = User(0, phone, email, name, birthYear)
 
             if (name == "" || birthYear == 0 || email == "" || phone == "") {
                 Toast.makeText(context, "Vennligst utfyll alle felter", Toast.LENGTH_SHORT).show()
@@ -102,7 +102,6 @@ class FirstFragment : Fragment() {
             val phoneLoginInput: TextInputEditText = view.findViewById(R.id.phone_login_input)
             val phoneLogin = phoneLoginInput.text.toString()
             if (sharedViewModel.login(phoneLogin)) {
-                Toast.makeText(context, "Velkommen tilbake", Toast.LENGTH_SHORT).show()
             }
             else {
                 Toast.makeText(context, "Ukjent mobilnummer", Toast.LENGTH_SHORT).show()
