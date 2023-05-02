@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.exercisetracker.db.ActiveUser
+import com.example.exercisetracker.db.ProgramType
+import com.example.exercisetracker.network.AppProgramTypeJSON
 import com.example.exercisetracker.network.UserJSON
 
 
@@ -19,6 +21,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _users = MutableLiveData<List<UserJSON>>()
     val users: LiveData<List<UserJSON>> = _users
 
+    private val _programTypes = MutableLiveData<List<AppProgramTypeJSON>>()
+    val programTypes: LiveData<List<AppProgramTypeJSON>> = _programTypes
 
 
 
