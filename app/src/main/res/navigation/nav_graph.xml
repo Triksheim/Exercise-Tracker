@@ -59,5 +59,16 @@
         <action
             android:id="@+id/action_programDetailsFragment_to_newProgramFragment"
             app:destination="@id/newProgramFragment" />
+        <action
+            android:id="@+id/action_programDetailsFragment_to_newExerciseFragment"
+            app:destination="@id/newExerciseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newExerciseFragment"
+        android:name="com.example.exercisetracker.NewExerciseFragment"
+        android:label="NewExerciseFragment" >
+        <action
+            android:id="@+id/action_newExerciseFragment_to_programDetailsFragment"
+            app:destination="@id/programDetailsFragment" />
     </fragment>
 </navigation>
