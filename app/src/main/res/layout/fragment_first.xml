@@ -102,27 +102,25 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/last_name"
+        android:id="@+id/birth_year"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/side_margin"
         android:layout_marginEnd="@dimen/side_margin"
         android:layout_marginTop="@dimen/margin_between_elements"
         android:layout_marginBottom="@dimen/margin_between_elements"
-        android:hint="@string/last_name"
-        app:startIconDrawable="@drawable/person_img"
+        android:hint="Fødselsdag"
+        app:startIconDrawable="@drawable/cake_img"
         app:errorEnabled="true"
         app:counterEnabled="true"
-        app:counterMaxLength="20"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/first_name">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/last_name_input"
+            android:id="@+id/birth_year_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:maxLength="21"/>
+            android:inputType="date" />
         <!--android:afterTextChanged=""-->
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -139,7 +137,7 @@
         app:startIconDrawable="@drawable/email_img"
         app:errorEnabled="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/last_name">
+        app:layout_constraintTop_toBottomOf="@id/birth_year">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email_name_input"
