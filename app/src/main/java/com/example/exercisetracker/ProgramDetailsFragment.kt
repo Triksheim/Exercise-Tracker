@@ -33,5 +33,9 @@ class ProgramDetailsFragment: Fragment() {
             findNavController().navigate(R.id.action_programDetailsFragment_to_newProgramFragment)
         }
 
+        binding.buttonAddExercises.setOnClickListener{
+            findNavController().navigate(R.id.action_programDetailsFragment_to_newExerciseFragment)
+        }
+
     }
 }
