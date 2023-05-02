@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.exercisetracker.viewmodel.SharedViewModel"/>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/side_margin"
+        android:layout_marginStart="@dimen/side_margin"
+        android:layout_marginEnd="@dimen/side_margin">
+
+        <ImageView
+            android:id="@+id/imageview_exercise"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/img_outdoor_runner"/>
+
+        <Button
+            android:id="@+id/button_exercise_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ta nytt bilde"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/imageview_exercise"/>
+
+        <View
+            android:id="@+id/divider_upper"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/side_margin"
+            android:background="?attr/dividerHorizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_exercise_photo"/>
+
+        <TextView
+            android:id="@+id/tv_new_exercise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lag ny øvelse"
+            android:textSize="@dimen/header_text"
+            android:layout_marginTop="@dimen/margin_between_elements"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_upper"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/exercise_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/side_margin"
+            android:layout_marginBottom="@dimen/margin_between_elements"
+            android:hint="Navn"
+            app:errorEnabled="true"
+            app:counterEnabled="true"
+            app:counterMaxLength="20"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_new_exercise">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/exercise_name_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLength="21"/>
+            <!--android:afterTextChanged=""-->
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/exercise_descript"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/side_margin"
+            android:layout_marginBottom="@dimen/margin_between_elements"
+            android:hint="@string/description"
+            app:errorEnabled="true"
+            app:counterEnabled="true"
+            app:counterMaxLength="500"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/exercise_name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/exercise_descript_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:lines="10"
+                android:maxLines="10"
+                android:maxLength="501"/>
+            <!--android:afterTextChanged=""-->
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/button_save_exercise"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:text="Lagre Øvelse"
+            android:layout_marginBottom="@dimen/side_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/button_back"
+            />
+
+        <Button
+            android:id="@+id/button_back"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:text="@string/button_back"
+            android:layout_marginBottom="@dimen/side_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/button_save_exercise"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
