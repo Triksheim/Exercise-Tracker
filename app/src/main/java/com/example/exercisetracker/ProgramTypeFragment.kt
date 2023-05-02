@@ -16,12 +16,11 @@ import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 class ProgramTypeFragment: Fragment() {
 
     private var _binding: FragmentProgramTypeBinding? = null
-    private val viewModel: SharedViewModel by activityViewModels() {
+    private val sharedViewModel: SharedViewModel by activityViewModels() {
         SharedViewModelFactory(
             (activity?.application as TrainingApplication).trainingRepository
         )
     }
-
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +34,7 @@ class ProgramTypeFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
          // Midlertidig navigering. Skal videre til newProgramFragment!!
         val adapter = ProgramTypeAdapter {programType ->
-            viewModel.setProgramType(programType)
+            sharedViewModel.onProgramTypeSelected(programType)
             findNavController().navigate(R.id.action_programTypeFragment_to_SecondFragment)}
 
         binding.buttonBack.setOnClickListener {
@@ -47,7 +46,9 @@ class ProgramTypeFragment: Fragment() {
         }
 
         binding?.apply {
+            viewModel = sharedViewModel
             programTypeFragment = this@ProgramTypeFragment
+            // listRecycler er recyclerView i fragment_program_type.xml
             listRecycler.adapter = adapter
         }
 
