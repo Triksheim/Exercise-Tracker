@@ -89,6 +89,12 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
+    fun setProgramType(programType: ProgramType) {
+        viewModelScope.launch {
+            TODO()
+        }
+    }
+
 }
 class SharedViewModelFactory(private val trainingRepository: TrainingRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

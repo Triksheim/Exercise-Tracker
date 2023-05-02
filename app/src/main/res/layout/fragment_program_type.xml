@@ -27,7 +27,6 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/button_back"
-
             tools:itemCount="15"
             tools:listItem="@layout/program_type_item"/>
 

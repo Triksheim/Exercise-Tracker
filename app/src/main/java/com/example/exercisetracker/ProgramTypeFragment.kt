@@ -35,6 +35,7 @@ class ProgramTypeFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
          // Midlertidig navigering. Skal videre til newProgramFragment!!
         val adapter = ProgramTypeAdapter {programType ->
+            viewModel.setProgramType(programType)
             findNavController().navigate(R.id.action_programTypeFragment_to_SecondFragment)}
 
         binding.buttonBack.setOnClickListener {
