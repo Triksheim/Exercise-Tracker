@@ -21,13 +21,16 @@ interface TrainingDao {
 
     // AppProgramType
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertAppProgramType(appProgramType: AppProgramType): Long
+    fun insertAppProgramTypes(appProgramTypes: AppProgramTypes): Long
 
-    @Query("SELECT * FROM app_program_type")
-    fun getAllAppProgramTypes(): Flow<List<AppProgramType>>
+    @Query("SELECT * FROM app_program_types")
+    fun getAllAppProgramTypes(): Flow<List<AppProgramTypes>>
 
-    @Query("SELECT * FROM app_program_type WHERE id = :id")
-    fun getAppProgramTypeById(id: Int): Flow<AppProgramType>
+    @Query("SELECT * FROM app_program_types WHERE back_color = :back_color")
+    fun getAppProgramTypes(back_color: String): Flow<List<AppProgramTypes>>
+
+    @Query("SELECT * FROM app_program_types WHERE id = :id")
+    fun getAppProgramTypesById(id: Int): Flow<AppProgramTypes>
 
 
 

@@ -17,19 +17,22 @@
         android:layout_height="match_parent"
         tools:context=".ProgramTypeFragment">
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list_recycler"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="6dp"
-            android:clipToPadding="false"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/button_back"
-            tools:itemCount="15"
-            tools:listItem="@layout/program_type_item"/>
+            android:layout_height="match_parent">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:clipToPadding="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/button_back"
+                tools:itemCount="15"
+                tools:listItem="@layout/program_type_item"/>
+        </ScrollView>
 
         <TextView
             android:layout_width="wrap_content"

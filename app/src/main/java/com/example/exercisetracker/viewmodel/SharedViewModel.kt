@@ -8,9 +8,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.exercisetracker.db.ActiveUser
+import com.example.exercisetracker.db.AppProgramTypes
 import com.example.exercisetracker.db.ProgramType
-import com.example.exercisetracker.network.AppProgramTypeJSON
+import com.example.exercisetracker.network.AppProgramTypesJSON
 import com.example.exercisetracker.network.UserJSON
+import com.example.exercisetracker.repository.ApiStatus
 import com.example.exercisetracker.utils.Type
 
 
@@ -28,8 +30,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _type = MutableLiveData<String>()
     val type: LiveData<String> = _type
 
-    private val _programTypes = MutableLiveData<List<AppProgramTypeJSON>>()
-    val programTypes: LiveData<List<AppProgramTypeJSON>> = _programTypes
+    private val _programTypes = MutableLiveData<List<AppProgramTypesJSON>>()
+    val programTypes: LiveData<List<AppProgramTypesJSON>> = _programTypes
 
     private val _backgroundColor = MutableLiveData<Int>()
     val backgroundColor: LiveData<Int> = _backgroundColor
@@ -37,6 +39,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _programTypeId = MutableLiveData<Int>()
     val programTypeId: LiveData<Int> = _programTypeId
 
+    private val _status = MutableLiveData<ApiStatus>()
+    val status: LiveData<ApiStatus> = _status
 
 
 
@@ -104,8 +108,17 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     }
 
     fun setTypeAndColor(type: Type) {
-            _type.value = type.name
-            _backgroundColor.value = type.rgb
+        viewModelScope.launch {
+            _status.value = ApiStatus.LOADING
+            try {
+                _programTypes.value = repository.getAllAppProgramTypes()
+                _type.value = type.name
+                _backgroundColor.value = type.rgb
+                _status.value = ApiStatus.DONE
+            } catch (e: Exception) {
+                _type.value = ApiStatus.ERROR.toString()
+            }
+        }
     }
 
     fun onProgramTypeSelected(programType: ProgramType) {

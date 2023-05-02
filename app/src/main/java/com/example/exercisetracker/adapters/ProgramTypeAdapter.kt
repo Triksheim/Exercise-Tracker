@@ -22,13 +22,14 @@ class ProgramTypeAdapter(private val onItemCLicked: (ProgramType) -> Unit)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
-    : ProgramViewHolder {
-        return ProgramViewHolder(
+    : ProgramTypeAdapter.ProgramViewHolder {
+        return ProgramTypeAdapter.ProgramViewHolder(
             ProgramTypeItemBinding.inflate(
-                LayoutInflater.from(parent.context)))
+                LayoutInflater.from(
+                    parent.context)))
     }
 
-    override fun onBindViewHolder(holder: ProgramViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ProgramTypeAdapter.ProgramViewHolder, position: Int) {
         val programType = getItem(position)
         holder.itemView.setOnClickListener {
             onItemCLicked(programType)

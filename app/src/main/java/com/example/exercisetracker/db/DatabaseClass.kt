@@ -3,19 +3,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.exercisetracker.db.AppProgramType
-import com.example.exercisetracker.db.User
-import com.example.exercisetracker.db.UserProgram
-import com.example.exercisetracker.db.UserProgramExercise
-import com.example.exercisetracker.db.UserExercise
-import com.example.exercisetracker.db.UserProgramSession
-import com.example.exercisetracker.db.UserProgramSessionData
-import com.example.exercisetracker.db.UserProgramSessionPhoto
 
 @Database(
     entities = [
         ActiveUser::class,
-        AppProgramType::class,
+        AppProgramTypes::class,
         User::class,
         UserProgram::class,
         UserProgramExercise::class,
@@ -24,7 +16,7 @@ import com.example.exercisetracker.db.UserProgramSessionPhoto
         UserProgramSessionData::class,
         UserProgramSessionPhoto::class,
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 abstract class TrainingDatabase : RoomDatabase() {

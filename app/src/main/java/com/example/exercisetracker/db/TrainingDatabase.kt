@@ -12,8 +12,8 @@ data class ActiveUser(
 )
 
 
-@Entity(tableName = "app_program_type")
-data class AppProgramType(
+@Entity(tableName = "app_program_types")
+data class AppProgramTypes(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "description") val description: String,
     @ColumnInfo(name = "icon") val icon: String,
