@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.exercisetracker.databinding.FragmentFirstBinding
 import com.example.exercisetracker.db.User
@@ -16,7 +17,12 @@ import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.w3c.dom.Text
+import retrofit2.HttpException
+import retrofit2.http.HTTP
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -51,20 +57,10 @@ class FirstFragment : Fragment() {
 
         }
 
-
-        binding?.buttonRegister?.setOnClickListener {
-            val nameInput: TextInputEditText = view.findViewById(R.id.first_name_input)
-            val birthInput: TextInputEditText = view.findViewById(R.id.birth_year_input)
-            val emailInput: TextInputEditText = view.findViewById(R.id.email_name_input)
-            val phoneInput: TextInputEditText = view.findViewById(R.id.phone_number_input)
-            val name = nameInput.text.toString()
-            val birthYear = birthInput.text.toString().toInt()
-            val email = emailInput.text.toString()
-            val phone = phoneInput.text.toString()
-            val user = User(0, phone, email, name, birthYear)
-            sharedViewModel.createUser(user)
-
-
+        sharedViewModel.createUserStatus.observe(viewLifecycleOwner) { result ->
+            if (result.isFailure) {
+                Toast.makeText(context, "Mobilnummer allerede i bruk", Toast.LENGTH_SHORT).show()
+            }
         }
 
         sharedViewModel.activeUserId.observe(viewLifecycleOwner, Observer {
@@ -73,6 +69,32 @@ class FirstFragment : Fragment() {
                 navigateToNextFragment()
             }
         })
+
+
+        binding?.buttonRegister?.setOnClickListener {
+            val name =
+                view.findViewById<TextInputEditText>(R.id.first_name_input).text.toString()
+            var birthYear = 0
+            val stringBirthYear =
+                view.findViewById<TextInputEditText>(R.id.birth_year_input).text.toString()
+            if (stringBirthYear != "") {
+                birthYear = stringBirthYear.toInt()
+            }
+            val email =
+                view.findViewById<TextInputEditText>(R.id.email_name_input).text.toString()
+            val phone =
+                view.findViewById<TextInputEditText>(R.id.phone_number_input).text.toString()
+            val user = User(0, phone, email, name, birthYear)
+
+            if (name == "" || birthYear == 0 || email == "" || phone == "") {
+                Toast.makeText(context, "Vennligst utfyll alle felter", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                val user = User(0, phone, email, name, birthYear)
+                sharedViewModel.createUser(user)
+            }
+        }
+
 
 
 

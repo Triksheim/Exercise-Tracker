@@ -80,7 +80,6 @@ class RemoteDataSource(private val apiService: ApiService) {
             Result.failure(e)
         }
     }
-
 }
 
 val apiService = retrofit.create(ApiService::class.java)

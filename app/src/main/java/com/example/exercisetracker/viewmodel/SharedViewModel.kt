@@ -19,7 +19,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _users = MutableLiveData<List<UserJSON>>()
     val users: LiveData<List<UserJSON>> = _users
 
-
+    private val _createUserStatus = MutableLiveData<Result<UserJSON>>()
+    val createUserStatus: LiveData<Result<UserJSON>> = _createUserStatus
 
 
 
@@ -27,7 +28,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         restart()
     }
 
-    fun createUser(user: User)  {
+    fun createUser(user: User)   {
         viewModelScope.launch {
 
             val result = repository.createUser(user)
@@ -38,8 +39,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 }
             }
             else {
-                val errorMessage = result.exceptionOrNull()?.message ?: "Unknown error"
-                Log.e("TAG", "Error creating user: $errorMessage")
+                _createUserStatus.value = result
+                Log.d("User creation", "Error creating user")
             }
         }
     }
@@ -69,6 +70,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
     fun logout() {
         _activeUserId.value = 0
+        _createUserStatus.value = Result.success(UserJSON(0,"1","1","1",1))
         viewModelScope.launch {
             repository.removeActiveUser()
         }
