@@ -28,4 +28,6 @@
     <string name="yes">Ja</string>
     <string name="no">Nei</string>
     <string name="add_exercises">Legg til øvelser</string>
+    <string name="create_new_exercise">Opprett ny øvelse</string>
+    <string name="no_registered_exercises">Du har ikke lagret noen øvelser. Opprett ny øvelse</string>
 </resources>

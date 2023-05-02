@@ -27,6 +27,9 @@ class NewProgramFragment: Fragment() {
         binding.buttonBack.setOnClickListener {
             findNavController().navigate(R.id.action_newProgramFragment_to_programTypeFragment)
         }
+        binding.buttonSaveProgram.setOnClickListener{
+            findNavController().navigate(R.id.action_newProgramFragment_to_programDetailsFragment)
+        }
 
     }
 

@@ -4,6 +4,7 @@
     <dimen name="margin_between_elements">4dp</dimen>
 
     <dimen name="button_size_medium">225dp</dimen>
+    <dimen name="button_size_small">50dp</dimen>
 
     <dimen name ="header_text">20sp</dimen>
 </resources>

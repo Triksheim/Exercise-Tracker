@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.exercisetracker.viewmodel.SharedViewModel"/>
+        <variable
+            name="exercise"
+            type="com.example.exercisetracker.db.Exercise"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/side_margin">
+
+        <View
+            android:id="@+id/divider_top"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_margin="@dimen/side_margin"
+            android:background="?attr/dividerHorizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageView
+            android:id="@+id/exercise_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/side_margin"
+            android:src="@{exercise.photo_url}"
+            app:layout_constraintTop_toBottomOf="@id/divider_top"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:src="@drawable/manual_img"/>
+
+        <TextView
+            android:id="@+id/exercise_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_between_elements"
+            android:text="@{exercise.name}"
+            app:layout_constraintStart_toEndOf="@id/exercise_icon"
+            app:layout_constraintTop_toBottomOf="@id/divider_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Exercise-navn"/>
+
+        <TextView
+            android:id="@+id/exercise_descript"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_between_elements"
+            android:text="@{exercise.description}"
+            android:minLines="3"
+            app:layout_constraintStart_toEndOf="@id/exercise_icon"
+            app:layout_constraintTop_toBottomOf="@id/exercise_name"
+            app:layout_constraintEnd_toStartOf="@id/button_add"
+            tools:text="Exercise-beskrivelse bla bla bla bla bla"/>
+
+        <Button
+            android:id="@+id/button_add"
+            android:layout_width="@dimen/button_size_small"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:textSize="@dimen/header_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_top"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
