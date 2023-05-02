@@ -10,14 +10,14 @@ import com.example.exercisetracker.databinding.FragmentNewProgramBinding
 
 class NewProgramFragment: Fragment() {
 
-    private var binding: FragmentNewProgramBinding? = null
-
+    private var _binding: FragmentNewProgramBinding? = null
+    private val binding get() = _binding!!
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?
+          savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentNewProgramBinding.inflate(inflater, container, false)
+        _binding = FragmentNewProgramBinding.inflate(inflater, container, false)
         return binding.root
     }
 
