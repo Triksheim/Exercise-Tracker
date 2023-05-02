@@ -22,6 +22,19 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _createUserStatus = MutableLiveData<Result<UserJSON>>()
     val createUserStatus: LiveData<Result<UserJSON>> = _createUserStatus
 
+    private val _type = MutableLiveData<String>()
+    val type: LiveData<String> = _type
+
+    private val _programTypes = MutableLiveData<List<AppProgramTypeJSON>>()
+    val programTypes: LiveData<List<AppProgramTypeJSON>> = _programTypes
+
+    private val _backgroundColor = MutableLiveData<Int>()
+    val backgroundColor: LiveData<Int> = _backgroundColor
+
+    private val _programTypeId = MutableLiveData<Int>()
+    val programTypeId: LiveData<Int> = _programTypeId
+
+
 
 
     init {
@@ -85,6 +98,15 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 resultActiveUser.getOrNull()?.let { login(it.phone) }
             }
         }
+    }
+
+    fun setTypeAndColor(type: Type) {
+            _type.value = type.name
+            _backgroundColor.value = type.rgb
+    }
+
+    fun onProgramTypeSelected(programType: ProgramType) {
+        TODO()
     }
 
 }

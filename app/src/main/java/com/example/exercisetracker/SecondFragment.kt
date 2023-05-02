@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.exercisetracker.databinding.FragmentSecondBinding
 import com.example.exercisetracker.repository.TrainingApplication
+import com.example.exercisetracker.utils.Type
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 
@@ -46,10 +47,12 @@ class SecondFragment : Fragment() {
 
         // Dersom indoor image er trykket, må innendørs program-typer vises i recyclerView
         binding.indoorImage.setOnClickListener {
+            sharedViewModel.setTypeAndColor(Type.INDOOR)
             findNavController().navigate(R.id.action_SecondFragment_to_programTypeFragment)
         }
         // Dersom outdoor image er trykket, må utendørs program-typer vises i recyclerView
         binding.outdoorImage.setOnClickListener {
+            sharedViewModel.setTypeAndColor(Type.OUTDOOR)
             findNavController().navigate(R.id.action_SecondFragment_to_programTypeFragment)
         }
     }
