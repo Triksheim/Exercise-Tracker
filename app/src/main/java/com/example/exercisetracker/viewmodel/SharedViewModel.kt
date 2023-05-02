@@ -8,7 +8,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.exercisetracker.db.ActiveUser
+import com.example.exercisetracker.db.ProgramType
+import com.example.exercisetracker.network.AppProgramTypeJSON
 import com.example.exercisetracker.network.UserJSON
+import com.example.exercisetracker.utils.Type
 
 
 class SharedViewModel(private val repository: TrainingRepository) : ViewModel() {
