@@ -1,56 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ProgramTypeFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_recycler"
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.exercisetracker.viewmodel.SharedViewModel" />
+        <variable
+            name="programTypeFragment"
+            type="com.example.exercisetracker.ProgramTypeFragment"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="6dp"
-        android:clipToPadding="false"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/button_back"
-
-        tools:itemCount="15"
-        tools:listItem="@layout/program_type_item"/>
+        tools:context=".ProgramTypeFragment">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Her kommer recyclerView med app_program_type"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <Button
-        android:id="@+id/button_back"
-        android:layout_width="@dimen/button_size_medium"
-        android:layout_height="wrap_content"
-        android:text="@string/button_back"
-        android:layout_marginBottom="@dimen/side_margin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
-    <Button
-        android:id="@+id/button_temp_next"
-        android:layout_width="@dimen/button_size_medium"
-        android:layout_height="wrap_content"
-        android:text="(Temp) Neste"
-        android:layout_marginBottom="@dimen/side_margin"
-        app:layout_constraintBottom_toTopOf="@id/button_back"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="6dp"
+            android:clipToPadding="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/button_back"
+            tools:itemCount="15"
+            tools:listItem="@layout/program_type_item"/>
 
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Her kommer recyclerView med app_program_type"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/button_back"
+            android:layout_width="@dimen/button_size_medium"
+            android:layout_height="wrap_content"
+            android:text="@string/button_back"
+            android:layout_marginBottom="@dimen/side_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <Button
+            android:id="@+id/button_temp_next"
+            android:layout_width="@dimen/button_size_medium"
+            android:layout_height="wrap_content"
+            android:text="(Temp) Neste"
+            android:layout_marginBottom="@dimen/side_margin"
+            app:layout_constraintBottom_toTopOf="@id/button_back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
