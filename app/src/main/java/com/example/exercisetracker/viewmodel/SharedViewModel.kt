@@ -17,8 +17,8 @@ import com.example.exercisetracker.utils.Type
 
 class SharedViewModel(private val repository: TrainingRepository) : ViewModel() {
 
-    private val _activeUserId = MutableLiveData<Int>()
-    val activeUserId: LiveData<Int> = _activeUserId
+    private val _activeUser = MutableLiveData<ActiveUser>()
+    val activeUser: LiveData<ActiveUser> = _activeUser
 
     private val _users = MutableLiveData<List<UserJSON>>()
     val users: LiveData<List<UserJSON>> = _users
@@ -54,7 +54,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             if (result.isSuccess) {
                 val newUser = result.getOrNull()
                 if (newUser != null) {
-                    setActiveUser(newUser.id, newUser.phone)
+                    setActiveUser(newUser)
                 }
             }
             else {
@@ -69,7 +69,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     fun login(phone: String): Boolean {
         for (user in users.value!!) {
             if (user.phone == phone) {
-                setActiveUser(user.id, user.phone)
+                setActiveUser(user)
                 return true
             }
         }
@@ -77,26 +77,25 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     }
 
 
-    fun setActiveUser(id: Int, phone: String) {
-        val activeUser = ActiveUser(id, phone)
-        _activeUserId.value = id
+    fun setActiveUser(user: UserJSON) {
+        val activeUser = ActiveUser(user.id, user.phone, user.email, user.name, user.birth_year)
+        _activeUser.value = activeUser
         viewModelScope.launch {
             repository.removeActiveUser()
             repository.addActiveUser(activeUser)
-            Log.d("Active userid", id.toString())
+            Log.d("Active userid", user.id.toString())
         }
     }
 
     fun logout() {
-        _activeUserId.value = 0
-        _createUserStatus.value = Result.success(UserJSON(0,"1","1","1",1))
+        _activeUser.value = ActiveUser(0,"0","0","0", 0)
+        _createUserStatus.value = Result.success(UserJSON(0,"0","0","0",0))
         viewModelScope.launch {
             repository.removeActiveUser()
         }
     }
 
     fun restart() {
-        _activeUserId.value = 0
         viewModelScope.launch {
             _users.value = repository.getUsers()
             val resultActiveUser = repository.getActiveUser()
