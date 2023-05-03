@@ -54,10 +54,10 @@ class ProgramTypeFragment: Fragment() {
             // listRecycler er recyclerView i fragment_program_type.xml
             listRecycler.adapter = adapter
         }
-        sharedViewModel.programTypes.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+
+            //adapter.submitList(sharedViewModel.programTypes)
             adapter.notifyDataSetChanged()
-        }
+
     }
 
     override fun onDestroyView() {

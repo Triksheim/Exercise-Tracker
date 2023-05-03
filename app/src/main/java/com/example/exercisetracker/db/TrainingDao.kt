@@ -21,17 +21,17 @@ interface TrainingDao {
 
     // AppProgramType
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertAppProgramTypes(appProgramTypes: AppProgramTypes): Long
+    suspend fun insertAppProgramTypes(appProgramTypes: AppProgramType): Long
 
-    @Query("SELECT * FROM app_program_types")
-    fun getAllAppProgramTypes(): Flow<List<AppProgramTypes>>
+    @Query("SELECT * FROM app_program_type")
+    fun getAppProgramTypes(): Flow<List<AppProgramType>>
 
-    @Query("SELECT * FROM app_program_types WHERE back_color = :back_color")
-    fun getAppProgramTypes(back_color: String): Flow<List<AppProgramTypes>>
 
-    @Query("SELECT * FROM app_program_types WHERE id = :id")
-    fun getAppProgramTypesById(id: Int): Flow<AppProgramTypes>
+    @Query("SELECT * FROM app_program_type WHERE id = :id")
+    fun getAppProgramTypesById(id: Int): Flow<AppProgramType>
 
+    @Query("DELETE FROM app_program_type")
+    suspend fun deleteProgramTypes()
 
 
     // User
@@ -43,6 +43,10 @@ interface TrainingDao {
 
     @Query("SELECT * FROM user WHERE id = :id")
     fun getUserById(id: Int): Flow<User>
+
+    @Query("DELETE FROM user")
+    suspend fun deleteAllUsers()
+
 
     // UserProgram
     @Insert(onConflict = OnConflictStrategy.IGNORE)

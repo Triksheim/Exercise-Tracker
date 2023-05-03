@@ -1,5 +1,6 @@
 package com.example.exercisetracker.repository
 import com.example.exercisetracker.db.ActiveUser
+import com.example.exercisetracker.db.AppProgramType
 import com.example.exercisetracker.db.TrainingDao
 import com.example.exercisetracker.db.User
 import kotlinx.coroutines.flow.Flow
@@ -14,6 +15,10 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
         return trainingDao.insertUser(user)
     }
 
+    suspend fun deleteAllUsers() {
+        return trainingDao.deleteAllUsers()
+
+    }
     suspend fun addActiveUser(activeUser: ActiveUser) {
         return trainingDao.addActiveUser(activeUser)
     }
@@ -29,6 +34,18 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
 
     suspend fun removeActiveUser() {
         return trainingDao.removeActiveUser()
+    }
+
+    suspend fun insertProgramType(appProgramType: AppProgramType): Long {
+        return trainingDao.insertAppProgramTypes(appProgramType)
+    }
+
+    fun getProgramTypes(): Flow<List<AppProgramType>> {
+        return trainingDao.getAppProgramTypes()
+    }
+
+    suspend fun deleteProgramTypes() {
+        return trainingDao.deleteProgramTypes()
     }
 
 }

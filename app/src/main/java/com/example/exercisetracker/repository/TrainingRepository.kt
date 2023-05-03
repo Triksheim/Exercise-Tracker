@@ -1,8 +1,8 @@
 package com.example.exercisetracker.repository
 import com.example.exercisetracker.db.ActiveUser
-import com.example.exercisetracker.db.AppProgramTypes
+import com.example.exercisetracker.db.AppProgramType
 import com.example.exercisetracker.db.User
-import com.example.exercisetracker.network.AppProgramTypesJSON
+import com.example.exercisetracker.network.AppProgramTypeJSON
 import com.example.exercisetracker.network.UserJSON
 import kotlinx.coroutines.flow.Flow
 
@@ -11,11 +11,15 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
                          private val remoteDataSource: RemoteDataSource
 ) {
     // Local data source methods
-    fun getAllUsersFromDatabase(): Flow<List<User>> {
+    suspend fun getAllUsers(): Flow<List<User>> {
         return localDataSource.getAllUsers()
     }
-    suspend fun insertUserToDatabase(user: User): Long {
+    suspend fun insertUser(user: User): Long {
         return localDataSource.insertUser(user)
+    }
+
+    suspend fun deleteAllUsers() {
+        return localDataSource.deleteAllUsers()
     }
 
     suspend fun addActiveUser(activeUser: ActiveUser) {
@@ -30,23 +34,35 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
         return localDataSource.removeActiveUser()
     }
 
+    suspend fun insertProgramType(appProgramType: AppProgramType): Long {
+        return localDataSource.insertProgramType(appProgramType)
+    }
+
+    fun getProgramTypes(): Flow<List<AppProgramType>> {
+        return localDataSource.getProgramTypes()
+    }
+
+    suspend fun deleteProgramTypes() {
+        return localDataSource.deleteProgramTypes()
+    }
+
+
 
 
     // Remote data source methods
-    suspend fun getUsers(): List<UserJSON> {
+    suspend fun getUsersAPI(): Result<List<UserJSON>> {
         return remoteDataSource.getUsers()
     }
-    suspend fun getUser(id: Int): UserJSON {
+    suspend fun getUserAPI(id: Int): UserJSON {
         return remoteDataSource.getUser(id)
     }
-    suspend fun createUser(user: User): Result<UserJSON> {
+    suspend fun createUserAPI(user: User): Result<UserJSON> {
         return remoteDataSource.createUser(user)
     }
-    suspend fun getAllAppProgramTypes(): List<AppProgramTypesJSON> {
-        return remoteDataSource.getAllAppProgramTypes()
+    suspend fun getAppProgramTypesAPI(): Result<List<AppProgramTypeJSON>> {
+        return remoteDataSource.getAppProgramTypes()
     }
-    suspend fun getAppProgramTypes(back_color: String): List<AppProgramTypes> {
-        return remoteDataSource.getAppProgramTypes(back_color)
-    }
+
+
 
 }

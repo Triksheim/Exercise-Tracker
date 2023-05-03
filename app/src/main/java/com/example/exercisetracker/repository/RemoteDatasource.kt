@@ -2,9 +2,9 @@ package com.example.exercisetracker.repository
 
 
 
-import com.example.exercisetracker.db.AppProgramTypes
+import com.example.exercisetracker.db.AppProgramType
 import com.example.exercisetracker.db.User
-import com.example.exercisetracker.network.AppProgramTypesJSON
+import com.example.exercisetracker.network.AppProgramTypeJSON
 import com.example.exercisetracker.network.UserJSON
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -61,22 +61,37 @@ interface ApiService {
     suspend fun createUser(@Body user: User): Response<UserJSON>
 
     @GET("app_program_types")
-    suspend fun getAllAppProgramTypes(): List<AppProgramTypesJSON>
+    suspend fun getAppProgramTypes(): List<AppProgramTypeJSON>
 
-    @GET("app_program_types/{back_color}")
-    suspend fun getAppProgramTypes(@Path("back_color") back_color: String): List<AppProgramTypes>
+
 }
 
 
 class RemoteDataSource(private val apiService: ApiService) {
 
-    suspend fun getUsers() = apiService.getUsers()
+    suspend fun getUsers(): Result<List<UserJSON>> {
+        return try {
+            val users = apiService.getUsers()
+            Result.success(users)
+        } catch (e: java.lang.Exception) {
+            Result.failure(e)
+        }
+    }
 
     suspend fun getUser(id: Int) = apiService.getUser(id)
 
-    suspend fun getAllAppProgramTypes() = apiService.getAllAppProgramTypes()
+    suspend fun getAppProgramTypes(): Result<List<AppProgramTypeJSON>> {
+        return try {
+            val programTypes = apiService.getAppProgramTypes()
+            Result.success(programTypes)
+        }
+        catch (e:java.lang.Exception) {
+            Result.failure(e)
+        }
+    }
 
-    suspend fun getAppProgramTypes(back_color: String) = apiService.getAppProgramTypes(back_color)
+
+
 
     suspend fun createUser(user: User): Result<UserJSON> {
         return try {

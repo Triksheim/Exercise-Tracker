@@ -9,12 +9,20 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.exercisetracker.databinding.ActivityMainBinding
+import com.example.exercisetracker.repository.TrainingApplication
+import com.example.exercisetracker.viewmodel.SharedViewModel
+import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 
 class MainActivity : AppCompatActivity() {
-
+    private val sharedViewModel: SharedViewModel by viewModels {
+        SharedViewModelFactory(
+            (application as TrainingApplication).trainingRepository
+        )
+    }
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
@@ -22,6 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

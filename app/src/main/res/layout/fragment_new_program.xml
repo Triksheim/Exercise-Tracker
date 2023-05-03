@@ -10,7 +10,7 @@
             type="com.example.exercisetracker.viewmodel.SharedViewModel"/>
         <variable
             name="programtype"
-            type="com.example.exercisetracker.network.AppProgramTypesJSON"/>
+            type="com.example.exercisetracker.network.AppProgramTypeJSON"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

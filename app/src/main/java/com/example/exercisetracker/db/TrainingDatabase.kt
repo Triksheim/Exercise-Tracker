@@ -15,8 +15,8 @@ data class ActiveUser(
 )
 
 
-@Entity(tableName = "app_program_types")
-data class AppProgramTypes(
+@Entity(tableName = "app_program_type")
+data class AppProgramType(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "description") val description: String,
     @ColumnInfo(name = "icon") val icon: String,
@@ -89,12 +89,7 @@ data class UserProgramSessionPhoto(
     @ColumnInfo(name = "photo_url") val photo_url: String
 )
 
-data class AppProgramType(
-    val id: Int,
-    val description: String,
-    val icon: String,
-    val back_color: String
-)
+
 
 data class Exercise(
     val id: Int,

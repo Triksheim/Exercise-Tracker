@@ -2,7 +2,7 @@ package com.example.exercisetracker.network
 
 import com.squareup.moshi.Json
 
-data class AppProgramTypesJSON(
+data class AppProgramTypeJSON(
     @Json(name = "id") val id: Int=0,
     @Json(name = "description") val description: String="undefined",
     @Json(name = "icon") val icon: String="undefined",
