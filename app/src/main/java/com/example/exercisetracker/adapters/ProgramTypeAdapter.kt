@@ -6,17 +6,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exercisetracker.databinding.ProgramTypeItemBinding
-import com.example.exercisetracker.db.ProgramType
+import com.example.exercisetracker.network.AppProgramTypesJSON
 
-class ProgramTypeAdapter(private val onItemCLicked: (ProgramType) -> Unit)
-    : ListAdapter<ProgramType, ProgramTypeAdapter.ProgramViewHolder>(DiffCallback) {
+class ProgramTypeAdapter(private val onItemCLicked: (AppProgramTypesJSON) -> Unit)
+    : ListAdapter<AppProgramTypesJSON, ProgramTypeAdapter.ProgramViewHolder>(DiffCallback) {
 
 
     class ProgramViewHolder(private var binding: ProgramTypeItemBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(programType: ProgramType) {
-            binding.program = programType
+        fun bind(appProgramTypesJSON: AppProgramTypesJSON) {
+            binding.program = appProgramTypesJSON
             binding.executePendingBindings()
         }
     }
@@ -25,7 +25,8 @@ class ProgramTypeAdapter(private val onItemCLicked: (ProgramType) -> Unit)
     : ProgramViewHolder {
         return ProgramViewHolder(
             ProgramTypeItemBinding.inflate(
-                LayoutInflater.from(parent.context)))
+                LayoutInflater.from(
+                    parent.context)))
     }
 
     override fun onBindViewHolder(holder: ProgramViewHolder, position: Int) {
@@ -36,12 +37,12 @@ class ProgramTypeAdapter(private val onItemCLicked: (ProgramType) -> Unit)
         holder.bind(programType)
     }
 
-    companion object DiffCallback: DiffUtil.ItemCallback<ProgramType>() {
-        override fun areItemsTheSame(oldItem: ProgramType, newItem: ProgramType): Boolean {
+    companion object DiffCallback: DiffUtil.ItemCallback<AppProgramTypesJSON>() {
+        override fun areItemsTheSame(oldItem: AppProgramTypesJSON, newItem: AppProgramTypesJSON): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: ProgramType, newItem: ProgramType): Boolean {
+        override fun areContentsTheSame(oldItem: AppProgramTypesJSON, newItem: AppProgramTypesJSON): Boolean {
             return oldItem.description == newItem.description
         }
     }

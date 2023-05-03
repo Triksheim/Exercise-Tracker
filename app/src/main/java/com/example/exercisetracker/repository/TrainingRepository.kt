@@ -1,6 +1,8 @@
 package com.example.exercisetracker.repository
 import com.example.exercisetracker.db.ActiveUser
+import com.example.exercisetracker.db.AppProgramTypes
 import com.example.exercisetracker.db.User
+import com.example.exercisetracker.network.AppProgramTypesJSON
 import com.example.exercisetracker.network.UserJSON
 import kotlinx.coroutines.flow.Flow
 
@@ -39,6 +41,12 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
     }
     suspend fun createUser(user: User): Result<UserJSON> {
         return remoteDataSource.createUser(user)
+    }
+    suspend fun getAllAppProgramTypes(): List<AppProgramTypesJSON> {
+        return remoteDataSource.getAllAppProgramTypes()
+    }
+    suspend fun getAppProgramTypes(back_color: String): List<AppProgramTypes> {
+        return remoteDataSource.getAppProgramTypes(back_color)
     }
 
 }

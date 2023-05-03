@@ -2,7 +2,9 @@ package com.example.exercisetracker.repository
 
 
 
+import com.example.exercisetracker.db.AppProgramTypes
 import com.example.exercisetracker.db.User
+import com.example.exercisetracker.network.AppProgramTypesJSON
 import com.example.exercisetracker.network.UserJSON
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -18,6 +20,7 @@ import kotlin.Result
 import retrofit2.HttpException
 import retrofit2.Response
 
+enum class ApiStatus { LOADING, ERROR, DONE}
 
 private const val BASE_URL = "https://wfa-media.com/exercise23/v3/api.php/"
 private const val API_KEY = "004E06B1-E02"
@@ -57,6 +60,11 @@ interface ApiService {
     @POST("users")
     suspend fun createUser(@Body user: User): Response<UserJSON>
 
+    @GET("app_program_types")
+    suspend fun getAllAppProgramTypes(): List<AppProgramTypesJSON>
+
+    @GET("app_program_types/{back_color}")
+    suspend fun getAppProgramTypes(@Path("back_color") back_color: String): List<AppProgramTypes>
 }
 
 
@@ -65,6 +73,10 @@ class RemoteDataSource(private val apiService: ApiService) {
     suspend fun getUsers() = apiService.getUsers()
 
     suspend fun getUser(id: Int) = apiService.getUser(id)
+
+    suspend fun getAllAppProgramTypes() = apiService.getAllAppProgramTypes()
+
+    suspend fun getAppProgramTypes(back_color: String) = apiService.getAppProgramTypes(back_color)
 
     suspend fun createUser(user: User): Result<UserJSON> {
         return try {
