@@ -86,7 +86,7 @@ data class UserProgramSessionPhoto(
     @ColumnInfo(name = "photo_url") val photo_url: String
 )
 
-data class ProgramType(
+data class AppProgramType(
     val id: Int,
     val description: String,
     val icon: String,

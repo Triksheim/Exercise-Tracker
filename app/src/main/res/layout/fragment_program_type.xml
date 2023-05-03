@@ -19,19 +19,21 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="-87dp">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list_recycler"
+                android:id="@+id/listRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="8dp"
                 android:clipToPadding="false"
+                android:padding="8dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/button_back"
+                app:layout_constraintStart_toStartOf="parent"
                 tools:itemCount="15"
-                tools:listItem="@layout/program_type_item"/>
+                tools:listItem="@layout/program_type_item" />
         </ScrollView>
 
         <TextView

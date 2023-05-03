@@ -1,5 +1,6 @@
 package com.example.exercisetracker
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,6 +31,7 @@ class ProgramTypeFragment: Fragment() {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
          // Midlertidig navigering. Skal videre til newProgramFragment!!
@@ -46,12 +48,16 @@ class ProgramTypeFragment: Fragment() {
         }
 
         binding?.apply {
+            lifecycleOwner = viewLifecycleOwner
             viewModel = sharedViewModel
             programTypeFragment = this@ProgramTypeFragment
             // listRecycler er recyclerView i fragment_program_type.xml
             listRecycler.adapter = adapter
         }
-
+        sharedViewModel.programTypes.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+            adapter.notifyDataSetChanged()
+        }
     }
 
     override fun onDestroyView() {

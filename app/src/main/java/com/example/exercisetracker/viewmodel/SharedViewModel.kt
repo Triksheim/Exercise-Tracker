@@ -8,8 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.exercisetracker.db.ActiveUser
-import com.example.exercisetracker.db.AppProgramTypes
-import com.example.exercisetracker.db.ProgramType
+import com.example.exercisetracker.db.AppProgramType
 import com.example.exercisetracker.network.AppProgramTypesJSON
 import com.example.exercisetracker.network.UserJSON
 import com.example.exercisetracker.repository.ApiStatus
@@ -121,7 +120,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-    fun onProgramTypeSelected(programType: ProgramType) {
+    fun onProgramTypeSelected(appProgramTypesJSON: com.example.exercisetracker.network.AppProgramTypesJSON) {
         TODO()
     }
 
