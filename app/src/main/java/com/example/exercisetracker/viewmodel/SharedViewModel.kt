@@ -34,19 +34,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
 
 
-    private val _type = MutableLiveData<String>()
-    val type: LiveData<String> = _type
-
-
-    private val _backgroundColor = MutableLiveData<Int>()
-    val backgroundColor: LiveData<Int> = _backgroundColor
-
-    private val _programTypeId = MutableLiveData<Int>()
-    val programTypeId: LiveData<Int> = _programTypeId
-
-    private val _status = MutableLiveData<ApiStatus>()
-    val status: LiveData<ApiStatus> = _status
-
 
 
     init {
