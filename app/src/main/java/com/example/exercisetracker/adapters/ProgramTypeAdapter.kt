@@ -6,17 +6,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exercisetracker.databinding.ProgramTypeItemBinding
-import com.example.exercisetracker.network.AppProgramTypeJSON
+import com.example.exercisetracker.db.AppProgramType
 
-class ProgramTypeAdapter(private val onItemCLicked: (AppProgramTypeJSON) -> Unit)
-    : ListAdapter<AppProgramTypeJSON, ProgramTypeAdapter.ProgramViewHolder>(DiffCallback) {
+class ProgramTypeAdapter(private val onItemCLicked: (AppProgramType) -> Unit)
+    : ListAdapter<AppProgramType, ProgramTypeAdapter.ProgramViewHolder>(DiffCallback) {
 
 
     class ProgramViewHolder(private var binding: ProgramTypeItemBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(appProgramTypeJSON: AppProgramTypeJSON) {
-            binding.program = appProgramTypeJSON
+        fun bind(appProgramType: AppProgramType) {
+            binding.program = appProgramType
             binding.executePendingBindings()
         }
     }
@@ -37,12 +37,12 @@ class ProgramTypeAdapter(private val onItemCLicked: (AppProgramTypeJSON) -> Unit
         holder.bind(programType)
     }
 
-    companion object DiffCallback: DiffUtil.ItemCallback<AppProgramTypeJSON>() {
-        override fun areItemsTheSame(oldItem: AppProgramTypeJSON, newItem: AppProgramTypeJSON): Boolean {
+    companion object DiffCallback: DiffUtil.ItemCallback<AppProgramType>() {
+        override fun areItemsTheSame(oldItem: AppProgramType, newItem: AppProgramType): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: AppProgramTypeJSON, newItem: AppProgramTypeJSON): Boolean {
+        override fun areContentsTheSame(oldItem: AppProgramType, newItem: AppProgramType): Boolean {
             return oldItem.description == newItem.description
         }
     }

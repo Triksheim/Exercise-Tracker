@@ -2,9 +2,7 @@ package com.example.exercisetracker.repository
 
 
 
-import com.example.exercisetracker.db.AppProgramType
 import com.example.exercisetracker.db.User
-import com.example.exercisetracker.network.AppProgramTypeJSON
 import com.example.exercisetracker.network.UserJSON
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -61,7 +59,7 @@ interface ApiService {
     suspend fun createUser(@Body user: User): Response<UserJSON>
 
     @GET("app_program_types")
-    suspend fun getAppProgramTypes(): List<AppProgramTypeJSON>
+    suspend fun getAppProgramTypes(): List<com.example.exercisetracker.network.AppProgramType>
 
 
 }
@@ -80,7 +78,7 @@ class RemoteDataSource(private val apiService: ApiService) {
 
     suspend fun getUser(id: Int) = apiService.getUser(id)
 
-    suspend fun getAppProgramTypes(): Result<List<AppProgramTypeJSON>> {
+    suspend fun getAppProgramTypes(): Result<List<com.example.exercisetracker.network.AppProgramType>> {
         return try {
             val programTypes = apiService.getAppProgramTypes()
             Result.success(programTypes)

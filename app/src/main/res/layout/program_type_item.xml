@@ -9,7 +9,7 @@
             type="com.example.exercisetracker.viewmodel.SharedViewModel" />
         <variable
             name="program"
-            type="com.example.exercisetracker.network.AppProgramTypeJSON"/>
+            type="com.example.exercisetracker.db.AppProgramType"/>
     </data>
 
     <androidx.cardview.widget.CardView

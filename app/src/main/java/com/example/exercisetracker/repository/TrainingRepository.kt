@@ -2,7 +2,6 @@ package com.example.exercisetracker.repository
 import com.example.exercisetracker.db.ActiveUser
 import com.example.exercisetracker.db.AppProgramType
 import com.example.exercisetracker.db.User
-import com.example.exercisetracker.network.AppProgramTypeJSON
 import com.example.exercisetracker.network.UserJSON
 import kotlinx.coroutines.flow.Flow
 
@@ -59,7 +58,7 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
     suspend fun createUserAPI(user: User): Result<UserJSON> {
         return remoteDataSource.createUser(user)
     }
-    suspend fun getAppProgramTypesAPI(): Result<List<AppProgramTypeJSON>> {
+    suspend fun getAppProgramTypesAPI(): Result<List<com.example.exercisetracker.network.AppProgramType>> {
         return remoteDataSource.getAppProgramTypes()
     }
 

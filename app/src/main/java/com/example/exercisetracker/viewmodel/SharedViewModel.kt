@@ -170,7 +170,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-    fun onProgramTypeSelected(appProgramTypeJSON: com.example.exercisetracker.network.AppProgramTypeJSON) {
+    fun onProgramTypeSelected(appProgramType: com.example.exercisetracker.db.AppProgramType) {
         TODO()
     }
 
