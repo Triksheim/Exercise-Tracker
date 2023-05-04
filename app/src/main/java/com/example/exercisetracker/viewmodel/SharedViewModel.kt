@@ -1,15 +1,12 @@
 package com.example.exercisetracker.viewmodel
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.exercisetracker.db.User
 import com.example.exercisetracker.repository.TrainingRepository
 import kotlinx.coroutines.launch
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.exercisetracker.db.ActiveUser
-import com.example.exercisetracker.db.AppProgramType
-import com.example.exercisetracker.db.UserProgram
+import com.example.exercisetracker.db.*
 import com.example.exercisetracker.network.UserJSON
 import com.example.exercisetracker.utils.asEntity
 import kotlinx.coroutines.Dispatchers
@@ -35,6 +32,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _userPrograms = MutableStateFlow<List<UserProgram>>(emptyList())
     val userPrograms: StateFlow<List<UserProgram>> = _userPrograms
 
+    private val _userExercises = MutableStateFlow<List<UserExercise>>(emptyList())
+    val userExercise: StateFlow<List<UserExercise>> = _userExercises
 
 
 
@@ -43,6 +42,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         fetchAppProgramTypes()
         fetchUsers()
         fetchUserPrograms()
+        fetchUserExercises()
     }
 
 
@@ -71,6 +71,16 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 .flowOn(Dispatchers.IO)
                 .collect { userProgramsList ->
                     _userPrograms.value = userProgramsList
+                }
+        }
+    }
+
+    private fun fetchUserExercises() {
+        viewModelScope.launch {
+            repository.getUserExercises()
+                .flowOn(Dispatchers.IO)
+                .collect { userExerciseList ->
+                    _userExercises.value = userExerciseList
                 }
         }
     }
@@ -112,7 +122,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         _activeUser.value = activeUser
         repository.removeActiveUser()
         repository.addActiveUser(activeUser)
-        Log.d("Active userid", user.id.toString())
+        Log.d("LOGGED IN", "ID:${user.id}")
 
     }
 
@@ -136,6 +146,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
             getAllProgramTypes()
             getAllUserPrograms()
+            getAllUserExcercises()
         }
     }
 
@@ -189,6 +200,21 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     }
 
 
+    suspend fun getAllUserExcercises() {
+        Log.d("USERPROGRAMS CURRENTUSER", "${activeUser.value!!.id}")
+        val result = repository.getUserExercisesAPI(activeUser.value!!.id)
+        if (result.isSuccess) {
+            Log.d("RESULT USER EXERCISES API", "SUCCESS" )
+            repository.deleteUserExercises()
+            val userExercises = result.getOrNull()
+            for (userExercise in userExercises!!) {
+                repository.insertUserExercise(userExercise.asEntity())
+            }
+        }
+        else {
+            Log.e("ERROR USER EXERCISES API", "Unable to fetch" )
+        }
+    }
 
 
 

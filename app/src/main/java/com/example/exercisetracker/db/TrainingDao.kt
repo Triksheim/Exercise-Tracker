@@ -61,6 +61,7 @@ interface TrainingDao {
     @Query("DELETE FROM user_program")
     suspend fun deleteAllUserPrograms()
 
+
     // UserProgramExercise
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertUserProgramExercise(userProgramExercise: UserProgramExercise): Long
@@ -76,7 +77,7 @@ interface TrainingDao {
 
     // UserExercise
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertUserExercise(userExercise: UserExercise): Long
+    suspend fun insertUserExercise(userExercise: UserExercise): Long
 
     @Query("SELECT * FROM user_exercise")
     fun getAllUserExercises(): Flow<List<UserExercise>>
@@ -84,7 +85,8 @@ interface TrainingDao {
     @Query("SELECT * FROM user_exercise WHERE id = :id")
     fun getUserExerciseById(id: Int): Flow<UserExercise>
 
-
+    @Query("DELETE FROM user_exercise")
+    suspend fun deleteAllUserExercises()
 
 
     // UserProgramSession
@@ -96,6 +98,7 @@ interface TrainingDao {
 
     @Query("SELECT * FROM user_program_session WHERE id = :id")
     fun getUserProgramSessionById(id: Int): Flow<UserProgramSession>
+
 
     // UserProgramSessionData
     @Insert(onConflict = OnConflictStrategy.IGNORE)

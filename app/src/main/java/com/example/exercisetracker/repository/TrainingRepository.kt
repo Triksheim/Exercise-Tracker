@@ -1,9 +1,7 @@
 package com.example.exercisetracker.repository
-import com.example.exercisetracker.db.ActiveUser
-import com.example.exercisetracker.db.AppProgramType
-import com.example.exercisetracker.db.User
-import com.example.exercisetracker.db.UserProgram
+import com.example.exercisetracker.db.*
 import com.example.exercisetracker.network.AppProgramTypeJSON
+import com.example.exercisetracker.network.UserExerciseJSON
 import com.example.exercisetracker.network.UserJSON
 import com.example.exercisetracker.network.UserProgramJSON
 import kotlinx.coroutines.flow.Flow
@@ -58,13 +56,25 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
         return localDataSource.deleteUserPrograms()
     }
 
+    // UserExercise
+    suspend fun insertUserExercise(userExercise: UserExercise): Long {
+        return localDataSource.insertUserExercise(userExercise)
+    }
+    suspend fun getUserExercises():Flow<List<UserExercise>> {
+        return localDataSource.getUserExercises()
+    }
+    suspend fun deleteUserExercises() {
+        return localDataSource.deleteUserExercises()
+    }
 
 
 
 
 
 
-    // Remote data source methods
+    // Remote data source methods ----------------------------------------------------------------
+
+
     // User
     suspend fun getUsersAPI(): Result<List<UserJSON>> {
         return remoteDataSource.getUsers()
@@ -91,5 +101,11 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
     suspend fun getUserProgramAPI(id: Int): Result<UserProgramJSON> {
         return remoteDataSource.getUserProgram(id)
     }
+
+    // UserExercise
+    suspend fun getUserExercisesAPI(userId: Int): Result<List<UserExerciseJSON>> {
+        return remoteDataSource.getUserExercises(userId)
+    }
+
 
 }
