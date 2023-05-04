@@ -1,28 +1,25 @@
 package com.example.exercisetracker.repository
-import com.example.exercisetracker.db.ActiveUser
-import com.example.exercisetracker.db.AppProgramType
-import com.example.exercisetracker.db.TrainingDao
-import com.example.exercisetracker.db.User
+import com.example.exercisetracker.db.*
 import kotlinx.coroutines.flow.Flow
 
 
 class LocalDataSource internal constructor (private val trainingDao: TrainingDao) {
+    // User
     fun getAllUsers(): Flow<List<User>> {
         return trainingDao.getAllUsers()
     }
-
     suspend fun insertUser(user: User): Long {
         return trainingDao.insertUser(user)
     }
-
     suspend fun deleteAllUsers() {
         return trainingDao.deleteAllUsers()
 
     }
+
+    // ActiveUser
     suspend fun addActiveUser(activeUser: ActiveUser) {
         return trainingDao.addActiveUser(activeUser)
     }
-
     suspend fun getActiveUser(): Result<ActiveUser> {
         return try {
             val activeUser = trainingDao.getActiveUser()
@@ -31,23 +28,34 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
             Result.failure(e)
         }
     }
-
     suspend fun removeActiveUser() {
         return trainingDao.removeActiveUser()
     }
 
+    // ProgramTypes
     suspend fun insertProgramType(appProgramType: AppProgramType): Long {
         return trainingDao.insertAppProgramTypes(appProgramType)
     }
-
     fun getProgramTypes(): Flow<List<AppProgramType>> {
         return trainingDao.getAppProgramTypes()
     }
-
     suspend fun deleteProgramTypes() {
         return trainingDao.deleteProgramTypes()
     }
 
+    // UserProgram
+    suspend fun insertUserProgram(userProgram: UserProgram): Long {
+        return trainingDao.insertUserProgram(userProgram)
+    }
+    suspend fun getUserProgram(id: Int): Flow<UserProgram> {
+        return trainingDao.getUserProgramById(id)
+    }
+    suspend fun getUserPrograms(): Flow<List<UserProgram>> {
+        return trainingDao.getAllUserPrograms()
+    }
+    suspend fun deleteUserPrograms() {
+        return trainingDao.deleteAllUserPrograms()
+    }
 }
 
 

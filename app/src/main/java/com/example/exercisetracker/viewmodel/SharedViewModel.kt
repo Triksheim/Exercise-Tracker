@@ -9,8 +9,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.exercisetracker.db.ActiveUser
 import com.example.exercisetracker.db.AppProgramType
+import com.example.exercisetracker.db.UserProgram
 import com.example.exercisetracker.network.UserJSON
-import com.example.exercisetracker.repository.ApiStatus
+import com.example.exercisetracker.utils.asEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,16 +23,17 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _activeUser = MutableLiveData<ActiveUser>()
     val activeUser: LiveData<ActiveUser> = _activeUser
 
-    private val _users = MutableStateFlow<List<User>>(emptyList())
-    val users: StateFlow<List<User>> = _users
-
     private val _createUserStatus = MutableLiveData<Result<UserJSON>>()
     val createUserStatus: LiveData<Result<UserJSON>> = _createUserStatus
+
+    private val _users = MutableStateFlow<List<User>>(emptyList())
+    val users: StateFlow<List<User>> = _users
 
     private val _programTypes = MutableStateFlow<List<AppProgramType>>(emptyList())
     val programTypes: StateFlow<List<AppProgramType>> = _programTypes
 
-
+    private val _userPrograms = MutableStateFlow<List<UserProgram>>(emptyList())
+    val userPrograms: StateFlow<List<UserProgram>> = _userPrograms
 
 
 
@@ -40,6 +42,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         restart()
         fetchAppProgramTypes()
         fetchUsers()
+        fetchUserPrograms()
     }
 
 
@@ -62,6 +65,16 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
+    private fun fetchUserPrograms() {
+        viewModelScope.launch {
+            repository.getUserPrograms()
+                .flowOn(Dispatchers.IO)
+                .collect { userProgramsList ->
+                    _userPrograms.value = userProgramsList
+                }
+        }
+    }
+
 
     fun createUser(user: User)   {
         viewModelScope.launch {
@@ -69,9 +82,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             val result = repository.createUserAPI(user)
             if (result.isSuccess) {
                 val newUser = result.getOrNull()
-                if (newUser != null) {
-                    setActiveUser(User(newUser.id, newUser.phone, newUser.email, newUser.name, newUser.birth_year))
-                }
+                setActiveUser(User(newUser!!.id, newUser!!.phone, newUser!!.email, newUser!!.name, newUser!!.birth_year))
+
             }
             else {
                 _createUserStatus.value = result
@@ -85,7 +97,9 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     fun login(phone: String): Boolean {
         for (user in users.value!!) {
             if (user.phone == phone) {
-                setActiveUser(user)
+                viewModelScope.launch {
+                    setActiveUser(user)
+                }
                 return true
             }
         }
@@ -93,69 +107,90 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     }
 
 
-    fun setActiveUser(user: User) {
+    suspend fun setActiveUser(user: User) {
         val activeUser = ActiveUser(user.id, user.phone, user.email, user.name, user.birth_year)
         _activeUser.value = activeUser
-        viewModelScope.launch {
-            repository.removeActiveUser()
-            repository.addActiveUser(activeUser)
-            Log.d("Active userid", user.id.toString())
-        }
+        repository.removeActiveUser()
+        repository.addActiveUser(activeUser)
+        Log.d("Active userid", user.id.toString())
+
     }
 
     fun logout() {
-        _activeUser.value = ActiveUser(0,"0","0","0", 0)
-        _createUserStatus.value = Result.success(UserJSON(0,"0","0","0",0))
         viewModelScope.launch {
             repository.removeActiveUser()
             repository.deleteAllUsers()
+            _activeUser.value = ActiveUser(0,"0","0","0", 0)
+            _createUserStatus.value = Result.success(UserJSON(0,"0","0","0",0))
             restart()
         }
     }
 
     fun restart() {
         viewModelScope.launch {
-            val resultUsers = repository.getUsersAPI()
-            if (resultUsers.isSuccess) {
-                Log.d("RESULT USERS API", "SUCCESS" )
-                repository.deleteAllUsers()
-                val users = resultUsers.getOrNull()
-                for (user in users!!) {
-                    repository.insertUser(User(user.id, user.phone, user.email,user.name, user.birth_year))
-                }
-            }
-            else {
-                Log.e("FETCH ERROR USERS API", "Unable to fetch Users" )
-            }
-
+            getAllUsers()
             val resultActiveUser = repository.getActiveUser()
             if (resultActiveUser.isSuccess) {
                 resultActiveUser.getOrNull()?.let { login(it.phone) }
             }
 
-            getProgramTypesAPI()
+            getAllProgramTypes()
+            getAllUserPrograms()
         }
     }
 
 
 
-    fun getProgramTypesAPI() {
-        viewModelScope.launch {
+    suspend fun getAllUsers() {
+        val resultUsers = repository.getUsersAPI()
+        if (resultUsers.isSuccess) {
+            Log.d("RESULT USERS API", "SUCCESS" )
+            repository.deleteAllUsers()
+            val users = resultUsers.getOrNull()
+            for (user in users!!) {
+                repository.insertUser(user.asEntity())
+            }
+        }
+        else {
+            Log.e("ERROR USERS API", "Unable to fetch" )
+        }
+
+    }
+
+    suspend fun getAllProgramTypes() {
             val result = repository.getAppProgramTypesAPI()
             if (result.isSuccess) {
                 Log.d("RESULT PROGRAM TYPES API", "SUCCESS" )
                 repository.deleteProgramTypes()
                 val appProgramTypes = result.getOrNull()
-                for (type in appProgramTypes!!) {
-                    repository.insertProgramType(AppProgramType
-                        (type.id, type.description, type.icon, type.back_color))
+                for (programType in appProgramTypes!!) {
+                    repository.insertProgramType(programType.asEntity())
                 }
             }
             else {
-                Log.e("FETCH ERROR PROGRAM TYPES API", "Unable to fetch Program Types" )
+                Log.e("ERROR PROGRAM TYPES API", "Unable to fetch" )
+            }
+    }
+
+    suspend fun getAllUserPrograms() {
+        Log.d("USERPROGRAMS CURRENTUSER", "${activeUser.value!!.id}" )
+        val result = repository.getUserProgramsAPI(activeUser.value!!.id)
+        if (result.isSuccess) {
+            Log.d("RESULT USER PROGRAMS API", "SUCCESS" )
+            repository.deleteUserPrograms()
+            val userPrograms = result.getOrNull()
+            for(userProgram in userPrograms!!) {
+                repository.insertUserProgram(userProgram.asEntity())
             }
         }
+        else {
+            Log.e("ERROR USER PROGRAM API", "Unable to fetch" )
+        }
     }
+
+
+
+
 
     fun onProgramTypeSelected(appProgramType: com.example.exercisetracker.db.AppProgramType) {
         TODO()

@@ -50,7 +50,7 @@ interface TrainingDao {
 
     // UserProgram
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertUserProgram(userProgram: UserProgram): Long
+    suspend fun insertUserProgram(userProgram: UserProgram): Long
 
     @Query("SELECT * FROM user_program")
     fun getAllUserPrograms(): Flow<List<UserProgram>>
@@ -58,7 +58,8 @@ interface TrainingDao {
     @Query("SELECT * FROM user_program WHERE id = :id")
     fun getUserProgramById(id: Int): Flow<UserProgram>
 
-
+    @Query("DELETE FROM user_program")
+    suspend fun deleteAllUserPrograms()
 
     // UserProgramExercise
     @Insert(onConflict = OnConflictStrategy.IGNORE)
