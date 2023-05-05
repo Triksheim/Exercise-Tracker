@@ -24,7 +24,7 @@
             tools:layout_editor_absoluteY="-87dp">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/listRecycler"
+                android:id="@+id/program_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
@@ -37,14 +37,15 @@
                 tools:listItem="@layout/program_type_item" />
         </ScrollView>
 
+        <!-- TEMPORARY TEXT: Remove this TextView when recycler view is working.-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Her kommer recyclerView med app_program_type"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="Her kommer recyclerView med app_program_type"/>
 
         <Button
             android:id="@+id/button_back"

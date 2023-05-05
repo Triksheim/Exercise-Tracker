@@ -36,7 +36,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     val userPrograms: StateFlow<List<UserProgram>> = _userPrograms
 
     private val _userExercises = MutableStateFlow<List<UserExercise>>(emptyList())
-    val userExercise: StateFlow<List<UserExercise>> = _userExercises
+    val userExercises: StateFlow<List<UserExercise>> = _userExercises
 
 
 
