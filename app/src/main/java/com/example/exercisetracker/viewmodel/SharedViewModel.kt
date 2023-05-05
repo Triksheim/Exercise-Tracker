@@ -38,6 +38,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
 
     init {
+        _activeUser.value = ActiveUser(0,"0","0","0", 0)
         restart()
         fetchAppProgramTypes()
         fetchUsers()
@@ -92,12 +93,13 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             val result = repository.createUserAPI(user)
             if (result.isSuccess) {
                 val newUser = result.getOrNull()
-                setActiveUser(User(newUser!!.id, newUser!!.phone, newUser!!.email, newUser!!.name, newUser!!.birth_year))
+                setActiveUser(newUser!!.asEntity())
+                restart()
 
             }
             else {
                 _createUserStatus.value = result
-                Log.d("User creation", "Error creating user")
+                Log.e("ERROR USER CREATION", "Creating user failed")
             }
         }
     }
@@ -109,7 +111,9 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             if (user.phone == phone) {
                 viewModelScope.launch {
                     setActiveUser(user)
+                    restart()
                 }
+                Log.d("LOGIN SUCCESS", "ID: ${user.id}")
                 return true
             }
         }
@@ -122,31 +126,38 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         _activeUser.value = activeUser
         repository.removeActiveUser()
         repository.addActiveUser(activeUser)
-        Log.d("LOGGED IN", "ID:${user.id}")
+        Log.d("ACTIVE USER SET", "ID: ${user.id}")
 
     }
 
     fun logout() {
         viewModelScope.launch {
-            repository.removeActiveUser()
-            repository.deleteAllUsers()
             _activeUser.value = ActiveUser(0,"0","0","0", 0)
             _createUserStatus.value = Result.success(UserJSON(0,"0","0","0",0))
+            repository.removeActiveUser()
+            repository.deleteAllUsers()
             restart()
         }
     }
 
+    fun checkIsActiveUser(): Boolean {
+        return activeUser.value?.id != 0
+    }
+
     fun restart() {
         viewModelScope.launch {
-            getAllUsers()
-            val resultActiveUser = repository.getActiveUser()
-            if (resultActiveUser.isSuccess) {
-                resultActiveUser.getOrNull()?.let { login(it.phone) }
+            if (activeUser.value?.id == 0) {
+                getAllUsers()
+                val resultActiveUser = repository.getActiveUser()
+                if (resultActiveUser.isSuccess) {
+                    resultActiveUser.getOrNull()?.let { login(it.phone) }
+                }
             }
-
-            getAllProgramTypes()
-            getAllUserPrograms()
-            getAllUserExcercises()
+            else if (checkIsActiveUser()) {
+                getAllProgramTypes()
+                getAllUserPrograms()
+                getAllUserExcercises()
+            }
         }
     }
 
@@ -184,7 +195,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     }
 
     suspend fun getAllUserPrograms() {
-        Log.d("USERPROGRAMS CURRENTUSER", "${activeUser.value!!.id}" )
         val result = repository.getUserProgramsAPI(activeUser.value!!.id)
         if (result.isSuccess) {
             Log.d("RESULT USER PROGRAMS API", "SUCCESS" )
@@ -195,13 +205,13 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             }
         }
         else {
-            Log.e("ERROR USER PROGRAM API", "Unable to fetch" )
+            Log.d("USER PROGRAMS CURRENTUSER", "${activeUser.value!!.id}" )
+            Log.e("ERROR USER PROGRAM API", "Unable to fetch / no data" )
         }
     }
 
 
     suspend fun getAllUserExcercises() {
-        Log.d("USERPROGRAMS CURRENTUSER", "${activeUser.value!!.id}")
         val result = repository.getUserExercisesAPI(activeUser.value!!.id)
         if (result.isSuccess) {
             Log.d("RESULT USER EXERCISES API", "SUCCESS" )
@@ -212,7 +222,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             }
         }
         else {
-            Log.e("ERROR USER EXERCISES API", "Unable to fetch" )
+            Log.d("USEREXERCISES CURRENTUSER", "${activeUser.value!!.id}")
+            Log.e("ERROR USER EXERCISES API", "Unable to fetch / no data" )
         }
     }
 

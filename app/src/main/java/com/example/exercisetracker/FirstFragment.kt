@@ -64,7 +64,6 @@ class FirstFragment : Fragment() {
         }
 
         sharedViewModel.activeUser.observe(viewLifecycleOwner, Observer {
-            Log.d("Active user", it.id.toString())
             if (it.id != 0) {
                 Toast.makeText(context, "Velkommen, ${it.name}", Toast.LENGTH_SHORT).show()
                 navigateToNextFragment()
