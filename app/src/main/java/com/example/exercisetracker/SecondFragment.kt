@@ -55,6 +55,13 @@ class SecondFragment : Fragment() {
             //sharedViewModel.setTypeAndColor(Type.OUTDOOR)
             findNavController().navigate(R.id.action_SecondFragment_to_programTypeFragment)
         }
+
+        // No network alert
+        if (!sharedViewModel.networkConnectionOk.value!!) {
+            Toast.makeText(context, "Ingen kontakt med server.\nSjekk internett forbindelsen.", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Innlogget på nødløsning.\nTreningsdata er ikke oppdatert.", Toast.LENGTH_LONG).show()
+        }
+
     }
 
     override fun onDestroyView() {

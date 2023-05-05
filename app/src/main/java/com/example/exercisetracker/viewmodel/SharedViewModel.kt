@@ -17,6 +17,9 @@ import kotlinx.coroutines.flow.flowOn
 
 class SharedViewModel(private val repository: TrainingRepository) : ViewModel() {
 
+    private val _networkConnectionOk = MutableLiveData<Boolean>()
+    val networkConnectionOk: LiveData<Boolean> = _networkConnectionOk
+
     private val _activeUser = MutableLiveData<ActiveUser>()
     val activeUser: LiveData<ActiveUser> = _activeUser
 
@@ -38,6 +41,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
 
     init {
+        _networkConnectionOk.value = true
         _activeUser.value = ActiveUser(0,"0","0","0", 0)
         restart()
         fetchAppProgramTypes()
@@ -92,6 +96,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
             val result = repository.createUserAPI(user)
             if (result.isSuccess) {
+                _networkConnectionOk.value = true
                 val newUser = result.getOrNull()
                 setActiveUser(newUser!!.asEntity())
                 restart()
@@ -107,6 +112,11 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
 
     fun login(phone: String): Boolean {
+        if (users.value.isEmpty()) {
+            restart()
+        }
+
+
         for (user in users.value!!) {
             if (user.phone == phone) {
                 viewModelScope.launch {
@@ -166,6 +176,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     suspend fun getAllUsers() {
         val resultUsers = repository.getUsersAPI()
         if (resultUsers.isSuccess) {
+            _networkConnectionOk.value = true
             Log.d("RESULT USERS API", "SUCCESS" )
             repository.deleteAllUsers()
             val users = resultUsers.getOrNull()
@@ -174,6 +185,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             }
         }
         else {
+            _networkConnectionOk.value = false
             Log.e("ERROR USERS API", "Unable to fetch" )
         }
 
@@ -225,6 +237,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             Log.d("USEREXERCISES CURRENTUSER", "${activeUser.value!!.id}")
             Log.e("ERROR USER EXERCISES API", "Unable to fetch / no data" )
         }
+
     }
 
 

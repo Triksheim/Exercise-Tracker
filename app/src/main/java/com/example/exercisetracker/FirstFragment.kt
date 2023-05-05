@@ -59,8 +59,14 @@ class FirstFragment : Fragment() {
 
         sharedViewModel.createUserStatus.observe(viewLifecycleOwner) { result ->
             if (result.isFailure) {
+                if(!sharedViewModel.networkConnectionOk.value!!) {
+                    Toast.makeText(context, "Ingen kontakt med server.\nSjekk internett forbindelsen.", Toast.LENGTH_LONG).show()
+                }
+                else {
                 Toast.makeText(context, "Mobilnummer allerede i bruk", Toast.LENGTH_SHORT).show()
+                }
             }
+
         }
 
         sharedViewModel.activeUser.observe(viewLifecycleOwner, Observer {
@@ -103,7 +109,15 @@ class FirstFragment : Fragment() {
             if (sharedViewModel.login(phoneLogin)) {
             }
             else {
-                Toast.makeText(context, "Ukjent mobilnummer", Toast.LENGTH_SHORT).show()
+                if (!sharedViewModel.networkConnectionOk.value!!) {
+                    Toast.makeText(
+                        context,
+                        "Ingen kontakt med server.\nSjekk internett forbindelsen.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    Toast.makeText(context, "Ukjent mobilnummer", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
