@@ -10,9 +10,7 @@ import com.example.exercisetracker.db.*
 import com.example.exercisetracker.network.UserJSON
 import com.example.exercisetracker.utils.asEntity
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.*
 
 
 class SharedViewModel(private val repository: TrainingRepository) : ViewModel() {
@@ -36,7 +34,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     val userPrograms: StateFlow<List<UserProgram>> = _userPrograms
 
     private val _userExercises = MutableStateFlow<List<UserExercise>>(emptyList())
-    val userExercise: StateFlow<List<UserExercise>> = _userExercises
+    val userExercises: StateFlow<List<UserExercise>> = _userExercises
 
     private val _allSessions = MutableStateFlow<List<UserProgramSession>>(emptyList())
     val allSessions: StateFlow<List<UserProgramSession>> = _allSessions
