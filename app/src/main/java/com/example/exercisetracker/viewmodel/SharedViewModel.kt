@@ -153,14 +153,24 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         viewModelScope.launch {
             _activeUser.value = ActiveUser(0,"0","0","0", 0)
             _createUserStatus.value = Result.success(UserJSON(0,"0","0","0",0))
-            repository.removeActiveUser()
-            repository.deleteAllUsers()
+            clearDb()
             restart()
         }
     }
 
     fun checkIsActiveUser(): Boolean {
         return activeUser.value?.id != 0
+    }
+
+    private suspend fun clearDb() {
+        withContext(Dispatchers.IO) {
+            repository.removeActiveUser()
+            repository.deleteAllUsers()
+            repository.deleteProgramTypes()
+            repository.deleteUserExercises()
+            repository.deleteUserPrograms()
+            repository.deleteUserProgramSessions()
+        }
     }
 
     private suspend fun restart() {
