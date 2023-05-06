@@ -13,7 +13,6 @@ import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 
-
 class ProgramDetailsFragment: Fragment() {
 
 

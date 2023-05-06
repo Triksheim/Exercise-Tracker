@@ -15,6 +15,7 @@
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/SecondFragment"
         android:name="com.example.exercisetracker.SecondFragment"
@@ -23,42 +24,56 @@
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            app:destination="@id/FirstFragment"
+            app:popUpTo="@id/FirstFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_SecondFragment_to_programTypeFragment"
             app:destination="@id/programTypeFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/programTypeFragment"
         android:name="com.example.exercisetracker.ProgramTypeFragment"
         android:label="fragment_program_type"
         tools:layout="@layout/fragment_program_type" >
         <action
-            android:id="@+id/action_programTypeFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
-        <action
             android:id="@+id/action_programTypeFragment_to_newProgramFragment"
             app:destination="@id/newProgramFragment" />
+        <action
+            android:id="@+id/action_programTypeFragment_to_SecondFragment"
+            app:destination="@id/SecondFragment"
+            app:popUpTo="@id/SecondFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
+
     <fragment
         android:id="@+id/newProgramFragment"
         android:name="com.example.exercisetracker.NewProgramFragment"
         android:label="fragment_new_program"
         tools:layout="@layout/fragment_new_program" >
+        <argument
+            android:name="programTypeId"
+            app:argType="integer"/>
         <action
             android:id="@+id/action_newProgramFragment_to_programTypeFragment"
-            app:destination="@id/programTypeFragment" />
+            app:destination="@id/programTypeFragment"
+            app:popUpTo="@id/programTypeFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_newProgramFragment_to_programDetailsFragment"
             app:destination="@id/programDetailsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/programDetailsFragment"
         android:name="com.example.exercisetracker.ProgramDetailsFragment"
         android:label="ProgramDetailsFragment" >
         <action
             android:id="@+id/action_programDetailsFragment_to_newProgramFragment"
-            app:destination="@id/newProgramFragment" />
+            app:destination="@id/newProgramFragment"
+            app:popUpTo="@id/newProgramFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_programDetailsFragment_to_newExerciseFragment"
             app:destination="@id/newExerciseFragment" />
@@ -67,8 +82,26 @@
         android:id="@+id/newExerciseFragment"
         android:name="com.example.exercisetracker.NewExerciseFragment"
         android:label="NewExerciseFragment" >
+        <argument
+            android:name="userExerciseId"
+            app:argType="integer"
+            android:defaultValue="-1"/>
         <action
             android:id="@+id/action_newExerciseFragment_to_programDetailsFragment"
-            app:destination="@id/programDetailsFragment" />
+            app:destination="@id/programDetailsFragment"
+            app:popUpTo="@id/programDetailsFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_newExerciseFragment_to_myExercisesFragment"
+            app:destination="@id/myExercisesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myExercisesFragment"
+        android:name="com.example.exercisetracker.MyExercisesFragment"
+        android:label="fragment_my_exercises"
+        tools:layout="@layout/fragment_my_exercises" >
+        <action
+            android:id="@+id/action_myExercisesFragment_to_newExerciseFragment"
+            app:destination="@id/newExerciseFragment" />
     </fragment>
 </navigation>

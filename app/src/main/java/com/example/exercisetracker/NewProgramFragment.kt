@@ -7,12 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.exercisetracker.databinding.FragmentNewProgramBinding
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 
 class NewProgramFragment: Fragment() {
+
+    private val navigationArgs: NewProgramFragmentArgs by navArgs()
 
     private var _binding: FragmentNewProgramBinding? = null
     private val binding get() = _binding!!
@@ -32,11 +35,15 @@ class NewProgramFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // appProgramTypeId needed to create user_program, then pass user_program_id to
+        // program_detail_fragment?:
+        val appProgramTypeId = navigationArgs.programTypeId
+
         binding.buttonBack.setOnClickListener {
             findNavController().navigate(R.id.action_newProgramFragment_to_programTypeFragment)
         }
-        binding.buttonSaveProgram.setOnClickListener{
 
+        binding.buttonSaveProgram.setOnClickListener{
             findNavController().navigate(R.id.action_newProgramFragment_to_programDetailsFragment)
         }
 

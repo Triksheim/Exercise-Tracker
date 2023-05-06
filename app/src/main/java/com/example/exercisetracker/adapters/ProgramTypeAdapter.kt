@@ -2,13 +2,14 @@ package com.example.exercisetracker.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.compose.ui.layout.Layout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exercisetracker.databinding.ProgramTypeItemBinding
 import com.example.exercisetracker.db.AppProgramType
 
-class ProgramTypeAdapter(private val onItemCLicked: (AppProgramType) -> Unit)
+class ProgramTypeAdapter(private val clickListener: (AppProgramType) -> Unit)
     : ListAdapter<AppProgramType, ProgramTypeAdapter.ProgramViewHolder>(DiffCallback) {
 
 
@@ -23,16 +24,16 @@ class ProgramTypeAdapter(private val onItemCLicked: (AppProgramType) -> Unit)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
     : ProgramViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
         return ProgramViewHolder(
-            ProgramTypeItemBinding.inflate(
-                LayoutInflater.from(
-                    parent.context)))
+            ProgramTypeItemBinding.inflate(layoutInflater, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: ProgramViewHolder, position: Int) {
         val programType = getItem(position)
         holder.itemView.setOnClickListener {
-            onItemCLicked(programType)
+            clickListener(programType)
         }
         holder.bind(programType)
     }
