@@ -47,13 +47,17 @@ class SecondFragment : Fragment() {
 
         // Dersom indoor image er trykket, må innendørs program-typer vises i recyclerView
         binding.indoorImage.setOnClickListener {
-            //sharedViewModel.setTypeAndColor(Type.INDOOR)
-            findNavController().navigate(R.id.action_SecondFragment_to_programTypeFragment)
+            val bundle = Bundle().apply {
+                putString("type", "Indoor")
+            }
+            findNavController().navigate(R.id.action_SecondFragment_to_programTypeFragment, bundle)
         }
         // Dersom outdoor image er trykket, må utendørs program-typer vises i recyclerView
         binding.outdoorImage.setOnClickListener {
-            //sharedViewModel.setTypeAndColor(Type.OUTDOOR)
-            findNavController().navigate(R.id.action_SecondFragment_to_programTypeFragment)
+            val bundle = Bundle().apply {
+                putString("type", "Outdoor")
+            }
+            findNavController().navigate(R.id.action_SecondFragment_to_programTypeFragment, bundle)
         }
 
         // No network alert

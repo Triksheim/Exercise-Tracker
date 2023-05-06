@@ -267,12 +267,9 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             Log.e("ERROR USER PROGRAM SESSION API", "Unable to fetch (or no data for ProgramID:${userProgramId})" )
         }
     }
-
-
-    fun onProgramTypeSelected(appProgramType: com.example.exercisetracker.db.AppProgramType) {
-        TODO()
+    fun getFilteredProgramTypes(){
+        // todo
     }
-
 }
 class SharedViewModelFactory(private val trainingRepository: TrainingRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

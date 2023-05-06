@@ -16,6 +16,7 @@ import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
+import android.util.Log
 
 class ProgramTypeFragment: Fragment() {
 
@@ -38,6 +39,14 @@ class ProgramTypeFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val type = arguments?.getString("type") ?: ""
+        Log.d("ProgramTypeFragment", "Received type: $type")
+
+        val backColor = when (type) {
+            "Indoor" -> "#7fe5ab"
+            "Outdoor" -> "#ab7fe5"
+            else -> ""
+        }
         // Navigating with safeArgs to pass programtypeId as argument to next fragment "newProgram"
         val adapter = ProgramTypeAdapter { programType ->
             val action = ProgramTypeFragmentDirections
@@ -46,7 +55,10 @@ class ProgramTypeFragment: Fragment() {
         }
 
         lifecycleScope.launchWhenStarted {
-            sharedViewModel.programTypes.collectLatest { programTypes -> adapter.submitList(programTypes) }
+            sharedViewModel.programTypes.collectLatest { programTypes ->
+                val filteredProgramTypes = programTypes.filter { it.back_color == backColor }
+                adapter.submitList(filteredProgramTypes)
+            }
         }
 
         //TEMPORARY NAVIGATION TO NEW PROGRAM FRAGMENT

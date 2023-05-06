@@ -37,6 +37,9 @@
         android:name="com.example.exercisetracker.ProgramTypeFragment"
         android:label="fragment_program_type"
         tools:layout="@layout/fragment_program_type" >
+        <argument
+            android:name="type"
+            app:argType="string" />
         <action
             android:id="@+id/action_programTypeFragment_to_newProgramFragment"
             app:destination="@id/newProgramFragment" />
