@@ -38,6 +38,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _userExercises = MutableStateFlow<List<UserExercise>>(emptyList())
     val userExercise: StateFlow<List<UserExercise>> = _userExercises
 
+    private val _allSessions = MutableStateFlow<List<UserProgramSession>>(emptyList())
+    val allSessions: StateFlow<List<UserProgramSession>> = _allSessions
 
 
     init {
@@ -48,6 +50,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         fetchUsers()
         fetchUserPrograms()
         fetchUserExercises()
+        fetchUserProgramSessions()
     }
 
 
@@ -69,7 +72,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 }
         }
     }
-
     private fun fetchUserPrograms() {
         viewModelScope.launch {
             repository.getUserPrograms()
@@ -79,7 +81,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 }
         }
     }
-
     private fun fetchUserExercises() {
         viewModelScope.launch {
             repository.getUserExercises()
@@ -89,6 +90,16 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 }
         }
     }
+    private fun fetchUserProgramSessions() {
+        viewModelScope.launch {
+            repository.getUserProgramSessions()
+                .flowOn(Dispatchers.IO)
+                .collect { sessionsList ->
+                    _allSessions.value = sessionsList
+                }
+        }
+    }
+
 
 
     fun createUser(user: User)   {
@@ -167,6 +178,11 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 getAllProgramTypes()
                 getAllUserPrograms()
                 getAllUserExcercises()
+                if (userPrograms.value.isNotEmpty()) {
+                    for (userProgram in userPrograms.value) {
+                        getAllSessionsForUserProgram(userProgram.id)
+                    }
+                }
             }
         }
     }
@@ -211,14 +227,14 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         if (result.isSuccess) {
             Log.d("RESULT USER PROGRAMS API", "SUCCESS" )
             repository.deleteUserPrograms()
+            repository.deleteUserProgramSessions()
             val userPrograms = result.getOrNull()
             for(userProgram in userPrograms!!) {
                 repository.insertUserProgram(userProgram.asEntity())
             }
         }
         else {
-            Log.d("USER PROGRAMS CURRENTUSER", "${activeUser.value!!.id}" )
-            Log.e("ERROR USER PROGRAM API", "Unable to fetch / no data" )
+            Log.e("ERROR USER PROGRAM API", "Unable to fetch (or no data for ID:${activeUser.value!!.id})" )
         }
     }
 
@@ -234,12 +250,25 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             }
         }
         else {
-            Log.d("USEREXERCISES CURRENTUSER", "${activeUser.value!!.id}")
-            Log.e("ERROR USER EXERCISES API", "Unable to fetch / no data" )
+
+            Log.e("ERROR USER EXERCISES API", "Unable to fetch (or no data for ID:${activeUser.value!!.id})" )
         }
 
     }
 
+    suspend fun getAllSessionsForUserProgram(userProgramId: Int) {
+        val result = repository.getUserProgramSessionsAPI(userProgramId)
+        if (result.isSuccess) {
+            Log.d("RESULT USER PROGRAM SESSION", "SUCCESS ID:${userProgramId}" )
+            val sessions = result.getOrNull()
+            for (session in sessions!!) {
+                repository.insertUserProgramSession(session.asEntity())
+            }
+        }
+        else {
+            Log.e("ERROR USER PROGRAM SESSION API", "Unable to fetch (or no data for ProgramID:${userProgramId})" )
+        }
+    }
 
 
     fun onProgramTypeSelected(appProgramType: com.example.exercisetracker.db.AppProgramType) {

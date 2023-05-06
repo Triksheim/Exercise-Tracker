@@ -1,9 +1,6 @@
 package com.example.exercisetracker.repository
 import com.example.exercisetracker.db.*
-import com.example.exercisetracker.network.AppProgramTypeJSON
-import com.example.exercisetracker.network.UserExerciseJSON
-import com.example.exercisetracker.network.UserJSON
-import com.example.exercisetracker.network.UserProgramJSON
+import com.example.exercisetracker.network.*
 import kotlinx.coroutines.flow.Flow
 
 
@@ -67,6 +64,16 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
         return localDataSource.deleteUserExercises()
     }
 
+    // UserProgramSession
+    suspend fun insertUserProgramSession(userProgramSession: UserProgramSession): Long {
+        return localDataSource.insertUserProgramSession(userProgramSession)
+    }
+    suspend fun getUserProgramSessions(): Flow<List<UserProgramSession>> {
+        return localDataSource.getUserProgramSessions()
+    }
+    suspend fun deleteUserProgramSessions() {
+        return localDataSource.deleteUserProgramSessions()
+    }
 
 
 
@@ -105,6 +112,11 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
     // UserExercise
     suspend fun getUserExercisesAPI(userId: Int): Result<List<UserExerciseJSON>> {
         return remoteDataSource.getUserExercises(userId)
+    }
+
+    // UserProgramSession
+    suspend fun getUserProgramSessionsAPI(userProgramId: Int): Result<List<UserProgramSessionJSON>> {
+        return remoteDataSource.getUserProgramSessions(userProgramId)
     }
 
 

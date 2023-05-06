@@ -91,7 +91,7 @@ interface TrainingDao {
 
     // UserProgramSession
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertUserProgramSession(userProgramSession: UserProgramSession): Long
+    suspend fun insertUserProgramSession(userProgramSession: UserProgramSession): Long
 
     @Query("SELECT * FROM user_program_session")
     fun getAllUserProgramSessions(): Flow<List<UserProgramSession>>
@@ -99,10 +99,12 @@ interface TrainingDao {
     @Query("SELECT * FROM user_program_session WHERE id = :id")
     fun getUserProgramSessionById(id: Int): Flow<UserProgramSession>
 
+    @Query("DELETE FROM user_program_session")
+    suspend fun deleteAllUserProgramSessions()
 
     // UserProgramSessionData
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertUserProgramSessionData(userProgramSessionData: UserProgramSessionData): Long
+    suspend fun insertUserProgramSessionData(userProgramSessionData: UserProgramSessionData): Long
 
     @Query("SELECT * FROM user_program_session_data")
     fun getAllUserProgramSessionData(): Flow<List<UserProgramSessionData>>
@@ -116,7 +118,7 @@ interface TrainingDao {
 
     // UserProgramSessionPhoto
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertUserProgramSessionPhoto(userProgramSessionPhoto: UserProgramSessionPhoto): Long
+    suspend fun insertUserProgramSessionPhoto(userProgramSessionPhoto: UserProgramSessionPhoto): Long
 
     @Query("SELECT * FROM user_program_session_photo")
     fun getAllUserProgramSessionPhotos(): Flow<List<UserProgramSessionPhoto>>

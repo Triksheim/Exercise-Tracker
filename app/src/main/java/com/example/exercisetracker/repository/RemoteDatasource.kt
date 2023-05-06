@@ -103,7 +103,7 @@ interface ApiService {
 
     // UserProgramSession
     @GET("user_program_sessions")
-    suspend fun getUserProgramSessions(): List<UserProgramSessionJSON>
+    suspend fun getUserProgramSessions(@Query("user_program_id") userProgramId: Int): List<UserProgramSessionJSON>
 
     @GET("user_program_sessions/{id}")
     suspend fun getUserProgramSession(@Path("id") id: Int): UserProgramSessionJSON
@@ -182,7 +182,11 @@ class RemoteDataSource(private val apiService: ApiService) {
     // UserExercise
     suspend fun getUserExercises(userId: Int) = safeApiCall { apiService.getUserExercises(userId) }
 
+    // UserProgramSession
+    suspend fun getUserProgramSessions(userProgramId: Int)
+    = safeApiCall { apiService.getUserProgramSessions(userProgramId) }
 }
+
 
 val apiService = retrofit.create(ApiService::class.java)
 val remoteDataSource = RemoteDataSource(apiService)
