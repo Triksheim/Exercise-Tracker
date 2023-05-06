@@ -10,7 +10,9 @@ import com.example.exercisetracker.db.*
 import com.example.exercisetracker.network.UserJSON
 import com.example.exercisetracker.utils.asEntity
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 
 
 class SharedViewModel(private val repository: TrainingRepository) : ViewModel() {
@@ -43,7 +45,9 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     init {
         _networkConnectionOk.value = true
         _activeUser.value = ActiveUser(0,"0","0","0", 0)
-        restart()
+        viewModelScope.launch {
+            restart()
+        }
         fetchAppProgramTypes()
         fetchUsers()
         fetchUserPrograms()
@@ -102,14 +106,12 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
     fun createUser(user: User)   {
         viewModelScope.launch {
-
             val result = repository.createUserAPI(user)
             if (result.isSuccess) {
                 _networkConnectionOk.value = true
                 val newUser = result.getOrNull()
                 setActiveUser(newUser!!.asEntity())
                 restart()
-
             }
             else {
                 _createUserStatus.value = result
@@ -119,34 +121,32 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     }
 
 
-
-    fun login(phone: String): Boolean {
+    suspend fun login(phone: String): Boolean {
+        return viewModelScope.async() {
         if (users.value.isEmpty()) {
-            restart()
+            getAllUsers()
         }
-
-
         for (user in users.value!!) {
             if (user.phone == phone) {
-                viewModelScope.launch {
-                    setActiveUser(user)
-                    restart()
-                }
+                setActiveUser(user)
                 Log.d("LOGIN SUCCESS", "ID: ${user.id}")
-                return true
+                restart()
+                return@async true
             }
         }
-        return false
-    }
+            return@async false
+    }.await()
+}
 
 
-    suspend fun setActiveUser(user: User) {
-        val activeUser = ActiveUser(user.id, user.phone, user.email, user.name, user.birth_year)
-        _activeUser.value = activeUser
-        repository.removeActiveUser()
-        repository.addActiveUser(activeUser)
-        Log.d("ACTIVE USER SET", "ID: ${user.id}")
-
+    private suspend fun setActiveUser(user: User) {
+        withContext(Dispatchers.IO) {
+            val activeUser = ActiveUser(user.id, user.phone, user.email, user.name, user.birth_year)
+            _activeUser.postValue(activeUser)
+            repository.removeActiveUser()
+            repository.addActiveUser(activeUser)
+            Log.d("ACTIVE USER SET", "ID: ${user.id}")
+        }
     }
 
     fun logout() {
@@ -163,7 +163,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         return activeUser.value?.id != 0
     }
 
-    fun restart() {
+    private suspend fun restart() {
         viewModelScope.launch {
             if (activeUser.value?.id == 0) {
                 getAllUsers()
@@ -186,85 +186,94 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     }
 
 
-
-    suspend fun getAllUsers() {
-        val resultUsers = repository.getUsersAPI()
-        if (resultUsers.isSuccess) {
-            _networkConnectionOk.value = true
-            Log.d("RESULT USERS API", "SUCCESS" )
-            repository.deleteAllUsers()
-            val users = resultUsers.getOrNull()
-            for (user in users!!) {
-                repository.insertUser(user.asEntity())
+    private suspend fun getAllUsers() {
+        withContext(Dispatchers.IO) {
+            val resultUsers = repository.getUsersAPI()
+            if (resultUsers.isSuccess) {
+                _networkConnectionOk.postValue(true)
+                Log.d("RESULT USERS API", "SUCCESS")
+                repository.deleteAllUsers()
+                val users = resultUsers.getOrNull()
+                for (user in users!!) {
+                    repository.insertUser(user.asEntity())
+                }
+            } else {
+                _networkConnectionOk.postValue(false)
+                Log.e("ERROR USERS API", "Unable to fetch")
             }
         }
-        else {
-            _networkConnectionOk.value = false
-            Log.e("ERROR USERS API", "Unable to fetch" )
-        }
-
     }
 
-    suspend fun getAllProgramTypes() {
+    private suspend fun getAllProgramTypes() {
+        withContext(Dispatchers.IO) {
             val result = repository.getAppProgramTypesAPI()
             if (result.isSuccess) {
-                Log.d("RESULT PROGRAM TYPES API", "SUCCESS" )
+                Log.d("RESULT PROGRAM TYPES API", "SUCCESS")
                 repository.deleteProgramTypes()
                 val appProgramTypes = result.getOrNull()
                 for (programType in appProgramTypes!!) {
                     repository.insertProgramType(programType.asEntity())
                 }
+            } else {
+                Log.e("ERROR PROGRAM TYPES API", "Unable to fetch")
             }
-            else {
-                Log.e("ERROR PROGRAM TYPES API", "Unable to fetch" )
-            }
-    }
-
-    suspend fun getAllUserPrograms() {
-        val result = repository.getUserProgramsAPI(activeUser.value!!.id)
-        if (result.isSuccess) {
-            Log.d("RESULT USER PROGRAMS API", "SUCCESS" )
-            repository.deleteUserPrograms()
-            repository.deleteUserProgramSessions()
-            val userPrograms = result.getOrNull()
-            for(userProgram in userPrograms!!) {
-                repository.insertUserProgram(userProgram.asEntity())
-            }
-        }
-        else {
-            Log.e("ERROR USER PROGRAM API", "Unable to fetch (or no data for ID:${activeUser.value!!.id})" )
         }
     }
 
-
-    suspend fun getAllUserExcercises() {
-        val result = repository.getUserExercisesAPI(activeUser.value!!.id)
-        if (result.isSuccess) {
-            Log.d("RESULT USER EXERCISES API", "SUCCESS" )
-            repository.deleteUserExercises()
-            val userExercises = result.getOrNull()
-            for (userExercise in userExercises!!) {
-                repository.insertUserExercise(userExercise.asEntity())
+    private suspend fun getAllUserPrograms() {
+        withContext(Dispatchers.IO) {
+            val result = repository.getUserProgramsAPI(activeUser.value!!.id)
+            if (result.isSuccess) {
+                Log.d("RESULT USER PROGRAMS API", "SUCCESS")
+                repository.deleteUserPrograms()
+                repository.deleteUserProgramSessions()
+                val userPrograms = result.getOrNull()
+                for (userProgram in userPrograms!!) {
+                    repository.insertUserProgram(userProgram.asEntity())
+                }
+            } else {
+                Log.e(
+                    "ERROR USER PROGRAM API",
+                    "Unable to fetch (or no programs for ID:${activeUser.value!!.id})"
+                )
             }
         }
-        else {
-
-            Log.e("ERROR USER EXERCISES API", "Unable to fetch (or no data for ID:${activeUser.value!!.id})" )
-        }
-
     }
 
-    suspend fun getAllSessionsForUserProgram(userProgramId: Int) {
-        val result = repository.getUserProgramSessionsAPI(userProgramId)
-        if (result.isSuccess) {
-            Log.d("RESULT USER PROGRAM SESSION", "SUCCESS ID:${userProgramId}" )
-            val sessions = result.getOrNull()
-            for (session in sessions!!) {
-                repository.insertUserProgramSession(session.asEntity())
+    private suspend fun getAllUserExcercises() {
+        withContext(Dispatchers.IO) {
+            val result = repository.getUserExercisesAPI(activeUser.value!!.id)
+            if (result.isSuccess) {
+                Log.d("RESULT USER EXERCISES API", "SUCCESS")
+                repository.deleteUserExercises()
+                val userExercises = result.getOrNull()
+                for (userExercise in userExercises!!) {
+                    repository.insertUserExercise(userExercise.asEntity())
+                }
+            } else {
+                Log.e(
+                    "ERROR USER EXERCISES API",
+                    "Unable to fetch (or no exercises for UserID:${activeUser.value!!.id})"
+                )
             }
         }
-        else {
-            Log.e("ERROR USER PROGRAM SESSION API", "Unable to fetch (or no data for ProgramID:${userProgramId})" )
+    }
+
+    private suspend fun getAllSessionsForUserProgram(userProgramId: Int) {
+        withContext(Dispatchers.IO) {
+            val result = repository.getUserProgramSessionsAPI(userProgramId)
+            if (result.isSuccess) {
+                Log.d("RESULT USER PROGRAM SESSION", "SUCCESS ID:${userProgramId}")
+                val sessions = result.getOrNull()
+                for (session in sessions!!) {
+                    repository.insertUserProgramSession(session.asEntity())
+                }
+            } else {
+                Log.e(
+                    "ERROR USER PROGRAM SESSION API",
+                    "Unable to fetch (or no session data for ProgramID:${userProgramId})"
+                )
+            }
         }
     }
 
