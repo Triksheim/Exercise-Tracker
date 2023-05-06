@@ -39,10 +39,7 @@ class ProgramTypeFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val type = arguments?.getString("type") ?: ""
-        Log.d("ProgramTypeFragment", "Received type: $type")
-
-        val backColor = when (type) {
+        val backColor = when (arguments?.getString("type") ?: "") {
             "Indoor" -> "#7fe5ab"
             "Outdoor" -> "#ab7fe5"
             else -> ""

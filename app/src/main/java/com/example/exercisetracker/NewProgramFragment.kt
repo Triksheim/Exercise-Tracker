@@ -1,6 +1,7 @@
 package com.example.exercisetracker
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,10 +36,14 @@ class NewProgramFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val programTypeId = arguments?.getInt("programTypeId") ?: -1
+        if (programTypeId == -1) {
+            Log.e("NewProgramFragment", "Failed to receive programTypeId")
+        }
+
         // appProgramTypeId needed to create user_program, then pass user_program_id to
         // program_detail_fragment?:
         val appProgramTypeId = navigationArgs.programTypeId
-
         binding.buttonBack.setOnClickListener {
             findNavController().navigate(R.id.action_newProgramFragment_to_programTypeFragment)
         }

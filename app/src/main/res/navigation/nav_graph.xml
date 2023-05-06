@@ -42,7 +42,11 @@
             app:argType="string" />
         <action
             android:id="@+id/action_programTypeFragment_to_newProgramFragment"
-            app:destination="@id/newProgramFragment" />
+            app:destination="@id/newProgramFragment">
+        <argument
+            android:name="programTypeId"
+            app:argType="integer" />
+        </action>
         <action
             android:id="@+id/action_programTypeFragment_to_SecondFragment"
             app:destination="@id/SecondFragment"
