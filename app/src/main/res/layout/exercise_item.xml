@@ -10,7 +10,7 @@
             type="com.example.exercisetracker.viewmodel.SharedViewModel"/>
         <variable
             name="exercise"
-            type="com.example.exercisetracker.db.Exercise"/>
+            type="com.example.exercisetracker.db.UserExercise"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,16 +61,26 @@
             app:layout_constraintEnd_toStartOf="@id/button_add"
             tools:text="Exercise-beskrivelse bla bla bla bla bla"/>
 
-        <Button
+        <!-- Add-button visible for recycler view in ProgramDetailsFragment-->
+        <ImageButton
             android:id="@+id/button_add"
             android:layout_width="@dimen/button_size_small"
             android:layout_height="wrap_content"
-            android:text="+"
+            android:src="@drawable/add_img"
             android:textSize="@dimen/header_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider_top"
             app:layout_constraintBottom_toBottomOf="parent" />
 
+        <!-- Edit-button visible for recyclerView in MyExercisesFragment-->
+        <ImageButton
+            android:id="@+id/button_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/edit_img"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_top"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
