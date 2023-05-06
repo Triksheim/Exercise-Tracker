@@ -122,21 +122,21 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
 
     suspend fun login(phone: String): Boolean {
-        return viewModelScope.async() {
+        return viewModelScope.async {
         if (users.value.isEmpty()) {
             getAllUsers()
         }
-        for (user in users.value!!) {
+        for (user in users.value) {
             if (user.phone == phone) {
-                setActiveUser(user)
                 Log.d("LOGIN SUCCESS", "ID: ${user.id}")
+                setActiveUser(user)
                 restart()
                 return@async true
             }
         }
             return@async false
-    }.await()
-}
+        }.await()
+    }
 
 
     private suspend fun setActiveUser(user: User) {
@@ -185,7 +185,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             else if (checkIsActiveUser()) {
                 getAllProgramTypes()
                 getAllUserPrograms()
-                getAllUserExcercises()
+                getAllUserExercises()
                 if (userPrograms.value.isNotEmpty()) {
                     for (userProgram in userPrograms.value) {
                         getAllSessionsForUserProgram(userProgram.id)
@@ -250,7 +250,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-    private suspend fun getAllUserExcercises() {
+    private suspend fun getAllUserExercises() {
         withContext(Dispatchers.IO) {
             val result = repository.getUserExercisesAPI(activeUser.value!!.id)
             if (result.isSuccess) {
