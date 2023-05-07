@@ -52,6 +52,10 @@ class NewProgramFragment: Fragment() {
             findNavController().navigate(R.id.action_newProgramFragment_to_programDetailsFragment)
         }
 
+        binding.buttonMyExercises.setOnClickListener {
+            findNavController().navigate(R.id.action_newProgramFragment_to_myExercisesFragment)
+        }
+
     }
 
     override fun onDestroyView() {

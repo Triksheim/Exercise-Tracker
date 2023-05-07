@@ -70,6 +70,9 @@
         <action
             android:id="@+id/action_newProgramFragment_to_programDetailsFragment"
             app:destination="@id/programDetailsFragment" />
+        <action
+            android:id="@+id/action_newProgramFragment_to_myExercisesFragment"
+            app:destination="@id/myExercisesFragment" />
     </fragment>
 
     <fragment
