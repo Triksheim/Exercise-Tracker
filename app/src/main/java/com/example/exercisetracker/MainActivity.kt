@@ -57,11 +57,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // Handle action bar item clicks here.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings -> {
+                // Handle settings action
+                true
+            }
+            R.id.nav_my_exercises -> {
+                // Navigate to myExercisesFragment
+                navController.navigate(R.id.myExercisesFragment)
+                true
+            }
+            R.id.action_my_programs -> {
+                navController.navigate(R.id.myProgramsFragment)
+                true
+            }
+            R.id.nav_logout -> {
+                // Handle logout action
+                performLogout()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -71,4 +86,9 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
+    private fun performLogout() {
+        // Navigate to the login screen
+        navController.navigate(R.id.FirstFragment)
+    }
+
 }

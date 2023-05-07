@@ -113,5 +113,13 @@
         <action
             android:id="@+id/action_myExercisesFragment_to_newExerciseFragment"
             app:destination="@id/newExerciseFragment" />
+        <action
+            android:id="@+id/action_myExercisesFragment_to_myProgramsFragment"
+            app:destination="@id/myProgramsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/myProgramsFragment"
+        android:name="com.example.exercisetracker.MyProgramsFragment"
+        android:label="My Programs"
+        tools:layout="@layout/fragment_my_programs" />
 </navigation>

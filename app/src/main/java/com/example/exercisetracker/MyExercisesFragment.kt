@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.fragment.findNavController
 import com.example.exercisetracker.adapters.ExerciseItemAdapter
 import com.example.exercisetracker.databinding.FragmentMyExercisesBinding
 import com.example.exercisetracker.repository.TrainingApplication
@@ -45,7 +46,15 @@ class MyExercisesFragment: Fragment() {
         binding.apply {
             exerciseRecycler.adapter = adapter
         }
+        binding.btNewExercise.setOnClickListener {
+            // Navigate to NewExerciseFragment
+            findNavController().navigate(R.id.action_myExercisesFragment_to_newExerciseFragment)
+        }
 
+        binding.btMyPrograms.setOnClickListener {
+            // Navigate to MyProgramsFragment
+            findNavController().navigate(R.id.action_myExercisesFragment_to_myProgramsFragment)
+        }
     }
 
     override fun onDestroyView() {

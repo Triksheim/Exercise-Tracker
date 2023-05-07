@@ -11,12 +11,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.exercisetracker.adapters.ProgramTypeAdapter
 import com.example.exercisetracker.databinding.FragmentProgramTypeBinding
-import com.example.exercisetracker.db.AppProgramType
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
-import android.util.Log
 
 class ProgramTypeFragment: Fragment() {
 

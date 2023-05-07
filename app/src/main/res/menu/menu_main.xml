@@ -7,4 +7,13 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/nav_my_exercises"
+        android:title="@string/nav_my_exercises" />
+    <item
+        android:id="@+id/action_my_programs"
+        android:title="@string/nav_my_programs" />
+    <item
+        android:id="@+id/nav_logout"
+        android:title="@string/nav_logout" />
 </menu>
