@@ -1,7 +1,6 @@
 package com.example.exercisetracker
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,25 +16,20 @@ import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 import com.google.android.material.textfield.TextInputEditText
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.w3c.dom.Text
-import retrofit2.HttpException
-import retrofit2.http.HTTP
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class FirstFragment : Fragment() {
+    val mainScope = MainScope()
     private var binding: FragmentFirstBinding? = null
     private val sharedViewModel: SharedViewModel by activityViewModels() {
         SharedViewModelFactory(
             (activity?.application as TrainingApplication).trainingRepository
         )
     }
-
-
 
 
     override fun onCreateView(
@@ -59,11 +53,15 @@ class FirstFragment : Fragment() {
 
         sharedViewModel.createUserStatus.observe(viewLifecycleOwner) { result ->
             if (result.isFailure) {
-                if(!sharedViewModel.networkConnectionOk.value!!) {
-                    Toast.makeText(context, "Ingen kontakt med server.\nSjekk internett forbindelsen.", Toast.LENGTH_LONG).show()
-                }
-                else {
-                Toast.makeText(context, "Mobilnummer allerede i bruk", Toast.LENGTH_SHORT).show()
+                if (!sharedViewModel.networkConnectionOk.value!!) {
+                    Toast.makeText(
+                        context,
+                        "Ingen kontakt med server.\nSjekk internett forbindelsen.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    Toast.makeText(context, "Mobilnummer allerede i bruk", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
 
@@ -93,8 +91,7 @@ class FirstFragment : Fragment() {
 
             if (name == "" || birthYear == 0 || email == "" || phone == "") {
                 Toast.makeText(context, "Vennligst utfyll alle felter", Toast.LENGTH_SHORT).show()
-            }
-            else {
+            } else {
                 val user = User(0, phone, email, name, birthYear)
                 sharedViewModel.createUser(user)
             }
@@ -106,21 +103,27 @@ class FirstFragment : Fragment() {
         binding?.buttonLogin?.setOnClickListener {
             val phoneLoginInput: TextInputEditText = view.findViewById(R.id.phone_login_input)
             val phoneLogin = phoneLoginInput.text.toString()
-            if (sharedViewModel.login(phoneLogin)) {
-            }
-            else {
-                if (!sharedViewModel.networkConnectionOk.value!!) {
-                    Toast.makeText(
-                        context,
-                        "Ingen kontakt med server.\nSjekk internett forbindelsen.",
-                        Toast.LENGTH_LONG
-                    ).show()
+
+            lifecycleScope.launch {
+                val loginSuccess = sharedViewModel.login(phoneLogin)
+                if (loginSuccess) {
+                    //Toast.makeText(context, "Godkjent", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(context, "Ukjent mobilnummer", Toast.LENGTH_SHORT).show()
+                    if (!sharedViewModel.networkConnectionOk.value!!) {
+                        Toast.makeText(
+                            context,
+                            "Ingen kontakt med server.\nSjekk internett forbindelsen.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        Toast.makeText(context, "Ukjent mobilnummer", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
     }
+
+
 
     private fun navigateToNextFragment() {
         findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
