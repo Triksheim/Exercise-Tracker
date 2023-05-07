@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.exercisetracker.adapters.ExerciseItemAdapter
 import com.example.exercisetracker.databinding.FragmentProgramDetailsBinding
 import com.example.exercisetracker.repository.TrainingApplication
@@ -35,6 +36,8 @@ class ProgramDetailsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val programId = requireArguments().getInt("programId")
         val adapter = ExerciseItemAdapter
 
         binding.buttonBack.setOnClickListener {

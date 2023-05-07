@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import com.example.exercisetracker.adapters.ProgramItemAdapter
 import com.example.exercisetracker.databinding.FragmentMyProgramsBinding
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
@@ -33,7 +35,14 @@ class MyProgramsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Add your logic here
+        val adapter = ProgramItemAdapter { selectedProgram ->
+            val action = MyProgramsFragmentDirections
+                .actionMyProgramsFragmentToProgramDetailsFragment()
+            val bundle = Bundle().apply {
+                putInt("programId", selectedProgram.id)
+            }
+            findNavController().navigate(action.actionId, bundle)
+        }
     }
 
     override fun onDestroyView() {

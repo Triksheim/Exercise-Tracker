@@ -29,7 +29,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_my_exercises"
-        tools:itemCount="10" />
+        tools:itemCount="10"
+        tools:listitem="@layout/exercise_item"/>
 
     <Button
         android:id="@+id/bt_new_exercise"
