@@ -42,12 +42,11 @@ class ProgramTypeFragment: Fragment() {
             "Outdoor" -> "#ab7fe5"
             else -> ""
         }
-        // Navigating with safeArgs to pass programtypeId as argument to next fragment "newProgram"
         val adapter = ProgramTypeAdapter { programType ->
-            val action = ProgramTypeFragmentDirections
-                .actionProgramTypeFragmentToNewProgramFragment(programType.id)
+            val action = ProgramTypeFragmentDirections.actionProgramTypeFragmentToNewProgramFragment(programType.id)
             findNavController().navigate(action)
         }
+
 
         lifecycleScope.launchWhenStarted {
             sharedViewModel.programTypes.collectLatest { programTypes ->

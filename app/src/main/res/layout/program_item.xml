@@ -50,6 +50,17 @@
             app:layout_constraintStart_toEndOf="@+id/program_icon"
             app:layout_constraintTop_toBottomOf="@+id/program_description" />
 
+        <Button
+            android:id="@+id/edit_program_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            app:layout_constraintTop_toTopOf="@+id/program_timing"
+            app:layout_constraintBottom_toBottomOf="@+id/program_timing"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/program_timing"
+            android:layout_marginStart="16dp"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

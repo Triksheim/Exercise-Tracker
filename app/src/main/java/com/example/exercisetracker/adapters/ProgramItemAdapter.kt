@@ -12,8 +12,10 @@ import com.example.exercisetracker.databinding.ProgramItemBinding
 import com.example.exercisetracker.db.UserProgram
 
 
-class ProgramItemAdapter(private val onItemClickListener: (UserProgram) -> Unit) :
-    ListAdapter<UserProgram, ProgramItemAdapter.ProgramViewHolder>(DiffCallback) {
+class ProgramItemAdapter(
+    private val onItemClickListener: (UserProgram) -> Unit,
+    private val onEditClickListener: (UserProgram) -> Unit
+) : ListAdapter<UserProgram, ProgramItemAdapter.ProgramViewHolder>(DiffCallback) {
 
     inner class ProgramViewHolder(private val binding: ProgramItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -25,6 +27,9 @@ class ProgramItemAdapter(private val onItemClickListener: (UserProgram) -> Unit)
 
                 root.setOnClickListener {
                     onItemClickListener(userProgram)
+                }
+                root.setOnClickListener {
+                    onEditClickListener(userProgram)
                 }
             }
         }

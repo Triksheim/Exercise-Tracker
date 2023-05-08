@@ -36,5 +36,8 @@
     <string name="my_programs">Mine treningsprogram</string>
     <string name="nav_my_exercises">Mine øvelser</string>
     <string name="nav_logout">Logg ut</string>
+    <string name="user_program_name">Program navn</string>
+    <string name="app_program_type_description">Program beskrivelse</string>
+    <string name="personal_description">Hvordan følte du deg?</string>
 
 </resources>

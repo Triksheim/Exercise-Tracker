@@ -67,7 +67,7 @@ data class UserExercise(
 data class UserProgramSession(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "user_program_id") val user_program_id: Int,
-    @ColumnInfo(name = "description") val description: String,
+    @ColumnInfo(name = "description") var description: String,
     @ColumnInfo(name = "startTime") val startTime: String,
     @ColumnInfo(name = "time_spent") val time_spent: Int
 )

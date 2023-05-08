@@ -41,6 +41,9 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _allSessions = MutableStateFlow<List<UserProgramSession>>(emptyList())
     val allSessions: StateFlow<List<UserProgramSession>> = _allSessions
 
+    private val _userProgramSessions = MutableStateFlow<List<UserProgramSession>>(emptyList())
+    val userProgramSessions: StateFlow<List<UserProgramSession>> = _userProgramSessions
+
 
     init {
         _networkConnectionOk.value = true
@@ -285,6 +288,12 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 )
             }
         }
+    }
+    fun addUserProgramSession(userProgramSession: UserProgramSession) {
+        val updatedSessions = _userProgramSessions.value.toMutableList().apply {
+            add(userProgramSession)
+        }
+        _userProgramSessions.value = updatedSessions
     }
 }
 class SharedViewModelFactory(private val trainingRepository: TrainingRepository) : ViewModelProvider.Factory {

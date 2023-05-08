@@ -117,6 +117,9 @@
         <action
             android:id="@+id/action_myExercisesFragment_to_myProgramsFragment"
             app:destination="@id/myProgramsFragment" />
+        <action
+            android:id="@+id/action_myExercisesFragment_to_programSessionFragment"
+            app:destination="@id/programSessionFragment" />
     </fragment>
     <fragment
         android:id="@+id/myProgramsFragment"
@@ -126,6 +129,27 @@
         <action
             android:id="@+id/action_myProgramsFragment_to_programDetailsFragment"
             app:destination="@id/programDetailsFragment">
+            <argument
+                android:name="programId"
+                app:argType="integer" />
         </action>
+        <action
+            android:id="@+id/action_myProgramsFragment_to_programSessionsFragment"
+            app:destination="@id/programSessionFragment" >
+            <argument
+                android:name="programId"
+                app:argType="integer" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/programSessionFragment"
+        android:name="com.example.exercisetracker.ProgramSessionFragment"
+        android:label="fragment_program_session"
+        tools:layout="@layout/fragment_program_session" >
+        <action
+            android:id="@+id/action_programSessionFragment_to_myExercisesFragment"
+            app:destination="@id/myExercisesFragment"
+            app:popUpTo="@id/myExercisesFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>
