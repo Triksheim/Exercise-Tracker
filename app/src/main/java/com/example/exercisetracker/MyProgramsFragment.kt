@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.exercisetracker.adapters.ProgramItemAdapter
@@ -14,7 +13,6 @@ import com.example.exercisetracker.databinding.FragmentMyProgramsBinding
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
-import kotlinx.coroutines.flow.collectLatest
 
 class MyProgramsFragment : Fragment() {
 

@@ -295,6 +295,9 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
         _userProgramSessions.value = updatedSessions
     }
+    suspend fun addExercise(userExercise: UserExercise) {
+        repository.insertUserExercise(userExercise)
+    }
 }
 class SharedViewModelFactory(private val trainingRepository: TrainingRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

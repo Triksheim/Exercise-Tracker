@@ -25,15 +25,24 @@
             android:adjustViewBounds="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/img_outdoor_runner"/>
+            android:src="@drawable/img_outdoor_runner" />
 
         <Button
-            android:id="@+id/button_exercise_photo"
+            android:id="@+id/button_gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_from_gallery"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/button_camera" />
+
+        <Button
+            android:id="@+id/button_camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/take_new_picture"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/imageview_exercise"/>
+            app:layout_constraintBottom_toBottomOf="@id/imageview_exercise" />
+
 
         <View
             android:id="@+id/divider_upper"
@@ -43,7 +52,7 @@
             android:background="?attr/dividerHorizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_exercise_photo"/>
+            app:layout_constraintTop_toBottomOf="@id/button_camera"/>
 
         <TextView
             android:id="@+id/tv_new_exercise"

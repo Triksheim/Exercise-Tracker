@@ -32,7 +32,8 @@
     <string name="add_exercises">Legg til øvelser</string>
     <string name="create_new_exercise">Opprett ny øvelse</string>
     <string name="no_registered_exercises">Du har ikke lagret noen øvelser. Opprett ny øvelse</string>
-    <string name="take_new_picture">Ta nytt bilde</string>
+    <string name="take_new_picture">Ta bilde</string>
+    <string name="select_from_gallery">Fotorull</string>
     <string name="my_programs">Mine treningsprogram</string>
     <string name="nav_my_exercises">Mine øvelser</string>
     <string name="nav_logout">Logg ut</string>
