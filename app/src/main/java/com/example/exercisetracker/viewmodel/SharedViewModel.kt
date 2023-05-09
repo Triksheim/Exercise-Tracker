@@ -295,8 +295,19 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
         _userProgramSessions.value = updatedSessions
     }
-    suspend fun addExercise(userExercise: UserExercise) {
-        repository.insertUserExercise(userExercise)
+    suspend fun createUserExercise(userExercise: UserExercise) {
+        viewModelScope.launch {
+            val result = repository.createUserExerciseAPI(userExercise)
+            if (result.isSuccess) {
+                _networkConnectionOk.value = true
+                val newUserExercise = result.getOrNull()
+                newUserExercise?.let { repository.insertUserExercise(it.asEntity()) }
+            }
+            else {
+                _networkConnectionOk.value = false
+                Log.e("ERROR USER EXERCISE", "Creating user exercise failed")
+            }
+        }
     }
 }
 class SharedViewModelFactory(private val trainingRepository: TrainingRepository) : ViewModelProvider.Factory {

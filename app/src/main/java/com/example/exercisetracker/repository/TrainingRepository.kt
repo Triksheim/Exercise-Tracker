@@ -110,6 +110,9 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
     }
 
     // UserExercise
+    suspend fun createUserExerciseAPI(userExercise: UserExercise): Result<UserExerciseJSON> {
+        return remoteDataSource.createUserExercise(userExercise)
+    }
     suspend fun getUserExercisesAPI(userId: Int): Result<List<UserExerciseJSON>> {
         return remoteDataSource.getUserExercises(userId)
     }

@@ -98,7 +98,7 @@ interface ApiService {
     suspend fun getUserExercise(@Path("id") id: Int): UserExerciseJSON
 
     @POST("user_exercises")
-    suspend fun createUserExercise(@Body userExercise: UserExerciseJSON): Response<UserExerciseJSON>
+    suspend fun createUserExercise(@Body userExercise: UserExercise): Response<UserExerciseJSON>
 
 
     // UserProgramSession
@@ -180,6 +180,8 @@ class RemoteDataSource(private val apiService: ApiService) {
     suspend fun getUserProgram(id: Int) = safeApiCall { apiService.getUserProgram(id) }
 
     // UserExercise
+    suspend fun createUserExercise(userExercise: UserExercise)
+    = safeApiCall { apiService.createUserExercise(userExercise).bodyOrThrow() }
     suspend fun getUserExercises(userId: Int) = safeApiCall { apiService.getUserExercises(userId) }
 
     // UserProgramSession

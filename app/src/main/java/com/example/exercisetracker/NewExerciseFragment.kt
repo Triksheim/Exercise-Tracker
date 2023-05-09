@@ -108,7 +108,7 @@ class NewExerciseFragment: Fragment() {
 
                     // Save the exercise to the database
                     viewLifecycleOwner.lifecycleScope.launch {
-                        sharedViewModel.addExercise(newUserExercise)
+                        sharedViewModel.createUserExercise(newUserExercise)
                     }
 
                     // Navigate to the ProgramDetailsFragment
