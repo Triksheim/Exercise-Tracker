@@ -1,16 +1,9 @@
 package com.example.exercisetracker
 
-import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -31,8 +24,6 @@ class NewExerciseFragment: Fragment() {
     private var _binding: FragmentNewExerciseBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var takePictureLauncher: ActivityResultLauncher<Intent>
-    private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
 
     private val sharedViewModel: SharedViewModel by activityViewModels() {
         SharedViewModelFactory(
@@ -50,24 +41,6 @@ class NewExerciseFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize takePictureLauncher
-        takePictureLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == AppCompatActivity.RESULT_OK) {
-                val bitmap = result.data?.extras?.get("data") as Bitmap
-                binding.imageviewExercise.setImageBitmap(bitmap)
-            } else {
-                Toast.makeText(requireContext(), "Feil ved visning av bilde", Toast.LENGTH_SHORT).show()
-            }
-        }
-        // Initialize galleryLauncher
-        galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == AppCompatActivity.RESULT_OK) {
-                binding.imageviewExercise.setImageURI(result.data?.data)
-            } else {
-                Toast.makeText(requireContext(), "Feil ved visning av bilde", Toast.LENGTH_SHORT).show()
-            }
-        }
-
 
         binding.buttonBack.setOnClickListener {
             findNavController().navigate(R.id.action_newExerciseFragment_to_programDetailsFragment)
@@ -75,14 +48,11 @@ class NewExerciseFragment: Fragment() {
 
         val buttonCamera = binding.buttonCamera
         buttonCamera.setOnClickListener {
-            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            takePictureLauncher.launch(takePictureIntent)
         }
 
         val buttonGallery = binding.buttonGallery
         buttonGallery.setOnClickListener {
-            val galleryIntent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            galleryLauncher.launch(galleryIntent)
+
         }
 
         sharedViewModel.activeUser.observe(viewLifecycleOwner, Observer { activeUser ->

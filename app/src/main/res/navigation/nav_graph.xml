@@ -108,7 +108,11 @@
         </action>
         <action
             android:id="@+id/action_newExerciseFragment_to_myExercisesFragment"
-            app:destination="@id/myExercisesFragment" />
+            app:destination="@id/myExercisesFragment">
+            <argument
+                android:name="userId"
+                app:argType="integer" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/myExercisesFragment"
