@@ -109,6 +109,9 @@ interface TrainingDao {
     @Query("SELECT * FROM user_program_session_data")
     fun getAllUserProgramSessionData(): Flow<List<UserProgramSessionData>>
 
+    @Query("DELETE FROM user_program_session_data")
+    suspend fun deleteAllUserProgramSessionData()
+
     @Query("SELECT * FROM user_program_session_data WHERE id = :id")
     fun getUserProgramSessionDataById(id: Int): Flow<UserProgramSessionData>
 
