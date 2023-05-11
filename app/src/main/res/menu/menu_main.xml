@@ -8,6 +8,9 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
+        android:id="@+id/nav_my_statistics"
+        android:title="@string/nav_my_sessions" />
+    <item
         android:id="@+id/nav_my_exercises"
         android:title="@string/nav_my_exercises" />
     <item

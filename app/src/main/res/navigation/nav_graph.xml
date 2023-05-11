@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_myStatisticsFragment"
+            app:destination="@id/myStatisticsFragment" />
     </fragment>
 
     <fragment
@@ -155,5 +158,14 @@
             app:destination="@id/myExercisesFragment"
             app:popUpTo="@id/myExercisesFragment"
             app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/myStatisticsFragment"
+        android:name="com.example.exercisetracker.MyStatisticsFragment"
+        android:label="fragment_my_statistics"
+        tools:layout="@layout/fragment_my_statistics" >
+        <action
+            android:id="@+id/action_myStatisticsFragment_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
     </fragment>
 </navigation>

@@ -63,6 +63,11 @@ class MainActivity : AppCompatActivity() {
                 // Handle settings action
                 true
             }
+            R.id.nav_my_statistics -> {
+                // Navigate to myExercisesFragment
+                navController.navigate(R.id.myStatisticsFragment)
+                true
+            }
             R.id.nav_my_exercises -> {
                 // Navigate to myExercisesFragment
                 navController.navigate(R.id.myExercisesFragment)
