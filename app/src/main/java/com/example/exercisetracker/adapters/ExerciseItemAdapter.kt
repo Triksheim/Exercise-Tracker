@@ -1,36 +1,38 @@
 package com.example.exercisetracker.adapters
-
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.exercisetracker.MyExercisesFragmentDirections
 import com.example.exercisetracker.databinding.ExerciseItemBinding
-import com.example.exercisetracker.db.Exercise
-import androidx.navigation.fragment.findNavController
+import com.example.exercisetracker.R
 import com.example.exercisetracker.db.UserExercise
+import kotlinx.coroutines.NonDisposableHandle.parent
 
-// Legg til- knappen for en øvelse i recycler view er ikke implementert
-// En adapter for både MyExercises fragment (da vises edit knappen) og for ProgramDetailsFragment
-// (da vises legg til øvelse-knappen)
-class ExerciseItemAdapter()
+
+class ExerciseItemAdapter(private val exerciseClickListener: ExerciseClickListener)
     : ListAdapter<UserExercise, ExerciseItemAdapter.ExerciseViewHolder>(DiffCallback) {
 
-    class ExerciseViewHolder(private var binding: ExerciseItemBinding)
-        : RecyclerView.ViewHolder(binding.root){
+    interface ExerciseClickListener {
+        fun onEditButtonClick(position: Int, exerciseId: Int)
+        fun onAddButtonClick(position: Int,exerciseId: Int)
+    }
 
-        fun bind(userExercise: UserExercise) {
+    class ExerciseViewHolder(private val binding: ExerciseItemBinding, exerciseClickListener: ExerciseClickListener)
+        : RecyclerView.ViewHolder(binding.root){
+        fun bind(userExercise: UserExercise,  position: Int) {
             binding.exercise = userExercise
-            binding.buttonAdd.visibility= View.GONE
-            /** binding.buttonEdit.setOnClickListener {
-                val action = MyExercisesFragmentDirections
-                    .actionMyExercisesFragmentToNewExerciseFragment(userExercise.id)
-                findNavController().navigate(action)
-            } **/
             binding.executePendingBindings()
+        }
+        init {
+            binding.buttonAdd.setOnClickListener{
+            exerciseClickListener.onAddButtonClick(position, binding.exercise!!.id)
+            }
+            binding.buttonEdit.setOnClickListener{
+                exerciseClickListener.onEditButtonClick(position, binding.exercise!!.id)
+            }
         }
     }
 
@@ -38,13 +40,18 @@ class ExerciseItemAdapter()
             ExerciseViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return ExerciseViewHolder(
-            ExerciseItemBinding.inflate(layoutInflater, parent, false)
+            ExerciseItemBinding.inflate(layoutInflater, parent, false),
+            exerciseClickListener
         )
     }
 
     override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
         val userExercise = getItem(position)
-        holder.bind(userExercise)
+        holder.bind(userExercise, position)
+
+        val color = ContextCompat.getColor(holder.itemView.context, R.color.bg_exercise)
+        holder.itemView.setBackgroundColor(color)
+
     }
 
     companion object DiffCallback: DiffUtil.ItemCallback<UserExercise>() {

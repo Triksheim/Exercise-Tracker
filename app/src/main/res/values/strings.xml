@@ -40,5 +40,10 @@
     <string name="user_program_name">Program navn</string>
     <string name="app_program_type_description">Program beskrivelse</string>
     <string name="personal_description">Hvordan følte du deg?</string>
+    <string name="program_exercises">Programøvelser:</string>
+    <string name="session_statistics">Treningsstatistikk</string>
+    <string name="registrer_new_program">Registrer nytt program</string>
+    <string name="you_have_no_sessions">Du har ikke registrert noen treningsøkter enda. Kom i gang nå!</string>
+    <string name="nav_my_sessions">Mine treningsøkter</string>
 
 </resources>

@@ -32,6 +32,9 @@ class ProgramTypeAdapter(private val clickListener: (AppProgramType) -> Unit)
 
     override fun onBindViewHolder(holder: ProgramViewHolder, position: Int) {
         val programType = getItem(position)
+
+        val color = programType.back_color.substring(1).toInt(16)
+        holder.itemView.setBackgroundColor(color)
         holder.itemView.setOnClickListener {
             clickListener(programType)
         }
@@ -49,3 +52,5 @@ class ProgramTypeAdapter(private val clickListener: (AppProgramType) -> Unit)
     }
 
 }
+
+

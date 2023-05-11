@@ -44,6 +44,9 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _userProgramSessions = MutableStateFlow<List<UserProgramSession>>(emptyList())
     val userProgramSessions: StateFlow<List<UserProgramSession>> = _userProgramSessions
 
+    private val _userProgramSessionsData = MutableStateFlow<List<UserProgramSessionData>>(emptyList())
+    val userProgramSessionsData: StateFlow<List<UserProgramSessionData>> = _userProgramSessionsData
+
 
     init {
         _networkConnectionOk.value = true
@@ -289,6 +292,26 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             }
         }
     }
+
+
+    private suspend fun getAllUserProgramSessionData() {
+        withContext(Dispatchers.IO) {
+            val result = repository.getALlUserProgramSessionDataAPI(activeUser.value!!.id)
+            if (result.isSuccess) {
+                Log.d("RESULT USER PROGRAM SESSIONS DATA", "SUCCESS")
+                val sessionsData = result.getOrNull()
+                for (sessionData in sessionsData!!) {
+                    repository.insertUserProgramSessionData(sessionData.asEntity())
+                }
+            } else {
+                Log.e(
+                    "ERROR USER PROGRAM SESSION DATA API",
+                    "Unable to fetch (or no session data for UserID)"
+                )
+            }
+        }
+    }
+
     fun addUserProgramSession(userProgramSession: UserProgramSession) {
         val updatedSessions = _userProgramSessions.value.toMutableList().apply {
             add(userProgramSession)

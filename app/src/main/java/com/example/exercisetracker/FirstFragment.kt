@@ -126,7 +126,7 @@ class FirstFragment : Fragment() {
 
 
     private fun navigateToNextFragment() {
-        findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        findNavController().navigate(R.id.action_FirstFragment_to_myStatisticsFragment)
     }
 
     override fun onDestroyView() {

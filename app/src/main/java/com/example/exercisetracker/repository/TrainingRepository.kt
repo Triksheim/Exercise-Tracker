@@ -75,6 +75,17 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
         return localDataSource.deleteUserProgramSessions()
     }
 
+    // UserProgramSessionData
+    suspend fun insertUserProgramSessionData(userProgramSessionData: UserProgramSessionData): Long {
+        return localDataSource.insertUserProgramSessionData(userProgramSessionData)
+    }
+    suspend fun getAllUserProgramSessionData(): Flow<List<UserProgramSessionData>> {
+        return localDataSource.getAllUserProgramSessionData()
+    }
+    suspend fun deleteAllUserProgramSessionData() {
+        return localDataSource.deleteAllUserProgramSessionData()
+    }
+
 
 
 
@@ -120,6 +131,11 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
     // UserProgramSession
     suspend fun getUserProgramSessionsAPI(userProgramId: Int): Result<List<UserProgramSessionJSON>> {
         return remoteDataSource.getUserProgramSessions(userProgramId)
+    }
+
+    // UserProgramSessionData
+    suspend fun getALlUserProgramSessionDataAPI(userId: Int): Result<List<UserProgramSessionDataJSON>> {
+        return remoteDataSource.getAllUserProgramSessionData(userId)
     }
 
 

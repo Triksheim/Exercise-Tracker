@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.exercisetracker.viewmodel.SharedViewModel"/>
+        <variable
+            name="userProgramSessionData"
+            type="com.example.exercisetracker.db.UserProgramSessionData"/>
+    </data>
+
+    <!-- Sette alle textviews i adapterklasse-filen (data fra 3(/4) tabeller! -->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/divider_top"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_margin="@dimen/side_margin"
+            android:background="?attr/dividerHorizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <!-- TextView to display user_program name -->
+        <TextView
+            android:id="@+id/textViewProgramName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/header_text"
+            app:layout_constraintTop_toBottomOf="@id/divider_top"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="User_program_name"/>
+
+        <!-- ImageView to display user_program_session_photo -->
+        <ImageView
+            android:id="@+id/imageViewPhoto"
+            android:layout_width="170dp"
+            android:layout_height="110dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewProgramName"
+            app:layout_constraintVertical_bias="0.5"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/img_outdoor_runner"/>
+
+        <!-- TextView to display user_program_session timespent -->
+        <TextView
+            android:id="@+id/textViewTimeSpent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_between_elements"
+            app:layout_constraintStart_toEndOf="@id/imageViewPhoto"
+            app:layout_constraintTop_toBottomOf="@id/textViewProgramName"
+            app:layout_constraintBottom_toTopOf="@id/textViewFloatData1"
+            tools:text="Tid: 1t 30min"/>
+
+        <!-- TextView to display user_program_session_data floatData1: DISTANSE-->
+        <TextView
+            android:id="@+id/textViewFloatData1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_between_elements"
+            app:layout_constraintStart_toEndOf="@id/imageViewPhoto"
+            app:layout_constraintTop_toBottomOf="@id/textViewTimeSpent"
+            app:layout_constraintBottom_toTopOf="@id/textViewFloatData2"
+            tools:text="Distanse: 5.2km"/>
+
+        <!-- TextView to display user_program_session_data floatData2: Høydemeter -->
+        <TextView
+            android:id="@+id/textViewFloatData2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_between_elements"
+            app:layout_constraintStart_toEndOf="@id/imageViewPhoto"
+            app:layout_constraintTop_toBottomOf="@id/textViewFloatData1"
+            app:layout_constraintBottom_toTopOf="@id/button_replay"
+            tools:text="Høydemeter: 125m"/>
+
+        <ImageButton
+            android:id="@+id/button_replay"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:src="@drawable/replay_img"
+            app:layout_constraintStart_toEndOf="@id/imageViewPhoto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewFloatData2"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewPhoto"/>
+
+        <!-- TextView to display user_program_session description -->
+        <TextView
+            android:id="@+id/textViewDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_between_elements"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewPhoto"
+            tools:text="User_program_session_description"/>
+
+        <!-- TextView to display user_program_session_data stringData1: Selvrapport -->
+        <TextView
+            android:id="@+id/textViewStringData1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_between_elements"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewDescription"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="Vurdering: God økt, fint vær og ny beste tid!"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
