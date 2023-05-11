@@ -40,5 +40,6 @@
     <string name="user_program_name">Program navn</string>
     <string name="app_program_type_description">Program beskrivelse</string>
     <string name="personal_description">Hvordan følte du deg?</string>
+    <string name="program_exercises">Programøvelser:</string>
 
 </resources>

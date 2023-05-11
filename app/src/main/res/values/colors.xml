@@ -8,4 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FFFF0000</color>
+
+    <!--Forslag.. kan endres. Abi: Lag tema!-->
+    <color name="bg_exercise">#FFE0ECDE</color>
+    <color name="bg_program">#FF6882A0</color>
+    <color name="bg_statistics">#FFCDE0C9</color>
 </resources>
