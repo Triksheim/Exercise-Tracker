@@ -43,7 +43,7 @@ class NewExerciseFragment: Fragment() {
 
 
         binding.buttonBack.setOnClickListener {
-            findNavController().navigate(R.id.action_newExerciseFragment_to_programDetailsFragment)
+            findNavController().navigate(R.id.action_newExerciseFragment_to_myExercisesFragment)
         }
 
         val buttonCamera = binding.buttonCamera
@@ -80,9 +80,9 @@ class NewExerciseFragment: Fragment() {
                         sharedViewModel.createUserExercise(newUserExercise)
                     }
 
-                    // Navigate to the ProgramDetailsFragment
+                    // Navigate to the MyExerciseFragment
                     val action = NewExerciseFragmentDirections
-                        .actionNewExerciseFragmentToProgramDetailsFragment(sharedViewModel.activeUser.value!!.id)
+                        .actionNewExerciseFragmentToMyExercisesFragment(sharedViewModel.activeUser.value!!.id)
                     findNavController().navigate(action)
                 }
             }

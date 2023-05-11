@@ -1,37 +1,39 @@
 package com.example.exercisetracker.adapters
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exercisetracker.databinding.ExerciseItemBinding
 import com.example.exercisetracker.R
 import com.example.exercisetracker.db.UserExercise
-import kotlinx.coroutines.NonDisposableHandle.parent
 
 
-class ExerciseItemAdapter(private val exerciseClickListener: ExerciseClickListener)
+class ExerciseItemAdapter(private val exerciseClickListener: ExerciseClickListener, private var addButton: Int)
     : ListAdapter<UserExercise, ExerciseItemAdapter.ExerciseViewHolder>(DiffCallback) {
 
     interface ExerciseClickListener {
-        fun onEditButtonClick(position: Int, exerciseId: Int)
-        fun onAddButtonClick(position: Int,exerciseId: Int)
+        fun onEditButtonClick(exerciseId: Int)
+        fun onAddButtonClick(exerciseId: Int)
     }
 
-    class ExerciseViewHolder(private val binding: ExerciseItemBinding, exerciseClickListener: ExerciseClickListener)
+    class ExerciseViewHolder(private val binding: ExerciseItemBinding, exerciseClickListener: ExerciseClickListener, addButton: Int)
         : RecyclerView.ViewHolder(binding.root){
-        fun bind(userExercise: UserExercise,  position: Int) {
+        fun bind(userExercise: UserExercise) {
             binding.exercise = userExercise
             binding.executePendingBindings()
         }
         init {
-            binding.buttonAdd.setOnClickListener{
-            exerciseClickListener.onAddButtonClick(position, binding.exercise!!.id)
+            if(addButton == 0) {
+                binding.buttonAdd.visibility = View.INVISIBLE
+            } else { binding.buttonAdd.setOnClickListener{
+                exerciseClickListener.onAddButtonClick(binding.exercise!!.id) }
             }
+
             binding.buttonEdit.setOnClickListener{
-                exerciseClickListener.onEditButtonClick(position, binding.exercise!!.id)
+                exerciseClickListener.onEditButtonClick(binding.exercise!!.id)
             }
         }
     }
@@ -41,13 +43,13 @@ class ExerciseItemAdapter(private val exerciseClickListener: ExerciseClickListen
         val layoutInflater = LayoutInflater.from(parent.context)
         return ExerciseViewHolder(
             ExerciseItemBinding.inflate(layoutInflater, parent, false),
-            exerciseClickListener
+            exerciseClickListener, addButton
         )
     }
 
     override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
         val userExercise = getItem(position)
-        holder.bind(userExercise, position)
+        holder.bind(userExercise)
 
         val color = ContextCompat.getColor(holder.itemView.context, R.color.bg_exercise)
         holder.itemView.setBackgroundColor(color)

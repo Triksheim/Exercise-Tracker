@@ -122,6 +122,9 @@
         android:name="com.example.exercisetracker.MyExercisesFragment"
         android:label="fragment_my_exercises"
         tools:layout="@layout/fragment_my_exercises" >
+        <argument
+            android:name="userId"
+            app:argType="integer" />
         <action
             android:id="@+id/action_myExercisesFragment_to_newExerciseFragment"
             app:destination="@id/newExerciseFragment" />

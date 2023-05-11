@@ -17,7 +17,6 @@ import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 
 class ProgramDetailsFragment: Fragment() {
 
-
     private var _binding: FragmentProgramDetailsBinding? = null
     private val sharedViewModel: SharedViewModel by activityViewModels() {
         SharedViewModelFactory(
@@ -25,6 +24,7 @@ class ProgramDetailsFragment: Fragment() {
         )
     }
     private val binding get() = _binding!!
+    private val addButton = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,18 +41,18 @@ class ProgramDetailsFragment: Fragment() {
         val programId = requireArguments().getInt("programId")
 
         val exerciseClickListener = object: ExerciseItemAdapter.ExerciseClickListener {
-            override fun onEditButtonClick(position: Int, exerciseId: Int) {
+            override fun onEditButtonClick(exerciseId: Int) {
                 Toast.makeText(context, "Exercise: Edit button clicked", Toast.LENGTH_SHORT).show()
                 // navigate to "new exercise" fragment, populate fields with data from chosen exercise
             }
 
-            override fun onAddButtonClick(position: Int, exerciseId: Int) {
+            override fun onAddButtonClick(exerciseId: Int) {
                 Toast.makeText(context, "Exercise: Add button clicked", Toast.LENGTH_SHORT).show()
                 // Add exercise to the current program.
             }
         }
 
-        val adapter = ExerciseItemAdapter(exerciseClickListener)
+        val adapter = ExerciseItemAdapter(exerciseClickListener, addButton)
         binding?.apply {
             lifecycleOwner = viewLifecycleOwner
             exerciseRecycler.adapter = adapter
