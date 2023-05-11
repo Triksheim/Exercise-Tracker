@@ -45,5 +45,6 @@
     <string name="registrer_new_program">Registrer nytt program</string>
     <string name="you_have_no_sessions">Du har ikke registrert noen treningsøkter enda. Kom i gang nå!</string>
     <string name="nav_my_sessions">Mine treningsøkter</string>
+    <string name="tv_no_exercises">Du har ikke registrert noen øvelser enda. Opprett ny øvelse for å komme i gang,</string>
 
 </resources>

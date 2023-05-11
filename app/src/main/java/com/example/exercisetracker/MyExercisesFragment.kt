@@ -54,8 +54,11 @@ class MyExercisesFragment: Fragment() {
 
         val adapter = ExerciseItemAdapter(exerciseClickListener, addButton)
 
-        lifecycleScope.launch {sharedViewModel.userExercises.collect {exercises ->
-            exercises.let {adapter.submitList(it)}
+        lifecycleScope.launchWhenStarted {
+            sharedViewModel.userExercises.collectLatest { userExercises -> adapter.submitList(userExercises)
+                if (userExercises.isEmpty()) {
+                    binding.tvNoExercises.visibility = View.VISIBLE
+                }else{ binding.tvNoExercises.visibility = View.INVISIBLE }
             }
         }
 
