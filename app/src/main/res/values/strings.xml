@@ -46,5 +46,8 @@
     <string name="you_have_no_sessions">Du har ikke registrert noen treningsøkter enda. Kom i gang nå!</string>
     <string name="nav_my_sessions">Mine treningsøkter</string>
     <string name="tv_no_exercises">Du har ikke registrert noen øvelser enda. Opprett ny øvelse for å komme i gang,</string>
+    <string name="tc_choose_exercises">Velg øvelser du vil legge til i programmet:</string>
+    <string name="bt_save_program">Lagre Program</string>
+    <string name="bt_my_programs">Mine treningsprogram</string>
 
 </resources>

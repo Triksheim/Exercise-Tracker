@@ -10,6 +10,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.exercisetracker.databinding.FragmentNewProgramBinding
+import com.example.exercisetracker.db.UserProgram
+import com.example.exercisetracker.db.UserProgramEntity
+import com.example.exercisetracker.network.UserProgramJSON
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
@@ -17,9 +20,12 @@ import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 class NewProgramFragment: Fragment() {
 
     private val navigationArgs: NewProgramFragmentArgs by navArgs()
-
     private var _binding: FragmentNewProgramBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var userProgram: UserProgramEntity
+    private var useTimer = 1
+
     private val sharedViewModel: SharedViewModel by activityViewModels() {
         SharedViewModelFactory(
             (activity?.application as TrainingApplication).trainingRepository
@@ -41,22 +47,48 @@ class NewProgramFragment: Fragment() {
             Log.e("NewProgramFragment", "Failed to receive programTypeId")
         }
 
-        // appProgramTypeId needed to create user_program, then pass user_program_id to
-        // program_detail_fragment?:
-        val appProgramTypeId = navigationArgs.programTypeId
-        binding.buttonBack.setOnClickListener {
-            findNavController().navigate(R.id.action_newProgramFragment_to_programTypeFragment)
-        }
+        binding.apply {
+            timerOptions.setOnCheckedChangeListener{ group, _ ->
+                useTimer = if (rbOptionYes.isChecked ) 1 else 0
+            }
 
-        binding.buttonSaveProgram.setOnClickListener{
-            findNavController().navigate(R.id.action_newProgramFragment_to_programDetailsFragment)
+            buttonBack.setOnClickListener {
+                findNavController().navigate(R.id.action_newProgramFragment_to_programTypeFragment)
+            }
+            buttonMyExercises.setOnClickListener {
+                findNavController().navigate(R.id.action_newProgramFragment_to_myExercisesFragment)
+            }
+            buttonSaveProgram.setOnClickListener {
+                if (sharedViewModel.isUserLoggedIn()) {
+                    addUserProgram()
+                }else {}
+            }
         }
-
-        binding.buttonMyExercises.setOnClickListener {
-            findNavController().navigate(R.id.action_newProgramFragment_to_myExercisesFragment)
-        }
-
     }
+
+    private fun addUserProgram() { // Holder det å sjekke innlogging ved hamburgermenyvalg + FrontPage? evt hamburger viser ingenting når ikke innlogget
+        if(isValidProgramEntry() || sharedViewModel.isUserLoggedIn()) {
+            userProgram = createUserProgram()
+            sharedViewModel.addUserProgram(userProgram)
+        }
+    }
+
+    private fun isValidProgramEntry() = sharedViewModel.isValidProgramEntry(
+        binding.programNameInput.text.toString(),
+        binding.programDescriptInput.text.toString()
+    )
+
+    private fun createUserProgram(): UserProgramEntity {
+        return UserProgramEntity(
+        id = 0,
+        user_id = sharedViewModel.activeUser.value!!.id,
+        app_program_type_id = navigationArgs.programTypeId,
+        name = binding.programNameInput.text.toString(),
+        description = binding.programDescriptInput.text.toString(),
+        use_timing = useTimer,
+        icon = "@drawable/runner")
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

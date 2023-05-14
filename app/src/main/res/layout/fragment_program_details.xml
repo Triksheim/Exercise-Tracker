@@ -7,9 +7,6 @@
 
     <data>
         <variable
-            name="viewModel"
-            type="com.example.exercisetracker.viewmodel.SharedViewModel"/>
-        <variable
             name="program"
             type="com.example.exercisetracker.db.Program" />
         <variable
@@ -77,26 +74,19 @@
             app:layout_constraintTop_toBottomOf="@id/program_type_name"/>
 
         <!-- Denne recycler view viser kun text med navn på øvelse som er lagt til. Må oppdateres underveis når øvelser legges til-->
-        <ScrollView
-            android:id="@+id/scrollview_upper"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/exercise_name_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/side_margin"
+            android:padding="6dp"
+            android:clipToPadding="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_program_exercises">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_program_exercises"
+            tools:itemCount="6"
+            tools:listItem="@layout/exercise_name_item"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/exercise_name_recycler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="6dp"
-                android:clipToPadding="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:itemCount="6"
-                tools:listItem="@layout/exercise_name_item"/>
-
-        </ScrollView>
 
         <View
             android:id="@+id/divider_bottom"
@@ -106,7 +96,7 @@
             android:background="?attr/dividerHorizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/scrollview_upper"/>
+            app:layout_constraintTop_toBottomOf="@id/exercise_name_recycler"/>
 
         <TextView
             android:id="@+id/no_exercise_message"
@@ -119,6 +109,14 @@
             app:layout_constraintTop_toBottomOf="@id/divider_bottom"
             />
 
+        <TextView
+            android:id="@+id/tv_choose_exercises"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tc_choose_exercises"
+            android:layout_marginTop="@dimen/margin_between_elements"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_bottom" />
 
         <!--Denne recycler viser liste over øvelser, med ikon, navn og legg-til knapp-->
         <!--Før bruker har lagret øvelser er den invisible-->
@@ -127,15 +125,14 @@
             android:id="@+id/exercise_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
             android:padding="6dp"
             android:clipToPadding="false"
             android:scrollbars="vertical"
             android:layout_marginTop="@dimen/margin_between_elements"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider_bottom"
-            tools:itemCount="6"
+            app:layout_constraintTop_toBottomOf="@id/tv_choose_exercises"
+            tools:itemCount="8"
             tools:listItem="@layout/exercise_item"/>
 
 
@@ -145,7 +142,7 @@
             android:layout_height="wrap_content"
             android:text="@string/button_back"
             android:layout_marginBottom="@dimen/side_margin"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/exercise_recycler"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/button_add_exercises"
             />
@@ -156,7 +153,7 @@
             android:layout_height="wrap_content"
             android:text="@string/create_new_exercise"
             android:layout_marginBottom="@dimen/side_margin"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/exercise_recycler"
             app:layout_constraintEnd_toStartOf="@id/button_back"
             app:layout_constraintStart_toStartOf="parent"
             />

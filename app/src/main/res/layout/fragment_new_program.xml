@@ -109,14 +109,14 @@
             app:layout_constraintTop_toBottomOf="@id/tv_use_timer">
 
             <RadioButton
-                android:id="@+id/option_yes"
+                android:id="@+id/rb_option_yes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/yes"
                 android:layout_marginEnd="@dimen/margin_between_elements"/>
 
             <RadioButton
-                android:id="@+id/option_no"
+                android:id="@+id/rb_option_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/no"
@@ -128,7 +128,7 @@
             android:id="@+id/button_save_program"
             android:layout_width="170dp"
             android:layout_height="wrap_content"
-            android:text="Lagre Program"
+            android:text="@string/bt_save_program"
             android:layout_marginBottom="@dimen/side_margin"
             app:layout_constraintTop_toBottomOf="@id/timer_options"
             app:layout_constraintStart_toStartOf="parent"
@@ -150,7 +150,7 @@
             android:id="@+id/button_my_exercises"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My Exercises"
+            android:text="@string/bt_my_programs"
             android:layout_marginTop="@dimen/side_margin"
             app:layout_constraintTop_toBottomOf="@id/button_save_program"
             app:layout_constraintStart_toStartOf="parent"

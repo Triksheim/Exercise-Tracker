@@ -83,6 +83,9 @@
         android:id="@+id/programDetailsFragment"
         android:name="com.example.exercisetracker.ProgramDetailsFragment"
         android:label="ProgramDetailsFragment" >
+        <argument
+            android:name="userProgramId"
+            app:argType="integer"/>
         <action
             android:id="@+id/action_programDetailsFragment_to_newProgramFragment"
             app:destination="@id/newProgramFragment"
@@ -91,7 +94,9 @@
         <action
             android:id="@+id/action_programDetailsFragment_to_newExerciseFragment"
             app:destination="@id/newExerciseFragment" />
+
     </fragment>
+
     <fragment
         android:id="@+id/newExerciseFragment"
         android:name="com.example.exercisetracker.NewExerciseFragment"
@@ -117,6 +122,7 @@
                 app:argType="integer" />
         </action>
     </fragment>
+
     <fragment
         android:id="@+id/myExercisesFragment"
         android:name="com.example.exercisetracker.MyExercisesFragment"
@@ -135,6 +141,7 @@
             android:id="@+id/action_myExercisesFragment_to_programSessionFragment"
             app:destination="@id/programSessionFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/myProgramsFragment"
         android:name="com.example.exercisetracker.MyProgramsFragment"
@@ -155,6 +162,7 @@
                 app:argType="integer" />
         </action>
     </fragment>
+
     <fragment
         android:id="@+id/programSessionFragment"
         android:name="com.example.exercisetracker.ProgramSessionFragment"
@@ -166,6 +174,7 @@
             app:popUpTo="@id/myExercisesFragment"
             app:popUpToInclusive="true"/>
     </fragment>
+
     <fragment
         android:id="@+id/myStatisticsFragment"
         android:name="com.example.exercisetracker.MyStatisticsFragment"
@@ -175,4 +184,5 @@
             android:id="@+id/action_myStatisticsFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
     </fragment>
+
 </navigation>
