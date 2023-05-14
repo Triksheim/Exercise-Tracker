@@ -9,21 +9,21 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
 ) {
     // Local data source methods
     // User
-    suspend fun getAllUsers(): Flow<List<User>> {
+    suspend fun getAllUsers(): Flow<List<UserEntity>> {
         return localDataSource.getAllUsers()
     }
-    suspend fun insertUser(user: User): Long {
-        return localDataSource.insertUser(user)
+    suspend fun insertUser(userEntity: UserEntity): Long {
+        return localDataSource.insertUser(userEntity)
     }
     suspend fun deleteAllUsers() {
         return localDataSource.deleteAllUsers()
     }
 
     // ActiveUser
-    suspend fun addActiveUser(activeUser: ActiveUser) {
-        return localDataSource.addActiveUser(activeUser)
+    suspend fun addActiveUser(activeUserEntity: ActiveUserEntity) {
+        return localDataSource.addActiveUser(activeUserEntity)
     }
-    suspend fun getActiveUser(): Result<ActiveUser> {
+    suspend fun getActiveUser(): Result<ActiveUserEntity> {
         return localDataSource.getActiveUser()
     }
     suspend fun removeActiveUser() {
@@ -31,10 +31,10 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
     }
 
     // ProgramType
-    suspend fun insertProgramType(appProgramType: AppProgramType): Long {
-        return localDataSource.insertProgramType(appProgramType)
+    suspend fun insertProgramType(appProgramTypeEntity: AppProgramTypeEntity): Long {
+        return localDataSource.insertProgramType(appProgramTypeEntity)
     }
-    suspend fun getProgramTypes(): Flow<List<AppProgramType>> {
+    suspend fun getProgramTypes(): Flow<List<AppProgramTypeEntity>> {
         return localDataSource.getProgramTypes()
     }
     suspend fun deleteProgramTypes() {
@@ -43,10 +43,10 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
 
 
     // UserProgram
-    suspend fun insertUserProgram(userProgram: UserProgram ): Long {
-        return localDataSource.insertUserProgram(userProgram)
+    suspend fun insertUserProgram(userProgramEntity: UserProgramEntity ): Long {
+        return localDataSource.insertUserProgram(userProgramEntity)
     }
-    suspend fun getUserPrograms(): Flow<List<UserProgram>> {
+    suspend fun getUserPrograms(): Flow<List<UserProgramEntity>> {
         return localDataSource.getUserPrograms()
     }
     suspend fun deleteUserPrograms() {
@@ -54,10 +54,10 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
     }
 
     // UserExercise
-    suspend fun insertUserExercise(userExercise: UserExercise): Long {
-        return localDataSource.insertUserExercise(userExercise)
+    suspend fun insertUserExercise(userExerciseEntity: UserExerciseEntity): Long {
+        return localDataSource.insertUserExercise(userExerciseEntity)
     }
-    suspend fun getUserExercises():Flow<List<UserExercise>> {
+    suspend fun getUserExercises():Flow<List<UserExerciseEntity>> {
         return localDataSource.getUserExercises()
     }
     suspend fun deleteUserExercises() {
@@ -65,10 +65,10 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
     }
 
     // UserProgramSession
-    suspend fun insertUserProgramSession(userProgramSession: UserProgramSession): Long {
-        return localDataSource.insertUserProgramSession(userProgramSession)
+    suspend fun insertUserProgramSession(userProgramSessionEntity: UserProgramSessionEntity): Long {
+        return localDataSource.insertUserProgramSession(userProgramSessionEntity)
     }
-    suspend fun getUserProgramSessions(): Flow<List<UserProgramSession>> {
+    suspend fun getUserProgramSessions(): Flow<List<UserProgramSessionEntity>> {
         return localDataSource.getUserProgramSessions()
     }
     suspend fun deleteUserProgramSessions() {
@@ -76,10 +76,10 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
     }
 
     // UserProgramSessionData
-    suspend fun insertUserProgramSessionData(userProgramSessionData: UserProgramSessionData): Long {
-        return localDataSource.insertUserProgramSessionData(userProgramSessionData)
+    suspend fun insertUserProgramSessionData(userProgramSessionDataEntity: UserProgramSessionDataEntity): Long {
+        return localDataSource.insertUserProgramSessionData(userProgramSessionDataEntity)
     }
-    suspend fun getAllUserProgramSessionData(): Flow<List<UserProgramSessionData>> {
+    suspend fun getAllUserProgramSessionData(): Flow<List<UserProgramSessionDataEntity>> {
         return localDataSource.getAllUserProgramSessionData()
     }
     suspend fun deleteAllUserProgramSessionData() {
@@ -100,7 +100,7 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
     suspend fun getUserAPI(id: Int): Result<UserJSON> {
         return remoteDataSource.getUser(id)
     }
-    suspend fun createUserAPI(user: User): Result<UserJSON> {
+    suspend fun createUserAPI(user: UserEntity): Result<UserJSON> {
         return remoteDataSource.createUser(user)
     }
 
@@ -110,7 +110,7 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
     }
 
     // UserProgram
-    suspend fun createUserProgramAPI(userProgram: UserProgram): Result<UserProgramJSON> {
+    suspend fun createUserProgramAPI(userProgram: UserProgramEntity): Result<UserProgramJSON> {
         return remoteDataSource.createUserProgram(userProgram)
     }
     suspend fun getUserProgramsAPI(userId: Int): Result<List<UserProgramJSON>> {
@@ -121,7 +121,7 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
     }
 
     // UserExercise
-    suspend fun createUserExerciseAPI(userExercise: UserExercise): Result<UserExerciseJSON> {
+    suspend fun createUserExerciseAPI(userExercise: UserExerciseEntity): Result<UserExerciseJSON> {
         return remoteDataSource.createUserExercise(userExercise)
     }
     suspend fun getUserExercisesAPI(userId: Int): Result<List<UserExerciseJSON>> {

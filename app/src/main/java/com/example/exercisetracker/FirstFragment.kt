@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.exercisetracker.databinding.FragmentFirstBinding
-import com.example.exercisetracker.db.User
+import com.example.exercisetracker.db.UserEntity
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
@@ -92,8 +92,8 @@ class FirstFragment : Fragment() {
             if (name == "" || birthYear == 0 || email == "" || phone == "") {
                 Toast.makeText(context, "Vennligst utfyll alle felter", Toast.LENGTH_SHORT).show()
             } else {
-                val user = User(0, phone, email, name, birthYear)
-                sharedViewModel.createUser(user)
+                val userEntity = UserEntity(0, phone, email, name, birthYear)
+                sharedViewModel.createUser(userEntity)
             }
         }
 

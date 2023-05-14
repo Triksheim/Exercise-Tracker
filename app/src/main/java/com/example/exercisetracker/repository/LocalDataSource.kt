@@ -5,11 +5,11 @@ import kotlinx.coroutines.flow.Flow
 
 class LocalDataSource internal constructor (private val trainingDao: TrainingDao) {
     // User
-    fun getAllUsers(): Flow<List<User>> {
+    fun getAllUsers(): Flow<List<UserEntity>> {
         return trainingDao.getAllUsers()
     }
-    suspend fun insertUser(user: User): Long {
-        return trainingDao.insertUser(user)
+    suspend fun insertUser(userEntity: UserEntity): Long {
+        return trainingDao.insertUser(userEntity)
     }
     suspend fun deleteAllUsers() {
         return trainingDao.deleteAllUsers()
@@ -17,10 +17,10 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
     }
 
     // ActiveUser
-    suspend fun addActiveUser(activeUser: ActiveUser) {
-        return trainingDao.addActiveUser(activeUser)
+    suspend fun addActiveUser(activeUserEntity: ActiveUserEntity) {
+        return trainingDao.addActiveUser(activeUserEntity)
     }
-    suspend fun getActiveUser(): Result<ActiveUser> {
+    suspend fun getActiveUser(): Result<ActiveUserEntity> {
         return try {
             val activeUser = trainingDao.getActiveUser()
             Result.success(activeUser)
@@ -33,10 +33,10 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
     }
 
     // ProgramTypes
-    suspend fun insertProgramType(appProgramType: AppProgramType): Long {
-        return trainingDao.insertAppProgramTypes(appProgramType)
+    suspend fun insertProgramType(appProgramTypeEntity: AppProgramTypeEntity): Long {
+        return trainingDao.insertAppProgramTypes(appProgramTypeEntity)
     }
-    fun getProgramTypes(): Flow<List<AppProgramType>> {
+    fun getProgramTypes(): Flow<List<AppProgramTypeEntity>> {
         return trainingDao.getAppProgramTypes()
     }
     suspend fun deleteProgramTypes() {
@@ -44,13 +44,13 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
     }
 
     // UserProgram
-    suspend fun insertUserProgram(userProgram: UserProgram): Long {
-        return trainingDao.insertUserProgram(userProgram)
+    suspend fun insertUserProgram(userProgramEntity: UserProgramEntity): Long {
+        return trainingDao.insertUserProgram(userProgramEntity)
     }
-    suspend fun getUserProgram(id: Int): Flow<UserProgram> {
+    suspend fun getUserProgram(id: Int): Flow<UserProgramEntity> {
         return trainingDao.getUserProgramById(id)
     }
-    suspend fun getUserPrograms(): Flow<List<UserProgram>> {
+    suspend fun getUserPrograms(): Flow<List<UserProgramEntity>> {
         return trainingDao.getAllUserPrograms()
     }
     suspend fun deleteUserPrograms() {
@@ -58,10 +58,10 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
     }
 
     // UserExercise
-    suspend fun insertUserExercise(userExercise: UserExercise): Long {
-        return trainingDao.insertUserExercise(userExercise)
+    suspend fun insertUserExercise(userExerciseEntity: UserExerciseEntity): Long {
+        return trainingDao.insertUserExercise(userExerciseEntity)
     }
-    suspend fun getUserExercises(): Flow<List<UserExercise>> {
+    suspend fun getUserExercises(): Flow<List<UserExerciseEntity>> {
         return trainingDao.getAllUserExercises()
     }
     suspend fun deleteUserExercises() {
@@ -69,10 +69,10 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
     }
 
     // UserProgramSession
-    suspend fun insertUserProgramSession(userProgramSession: UserProgramSession): Long {
-        return trainingDao.insertUserProgramSession(userProgramSession)
+    suspend fun insertUserProgramSession(userProgramSessionEntity: UserProgramSessionEntity): Long {
+        return trainingDao.insertUserProgramSession(userProgramSessionEntity)
     }
-    suspend fun getUserProgramSessions(): Flow<List<UserProgramSession>> {
+    suspend fun getUserProgramSessions(): Flow<List<UserProgramSessionEntity>> {
         return trainingDao.getAllUserProgramSessions()
     }
     suspend fun deleteUserProgramSessions() {
@@ -80,10 +80,10 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
     }
 
     // UserProgramSessionData
-    suspend fun insertUserProgramSessionData(userProgramSessionData: UserProgramSessionData): Long {
-        return trainingDao.insertUserProgramSessionData(userProgramSessionData)
+    suspend fun insertUserProgramSessionData(userProgramSessionDataEntity: UserProgramSessionDataEntity): Long {
+        return trainingDao.insertUserProgramSessionData(userProgramSessionDataEntity)
     }
-    suspend fun getAllUserProgramSessionData(): Flow<List<UserProgramSessionData>> {
+    suspend fun getAllUserProgramSessionData(): Flow<List<UserProgramSessionDataEntity>> {
         return trainingDao.getAllUserProgramSessionData()
     }
     suspend fun deleteAllUserProgramSessionData() {

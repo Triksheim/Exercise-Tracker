@@ -14,6 +14,7 @@ import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.Fragment
 import com.example.exercisetracker.db.UserProgramSession
+import com.example.exercisetracker.db.UserProgramSessionEntity
 import com.example.exercisetracker.repository.TrainingApplication
 import java.text.SimpleDateFormat
 import java.util.*

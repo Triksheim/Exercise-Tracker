@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.exercisetracker.R
 import com.example.exercisetracker.databinding.StatisticsItemBinding
 import com.example.exercisetracker.db.UserProgramSessionData
+import com.example.exercisetracker.db.UserProgramSessionDataEntity
 
 class StatisticsItemAdapter (private val replayClickListener: ReplayClickListener)
     : ListAdapter<UserProgramSessionData, StatisticsItemAdapter.StatisticsViewHolder>(DiffCallback) {

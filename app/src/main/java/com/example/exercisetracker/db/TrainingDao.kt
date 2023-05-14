@@ -9,10 +9,10 @@ interface TrainingDao {
 
     // ActiveUser
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addActiveUser(activeUser: ActiveUser)
+    suspend fun addActiveUser(activeUserEntity: ActiveUserEntity)
 
     @Query("SELECT * FROM active_user")
-    suspend fun getActiveUser(): ActiveUser
+    suspend fun getActiveUser(): ActiveUserEntity
 
     @Query("DELETE FROM active_user")
     suspend fun removeActiveUser()
@@ -21,14 +21,14 @@ interface TrainingDao {
 
     // AppProgramType
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertAppProgramTypes(appProgramTypes: AppProgramType): Long
+    suspend fun insertAppProgramTypes(appProgramTypes: AppProgramTypeEntity): Long
 
     @Query("SELECT * FROM app_program_type")
-    fun getAppProgramTypes(): Flow<List<AppProgramType>>
+    fun getAppProgramTypes(): Flow<List<AppProgramTypeEntity>>
 
 
     @Query("SELECT * FROM app_program_type WHERE id = :id")
-    fun getAppProgramTypesById(id: Int): Flow<AppProgramType>
+    fun getAppProgramTypesById(id: Int): Flow<AppProgramTypeEntity>
 
     @Query("DELETE FROM app_program_type")
     suspend fun deleteProgramTypes()
@@ -36,13 +36,13 @@ interface TrainingDao {
 
     // User
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertUser(user: User): Long
+    suspend fun insertUser(userEntity: UserEntity): Long
 
     @Query("SELECT * FROM user")
-    fun getAllUsers(): Flow<List<User>>
+    fun getAllUsers(): Flow<List<UserEntity>>
 
     @Query("SELECT * FROM user WHERE id = :id")
-    fun getUserById(id: Int): Flow<User>
+    fun getUserById(id: Int): Flow<UserEntity>
 
     @Query("DELETE FROM user")
     suspend fun deleteAllUsers()
@@ -50,13 +50,13 @@ interface TrainingDao {
 
     // UserProgram
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertUserProgram(userProgram: UserProgram): Long
+    suspend fun insertUserProgram(userProgramEntity: UserProgramEntity): Long
 
     @Query("SELECT * FROM user_program")
-    fun getAllUserPrograms(): Flow<List<UserProgram>>
+    fun getAllUserPrograms(): Flow<List<UserProgramEntity>>
 
     @Query("SELECT * FROM user_program WHERE id = :id")
-    fun getUserProgramById(id: Int): Flow<UserProgram>
+    fun getUserProgramById(id: Int): Flow<UserProgramEntity>
 
     @Query("DELETE FROM user_program")
     suspend fun deleteAllUserPrograms()
@@ -64,26 +64,26 @@ interface TrainingDao {
 
     // UserProgramExercise
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertUserProgramExercise(userProgramExercise: UserProgramExercise): Long
+    fun insertUserProgramExercise(userProgramExerciseEntity: UserProgramExerciseEntity): Long
 
     @Query("SELECT * FROM user_program_exercise")
-    fun getAllUserProgramExercises(): Flow<List<UserProgramExercise>>
+    fun getAllUserProgramExercises(): Flow<List<UserProgramExerciseEntity>>
 
     @Query("SELECT * FROM user_program_exercise WHERE id = :id")
-    fun getUserProgramExerciseById(id: Int): Flow<UserProgramExercise>
+    fun getUserProgramExerciseById(id: Int): Flow<UserProgramExerciseEntity>
 
 
 
 
     // UserExercise
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertUserExercise(userExercise: UserExercise): Long
+    suspend fun insertUserExercise(userExerciseEntity: UserExerciseEntity): Long
 
     @Query("SELECT * FROM user_exercise")
-    fun getAllUserExercises(): Flow<List<UserExercise>>
+    fun getAllUserExercises(): Flow<List<UserExerciseEntity>>
 
     @Query("SELECT * FROM user_exercise WHERE id = :id")
-    fun getUserExerciseById(id: Int): Flow<UserExercise>
+    fun getUserExerciseById(id: Int): Flow<UserExerciseEntity>
 
     @Query("DELETE FROM user_exercise")
     suspend fun deleteAllUserExercises()
@@ -91,29 +91,29 @@ interface TrainingDao {
 
     // UserProgramSession
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertUserProgramSession(userProgramSession: UserProgramSession): Long
+    suspend fun insertUserProgramSession(userProgramSessionEntity: UserProgramSessionEntity): Long
 
     @Query("SELECT * FROM user_program_session")
-    fun getAllUserProgramSessions(): Flow<List<UserProgramSession>>
+    fun getAllUserProgramSessions(): Flow<List<UserProgramSessionEntity>>
 
     @Query("SELECT * FROM user_program_session WHERE id = :id")
-    fun getUserProgramSessionById(id: Int): Flow<UserProgramSession>
+    fun getUserProgramSessionById(id: Int): Flow<UserProgramSessionEntity>
 
     @Query("DELETE FROM user_program_session")
     suspend fun deleteAllUserProgramSessions()
 
     // UserProgramSessionData
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertUserProgramSessionData(userProgramSessionData: UserProgramSessionData): Long
+    suspend fun insertUserProgramSessionData(userProgramSessionDataEntity: UserProgramSessionDataEntity): Long
 
     @Query("SELECT * FROM user_program_session_data")
-    fun getAllUserProgramSessionData(): Flow<List<UserProgramSessionData>>
+    fun getAllUserProgramSessionData(): Flow<List<UserProgramSessionDataEntity>>
 
     @Query("DELETE FROM user_program_session_data")
     suspend fun deleteAllUserProgramSessionData()
 
     @Query("SELECT * FROM user_program_session_data WHERE id = :id")
-    fun getUserProgramSessionDataById(id: Int): Flow<UserProgramSessionData>
+    fun getUserProgramSessionDataById(id: Int): Flow<UserProgramSessionDataEntity>
 
 
 
@@ -121,12 +121,12 @@ interface TrainingDao {
 
     // UserProgramSessionPhoto
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertUserProgramSessionPhoto(userProgramSessionPhoto: UserProgramSessionPhoto): Long
+    suspend fun insertUserProgramSessionPhoto(userProgramSessionPhotoEntity: UserProgramSessionPhotoEntity): Long
 
     @Query("SELECT * FROM user_program_session_photo")
-    fun getAllUserProgramSessionPhotos(): Flow<List<UserProgramSessionPhoto>>
+    fun getAllUserProgramSessionPhotos(): Flow<List<UserProgramSessionPhotoEntity>>
 
     @Query("SELECT * FROM user_program_session_photo WHERE id = :id")
-    fun getUserProgramSessionPhotoById(id: Int): Flow<UserProgramSessionPhoto>
+    fun getUserProgramSessionPhotoById(id: Int): Flow<UserProgramSessionPhotoEntity>
 }
 

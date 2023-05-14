@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.exercisetracker.db.*
 import com.example.exercisetracker.network.UserJSON
+import com.example.exercisetracker.utils.asDomainModel
 import com.example.exercisetracker.utils.asEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -20,8 +21,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _networkConnectionOk = MutableLiveData<Boolean>()
     val networkConnectionOk: LiveData<Boolean> = _networkConnectionOk
 
-    private val _activeUser = MutableLiveData<ActiveUser>()
-    val activeUser: LiveData<ActiveUser> = _activeUser
+    private val _activeUser = MutableLiveData<ActiveUserEntity>()
+    val activeUser: LiveData<ActiveUserEntity> = _activeUser
 
     private val _createUserStatus = MutableLiveData<Result<UserJSON>>()
     val createUserStatus: LiveData<Result<UserJSON>> = _createUserStatus
@@ -50,7 +51,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
     init {
         _networkConnectionOk.value = true
-        _activeUser.value = ActiveUser(0,"0","0","0", 0)
+        _activeUser.value = ActiveUserEntity(0,"0","0","0", 0)
         viewModelScope.launch {
             restart()
         }
@@ -66,6 +67,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         viewModelScope.launch {
             repository.getAllUsers()
                 .flowOn(Dispatchers.IO)
+                .map { usersList -> usersList.map { it.asDomainModel() } }
                 .collect { usersList ->
                     _users.value = usersList
                 }
@@ -75,6 +77,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         viewModelScope.launch {
             repository.getProgramTypes()
                 .flowOn(Dispatchers.IO)
+                .map { appProgramTypesList -> appProgramTypesList.map { it.asDomainModel() } }
                 .collect { appProgramTypesList ->
                     _programTypes.value = appProgramTypesList
                 }
@@ -84,6 +87,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         viewModelScope.launch {
             repository.getUserPrograms()
                 .flowOn(Dispatchers.IO)
+                .map { userProgramsList -> userProgramsList.map { it.asDomainModel() } }
                 .collect { userProgramsList ->
                     _userPrograms.value = userProgramsList
                 }
@@ -93,6 +97,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         viewModelScope.launch {
             repository.getUserExercises()
                 .flowOn(Dispatchers.IO)
+                .map { userExerciseList -> userExerciseList.map { it.asDomainModel() } }
                 .collect { userExerciseList ->
                     _userExercises.value = userExerciseList
                 }
@@ -102,6 +107,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         viewModelScope.launch {
             repository.getUserProgramSessions()
                 .flowOn(Dispatchers.IO)
+                .map { sessionsList -> sessionsList.map { it.asDomainModel() } }
                 .collect { sessionsList ->
                     _allSessions.value = sessionsList
                 }
@@ -110,13 +116,13 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
 
 
-    fun createUser(user: User)   {
+    fun createUser(user: UserEntity)   {
         viewModelScope.launch {
             val result = repository.createUserAPI(user)
             if (result.isSuccess) {
                 _networkConnectionOk.value = true
                 val newUser = result.getOrNull()
-                setActiveUser(newUser!!.asEntity())
+                setActiveUser(newUser!!.asEntity().asDomainModel())
                 restart()
             }
             else {
@@ -147,17 +153,17 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
     private suspend fun setActiveUser(user: User) {
         withContext(Dispatchers.IO) {
-            val activeUser = ActiveUser(user.id, user.phone, user.email, user.name, user.birth_year)
-            _activeUser.postValue(activeUser)
+            val activeUserEntity = ActiveUserEntity(user.id, user.phone, user.email, user.name, user.birth_year)
+            _activeUser.postValue(activeUserEntity)
             repository.removeActiveUser()
-            repository.addActiveUser(activeUser)
+            repository.addActiveUser(activeUserEntity)
             Log.d("ACTIVE USER SET", "ID: ${user.id}")
         }
     }
 
     fun logout() {
         viewModelScope.launch {
-            _activeUser.value = ActiveUser(0,"0","0","0", 0)
+            _activeUser.value = ActiveUserEntity(0,"0","0","0", 0)
             _createUserStatus.value = Result.success(UserJSON(0,"0","0","0",0))
             clearDb()
             restart()
@@ -318,7 +324,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
         _userProgramSessions.value = updatedSessions
     }
-    suspend fun createUserExercise(userExercise: UserExercise) {
+
+    suspend fun createUserExercise(userExercise: UserExerciseEntity) {
         viewModelScope.launch {
             val result = repository.createUserExerciseAPI(userExercise)
             if (result.isSuccess) {

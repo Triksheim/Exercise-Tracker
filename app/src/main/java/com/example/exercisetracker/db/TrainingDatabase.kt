@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 
 @Entity(tableName = "active_user")
-data class ActiveUser(
+data class ActiveUserEntity(
     @PrimaryKey()
     @ColumnInfo(name = "id", ) val id: Int,
     @ColumnInfo(name = "phone") val phone: String,
@@ -16,7 +16,7 @@ data class ActiveUser(
 
 
 @Entity(tableName = "app_program_type")
-data class AppProgramType(
+data class AppProgramTypeEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "description") val description: String,
     @ColumnInfo(name = "icon") val icon: String,
@@ -24,7 +24,7 @@ data class AppProgramType(
 )
 
 @Entity(tableName = "user")
-data class User(
+data class UserEntity(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id", ) val id: Int,
     @ColumnInfo(name = "phone") val phone: String,
@@ -35,7 +35,7 @@ data class User(
 )
 
 @Entity(tableName = "user_program")
-data class UserProgram(
+data class UserProgramEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "user_id") val user_id: Int,
     @ColumnInfo(name = "app_program_type_id") val app_program_type_id: Int,
@@ -46,14 +46,14 @@ data class UserProgram(
 )
 
 @Entity(tableName = "user_program_exercise")
-data class  UserProgramExercise(
+data class  UserProgramExerciseEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "user_program_id") val user_program_id: Int,
     @ColumnInfo(name = "user_exercise_id") val user_exercise_id: Int
 )
 
 @Entity(tableName = "user_exercise")
-data class UserExercise(
+data class UserExerciseEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "user_id") val user_id: Int,
     @ColumnInfo(name = "name") val name: String,
@@ -64,7 +64,7 @@ data class UserExercise(
 )
 
 @Entity(tableName = "user_program_session")
-data class UserProgramSession(
+data class UserProgramSessionEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "user_program_id") val user_program_id: Int,
     @ColumnInfo(name = "description") var description: String,
@@ -73,7 +73,7 @@ data class UserProgramSession(
 )
 
 @Entity(tableName = "user_program_session_data")
-data class  UserProgramSessionData(
+data class  UserProgramSessionDataEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "user_program_session_id") val user_program_session_id: Int,
     @ColumnInfo(name = "floatData1") val floatData1: Float,
@@ -83,7 +83,7 @@ data class  UserProgramSessionData(
 )
 
 @Entity(tableName = "user_program_session_photo")
-data class UserProgramSessionPhoto(
+data class UserProgramSessionPhotoEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "user_program_session_id") val user_program_session_id: Int,
     @ColumnInfo(name = "photo_url") val photo_url: String

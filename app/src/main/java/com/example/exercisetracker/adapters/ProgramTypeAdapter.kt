@@ -2,12 +2,12 @@ package com.example.exercisetracker.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.compose.ui.layout.Layout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exercisetracker.databinding.ProgramTypeItemBinding
 import com.example.exercisetracker.db.AppProgramType
+import com.example.exercisetracker.db.AppProgramTypeEntity
 
 class ProgramTypeAdapter(private val clickListener: (AppProgramType) -> Unit)
     : ListAdapter<AppProgramType, ProgramTypeAdapter.ProgramViewHolder>(DiffCallback) {

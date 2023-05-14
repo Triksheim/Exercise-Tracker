@@ -14,7 +14,7 @@
             type="com.example.exercisetracker.db.Program" />
         <variable
             name="programType"
-            type="com.example.exercisetracker.db.AppProgramType" />
+            type="com.example.exercisetracker.db.AppProgramTypeEntity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

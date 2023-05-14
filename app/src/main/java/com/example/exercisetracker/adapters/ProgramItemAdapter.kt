@@ -4,12 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.example.exercisetracker.databinding.ExerciseItemBinding
-import com.example.exercisetracker.db.Program
-import com.example.exercisetracker.db.UserExercise
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exercisetracker.databinding.ProgramItemBinding
 import com.example.exercisetracker.db.UserProgram
+import com.example.exercisetracker.db.UserProgramEntity
 
 
 class ProgramItemAdapter(

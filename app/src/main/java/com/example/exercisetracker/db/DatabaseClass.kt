@@ -6,15 +6,15 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [
-        ActiveUser::class,
-        AppProgramType::class,
-        User::class,
-        UserProgram::class,
-        UserProgramExercise::class,
-        UserExercise::class,
-        UserProgramSession::class,
-        UserProgramSessionData::class,
-        UserProgramSessionPhoto::class,
+        ActiveUserEntity::class,
+        AppProgramTypeEntity::class,
+        UserEntity::class,
+        UserProgramEntity::class,
+        UserProgramExerciseEntity::class,
+        UserExerciseEntity::class,
+        UserProgramSessionEntity::class,
+        UserProgramSessionDataEntity::class,
+        UserProgramSessionPhotoEntity::class,
     ],
     version = 6,
     exportSchema = false

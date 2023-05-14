@@ -4,6 +4,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exercisetracker.adapters.ProgramTypeAdapter
 import com.example.exercisetracker.db.AppProgramType
+import com.example.exercisetracker.db.AppProgramTypeEntity
 
 /**
  * Updates the data shown in the [RecyclerView].
