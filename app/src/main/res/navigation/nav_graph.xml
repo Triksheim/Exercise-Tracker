@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_SecondFragment_to_programTypeFragment"
             app:destination="@id/programTypeFragment" />
+        <action
+            android:id="@+id/action_SecondFragment_to_newProgramFragment"
+            app:destination="@id/newProgramFragment" />
     </fragment>
 
     <fragment
@@ -63,8 +66,10 @@
             android:name="programTypeId"
             app:argType="integer"/>
         <argument
-            android:name="activityLocation"
-            app:argType="string"/>
+            android:name="programId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+
         <action
             android:id="@+id/action_newProgramFragment_to_programTypeFragment"
             app:destination="@id/programTypeFragment"
@@ -86,6 +91,7 @@
         <argument
             android:name="userProgramId"
             app:argType="integer"/>
+
         <action
             android:id="@+id/action_programDetailsFragment_to_newProgramFragment"
             app:destination="@id/newProgramFragment"
@@ -98,6 +104,9 @@
         <action
             android:id="@+id/action_programDetailsFragment_to_newExerciseFragment"
             app:destination="@id/newExerciseFragment" />
+        <action
+            android:id="@+id/action_programDetailsFragment_to_ProgramSessionFragment"
+            app:destination="@id/programSessionFragment" />
 
     </fragment>
 
@@ -152,8 +161,8 @@
         android:label="My Programs"
         tools:layout="@layout/fragment_my_programs" >
         <action
-            android:id="@+id/action_myProgramsFragment_to_programDetailsFragment"
-            app:destination="@id/programDetailsFragment">
+            android:id="@+id/action_myProgramsFragment_to_newProgramFragment"
+            app:destination="@id/newProgramFragment">
             <argument
                 android:name="programId"
                 app:argType="integer" />

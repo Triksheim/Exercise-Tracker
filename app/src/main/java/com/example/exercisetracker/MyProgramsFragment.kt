@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -37,22 +38,27 @@ class MyProgramsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = ProgramItemAdapter(
+        val userProgramClickListener = object: ProgramItemAdapter.UserProgramClickListener {
+            override fun onEditButtonClick(userProgram: UserProgram) {
+                val action = MyProgramsFragmentDirections
+                    .actionMyProgramsFragmentToNewProgramFragment(userProgram.app_program_type_id, userProgram.id)
+                findNavController().navigate(action)
+            }
+        }
+
+        val adapter = ProgramItemAdapter( userProgramClickListener,
             onItemClickListener = { selectedProgram ->
+                sharedViewModel.setCurrentUserProgram(selectedProgram)
                 val action = MyProgramsFragmentDirections
                     .actionMyProgramsFragmentToProgramSessionsFragment(selectedProgram.id)
                 findNavController().navigate(action)
-            },
-            onEditClickListener = { selectedProgram ->
-                val action = MyProgramsFragmentDirections
-                    .actionMyProgramsFragmentToProgramDetailsFragment(selectedProgram.app_program_type_id, selectedProgram.id)
-                findNavController().navigate(action)
             }
+
         )
 
         binding.programRecycler.adapter = adapter
 
-        sharedViewModel.activeUser.observe(viewLifecycleOwner) { activeUser ->
+        sharedViewModel.activeUser.observe(viewLifecycleOwner, Observer { activeUser ->
             val userId = activeUser.id
 
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -61,7 +67,7 @@ class MyProgramsFragment : Fragment() {
                     adapter.submitList(filteredUserPrograms)
                 }
             }
-        }
+        })
     }
 
     override fun onDestroyView() {

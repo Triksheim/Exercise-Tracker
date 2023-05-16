@@ -55,9 +55,9 @@ class ProgramDetailsFragment: Fragment() {
         val adapter = ExerciseItemAdapter(exerciseClickListener, addButton)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
-
+            program = sharedViewModel.currentProgram.value
             exerciseRecycler.adapter = adapter
-            buttonBack.setOnClickListener {
+            buttonStart.setOnClickListener {
                 findNavController().navigate(R.id.action_programDetailsFragment_to_newProgramFragment)
             }
             binding.buttonAddExercises.setOnClickListener{

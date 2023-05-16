@@ -25,7 +25,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _activeUser = MutableLiveData<ActiveUserEntity>()
     val activeUser: LiveData<ActiveUserEntity> = _activeUser
 
-    private val _currentProgram = MutableLiveData<UserProgram>()
+    private var _currentProgram = MutableLiveData<UserProgram>()
     val currentProgram: LiveData<UserProgram> = _currentProgram
 
     private val _createUserStatus = MutableLiveData<Result<UserJSON>>()
@@ -326,9 +326,18 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
+    fun updateUserProgram(userProgram: UserProgram){
+        // call from save button in newProgramFragment when editing progam
+    }
+
     fun addUserProgram(userProgram: UserProgram) {
         viewModelScope.launch(Dispatchers.IO){
             repository.createUserProgramAPI(userProgram = userProgram)}
+
+    }
+
+    fun setCurrentUserProgram(userProgram: UserProgram){
+        _currentProgram.value = userProgram
     }
 
     fun isUserLoggedIn(): Boolean {

@@ -8,10 +8,10 @@
     <data>
         <variable
             name="program"
-            type="com.example.exercisetracker.db.Program" />
+            type="com.example.exercisetracker.db.UserProgram" />
         <variable
             name="programType"
-            type="com.example.exercisetracker.db.AppProgramTypeEntity" />
+            type="com.example.exercisetracker.db.AppProgramType" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -54,16 +54,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_add_programs"/>
 
-        <!--android:text="@{viewModel.programType.description}"-->
         <TextView
-            android:id="@+id/program_type_name"
+            android:id="@+id/program_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{programType.description}"
+            android:text="@{program.description}"
             android:layout_marginTop="@dimen/margin_between_elements"
             app:layout_constraintStart_toStartOf="@id/divider_top"
             app:layout_constraintTop_toBottomOf="@id/divider_top"
-            tools:text="ProgramType-navn"/>
+            tools:text="Programbeskrivelse"/>
 
         <TextView
             android:id="@+id/tv_program_exercises"
@@ -71,7 +70,7 @@
             android:layout_height="wrap_content"
             android:text="@string/program_exercises"
             app:layout_constraintStart_toStartOf="@id/divider_top"
-            app:layout_constraintTop_toBottomOf="@id/program_type_name"/>
+            app:layout_constraintTop_toBottomOf="@id/program_description"/>
 
         <!-- Denne recycler view viser kun text med navn på øvelse som er lagt til. Må oppdateres underveis når øvelser legges til-->
         <androidx.recyclerview.widget.RecyclerView
@@ -137,11 +136,12 @@
 
 
         <Button
-            android:id="@+id/button_back"
+            android:id="@+id/button_start"
             android:layout_width="170dp"
             android:layout_height="wrap_content"
-            android:text="@string/button_back"
-            android:layout_marginBottom="@dimen/side_margin"
+            android:text="Start Program"
+            android:layout_marginTop="@dimen/side_margin"
+            android:layout_marginStart="@dimen/margin_between_elements"
             app:layout_constraintTop_toBottomOf="@id/exercise_recycler"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/button_add_exercises"
@@ -152,9 +152,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/create_new_exercise"
-            android:layout_marginBottom="@dimen/side_margin"
+            android:layout_marginTop="@dimen/side_margin"
+            android:layout_marginEnd="@dimen/margin_between_elements"
             app:layout_constraintTop_toBottomOf="@id/exercise_recycler"
-            app:layout_constraintEnd_toStartOf="@id/button_back"
+            app:layout_constraintEnd_toStartOf="@id/button_start"
             app:layout_constraintStart_toStartOf="parent"
             />
 

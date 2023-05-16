@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -43,11 +44,18 @@ class NewProgramFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val activityLocation = navigationArgs.activityLocation
-
-        val programTypeId = navigationArgs.programTypeId ?: -1
+        val programTypeId = navigationArgs.programTypeId
         if (programTypeId == -1) {
             Log.e("NewProgramFragment", "Failed to receive programTypeId")
+        }
+
+        // ProgramID is set from navargs if user navigates via edit-button on a userprogram
+        val programId = navigationArgs.programId
+        if (programId > 0) {
+            sharedViewModel.currentProgram.observe(this.viewLifecycleOwner) {selectedProgram ->
+                userProgram = selectedProgram
+                bindUserProgram(userProgram)
+            }
         }
 
         binding.apply {
@@ -69,10 +77,38 @@ class NewProgramFragment: Fragment() {
         }
     }
 
+    private fun bindUserProgram(userProgram: UserProgram) {
+        binding.apply{
+            programNameInput.setText(userProgram.name, TextView.BufferType.SPANNABLE)
+            programDescriptInput.setText(userProgram.description, TextView.BufferType.SPANNABLE)
+            rbOptionYes.isChecked = userProgram.use_timing == 1
+            rbOptionNo.isChecked = userProgram.use_timing == 0
+            buttonSaveProgram.setOnClickListener{
+                updateUserProgram()
+            }
+        }
+    }
+
+    private fun updateUserProgram(){
+        if (isValidProgramEntry()) {
+            sharedViewModel.updateUserProgram(
+                UserProgram(
+                    userProgram.id,
+                    userProgram.user_id,
+                    userProgram.app_program_type_id,
+                    binding.programNameInput.text.toString(),
+                    binding.programDescriptInput.text.toString(),
+                    useTimer,
+                    "@drawable/runner")
+            )
+        }
+    }
+
     private fun addUserProgram() { // Holder det å sjekke innlogging ved hamburgermenyvalg + FrontPage? evt hamburger viser ingenting når ikke innlogget
         if(isValidProgramEntry()) {
             userProgram = createUserProgram()
             sharedViewModel.addUserProgram(userProgram)
+            sharedViewModel.setCurrentUserProgram(userProgram)
         }
         val action = NewProgramFragmentDirections.actionNewProgramFragmentToProgramDetailsFragment(userProgram.id)
         findNavController().navigate(action)
@@ -84,6 +120,8 @@ class NewProgramFragment: Fragment() {
     )
 
     private fun createUserProgram(): UserProgram {
+        useTimer = if (binding.rbOptionYes.isChecked) {
+            1 } else { 0 }
         return UserProgram(
         id = 0,
         user_id = sharedViewModel.activeUser.value!!.id,

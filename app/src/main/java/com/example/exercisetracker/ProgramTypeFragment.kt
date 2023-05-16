@@ -45,7 +45,7 @@ class ProgramTypeFragment: Fragment() {
             else -> ""
         }
         val adapter = ProgramTypeAdapter { programType ->
-            val action = ProgramTypeFragmentDirections.actionProgramTypeFragmentToNewProgramFragment(programType.id, backColor)
+            val action = ProgramTypeFragmentDirections.actionProgramTypeFragmentToNewProgramFragment(programType.id)
             findNavController().navigate(action)
         }
 
