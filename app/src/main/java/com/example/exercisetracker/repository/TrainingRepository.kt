@@ -4,8 +4,8 @@ import com.example.exercisetracker.network.*
 import kotlinx.coroutines.flow.Flow
 
 
-class TrainingRepository(private val localDataSource: LocalDataSource,
-                         private val remoteDataSource: RemoteDataSource
+class TrainingRepository(private val localDataSource: LocalDataSource, // database
+                         private val remoteDataSource: RemoteDataSource // network
 ) {
     // Local data source methods
     // User
@@ -110,7 +110,7 @@ class TrainingRepository(private val localDataSource: LocalDataSource,
     }
 
     // UserProgram
-    suspend fun createUserProgramAPI(userProgram: UserProgramEntity): Result<UserProgramJSON> {
+    suspend fun createUserProgramAPI(userProgram: UserProgram):  Result<UserProgramJSON>{
         return remoteDataSource.createUserProgram(userProgram)
     }
     suspend fun getUserProgramsAPI(userId: Int): Result<List<UserProgramJSON>> {

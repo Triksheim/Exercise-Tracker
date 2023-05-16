@@ -326,7 +326,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-    fun addUserProgram(userProgram: UserProgramEntity) {
+    fun addUserProgram(userProgram: UserProgram) {
         viewModelScope.launch(Dispatchers.IO){
             repository.createUserProgramAPI(userProgram = userProgram)}
     }

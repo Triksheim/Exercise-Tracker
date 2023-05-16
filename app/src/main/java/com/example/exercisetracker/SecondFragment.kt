@@ -60,6 +60,7 @@ class SecondFragment : Fragment() {
             findNavController().navigate(R.id.action_SecondFragment_to_programTypeFragment, bundle)
         }
 
+
         // No network alert
         if (!sharedViewModel.networkConnectionOk.value!!) {
             Toast.makeText(context, "Ingen kontakt med server.\nSjekk internett forbindelsen.", Toast.LENGTH_LONG).show()

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -23,7 +24,7 @@ class NewProgramFragment: Fragment() {
     private var _binding: FragmentNewProgramBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var userProgram: UserProgramEntity
+    private lateinit var userProgram: UserProgram
     private var useTimer = 1
 
     private val sharedViewModel: SharedViewModel by activityViewModels() {
@@ -42,7 +43,9 @@ class NewProgramFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val programTypeId = arguments?.getInt("programTypeId") ?: -1
+        val activityLocation = navigationArgs.activityLocation
+
+        val programTypeId = navigationArgs.programTypeId ?: -1
         if (programTypeId == -1) {
             Log.e("NewProgramFragment", "Failed to receive programTypeId")
         }
@@ -55,8 +58,8 @@ class NewProgramFragment: Fragment() {
             buttonBack.setOnClickListener {
                 findNavController().navigate(R.id.action_newProgramFragment_to_programTypeFragment)
             }
-            buttonMyExercises.setOnClickListener {
-                findNavController().navigate(R.id.action_newProgramFragment_to_myExercisesFragment)
+            buttonMyPrograms.setOnClickListener {
+                findNavController().navigate(R.id.action_newProgramFragment_to_myProgramsFragment)
             }
             buttonSaveProgram.setOnClickListener {
                 if (sharedViewModel.isUserLoggedIn()) {
@@ -67,10 +70,12 @@ class NewProgramFragment: Fragment() {
     }
 
     private fun addUserProgram() { // Holder det å sjekke innlogging ved hamburgermenyvalg + FrontPage? evt hamburger viser ingenting når ikke innlogget
-        if(isValidProgramEntry() || sharedViewModel.isUserLoggedIn()) {
+        if(isValidProgramEntry()) {
             userProgram = createUserProgram()
             sharedViewModel.addUserProgram(userProgram)
         }
+        val action = NewProgramFragmentDirections.actionNewProgramFragmentToProgramDetailsFragment(userProgram.id)
+        findNavController().navigate(action)
     }
 
     private fun isValidProgramEntry() = sharedViewModel.isValidProgramEntry(
@@ -78,8 +83,8 @@ class NewProgramFragment: Fragment() {
         binding.programDescriptInput.text.toString()
     )
 
-    private fun createUserProgram(): UserProgramEntity {
-        return UserProgramEntity(
+    private fun createUserProgram(): UserProgram {
+        return UserProgram(
         id = 0,
         user_id = sharedViewModel.activeUser.value!!.id,
         app_program_type_id = navigationArgs.programTypeId,

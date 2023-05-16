@@ -8,14 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.exercisetracker.adapters.ProgramItemAdapter
 import com.example.exercisetracker.databinding.FragmentMyProgramsBinding
+import com.example.exercisetracker.db.UserProgram
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 
 class MyProgramsFragment : Fragment() {
-
     private var _binding: FragmentMyProgramsBinding? = null
     private val binding get() = _binding!!
 
@@ -44,7 +45,7 @@ class MyProgramsFragment : Fragment() {
             },
             onEditClickListener = { selectedProgram ->
                 val action = MyProgramsFragmentDirections
-                    .actionMyProgramsFragmentToProgramDetailsFragment(selectedProgram.id)
+                    .actionMyProgramsFragmentToProgramDetailsFragment(selectedProgram.app_program_type_id, selectedProgram.id)
                 findNavController().navigate(action)
             }
         )
