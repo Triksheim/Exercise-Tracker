@@ -48,6 +48,38 @@
                 android:text="@string/user_program_name"
                 android:textSize="18sp"
                 android:layout_gravity="center_horizontal" />
+            <TextView
+                android:id="@+id/tv_use_gps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tv_bruke_gps"
+                android:layout_margin="@dimen/margin_between_elements"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/user_program_name"/>
+
+            <RadioGroup
+                android:id="@+id/gps_options"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toEndOf="@id/tv_use_gps"
+                app:layout_constraintTop_toBottomOf="@id/user_program_name">
+
+                <RadioButton
+                    android:id="@+id/rb_gps_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:layout_marginEnd="@dimen/margin_between_elements"/>
+
+                <RadioButton
+                    android:id="@+id/rb_gps_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no"
+                    android:layout_marginStart="@dimen/margin_between_elements"/>
+
+            </RadioGroup>
 
             <LinearLayout
                 android:id="@+id/exercises_container"

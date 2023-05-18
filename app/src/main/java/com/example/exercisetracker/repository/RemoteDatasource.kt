@@ -76,7 +76,7 @@ interface ApiService {
     suspend fun getUserProgram(@Path("id") id: Int): UserProgramJSON
 
     @POST("user_programs")
-    suspend fun createUserProgram(@Body userProgram: UserProgramEntity): Response<UserProgramJSON>
+    suspend fun createUserProgram(@Body userProgram: UserProgram): Response<UserProgramJSON>
 
 
     // UserProgramExercise
@@ -172,7 +172,7 @@ class RemoteDataSource(private val apiService: ApiService) {
     suspend fun getAppProgramTypes() = safeApiCall { apiService.getAppProgramTypes() }
 
     // UserProgram
-    suspend fun createUserProgram(userProgram: UserProgramEntity)
+    suspend fun createUserProgram(userProgram: UserProgram)
     = safeApiCall { apiService.createUserProgram(userProgram).bodyOrThrow() }
 
     suspend fun getUserPrograms(userId: Int) = safeApiCall { apiService.getUserPrograms(userId) }

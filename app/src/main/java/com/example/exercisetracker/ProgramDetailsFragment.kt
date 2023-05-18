@@ -16,7 +16,7 @@ import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 
 class ProgramDetailsFragment: Fragment() {
-
+    private val navigationArgs: ProgramDetailsFragmentArgs by navArgs()
     private var _binding: FragmentProgramDetailsBinding? = null
     private val sharedViewModel: SharedViewModel by activityViewModels() {
         SharedViewModelFactory(
@@ -38,7 +38,7 @@ class ProgramDetailsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val programId = requireArguments().getInt("programId")
+        val programId = navigationArgs.userProgramId
 
         val exerciseClickListener = object: ExerciseItemAdapter.ExerciseClickListener {
             override fun onEditButtonClick(exerciseId: Int) {
@@ -53,10 +53,11 @@ class ProgramDetailsFragment: Fragment() {
         }
 
         val adapter = ExerciseItemAdapter(exerciseClickListener, addButton)
-        binding?.apply {
+        binding.apply {
             lifecycleOwner = viewLifecycleOwner
+            program = sharedViewModel.currentProgram.value
             exerciseRecycler.adapter = adapter
-            buttonBack.setOnClickListener {
+            buttonStart.setOnClickListener {
                 findNavController().navigate(R.id.action_programDetailsFragment_to_newProgramFragment)
             }
             binding.buttonAddExercises.setOnClickListener{

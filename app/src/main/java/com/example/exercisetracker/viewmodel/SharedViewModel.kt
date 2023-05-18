@@ -6,6 +6,7 @@ import kotlinx.coroutines.launch
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.exercisetracker.db.*
 import com.example.exercisetracker.network.UserJSON
 import com.example.exercisetracker.utils.asDomainModel
@@ -23,6 +24,9 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
     private val _activeUser = MutableLiveData<ActiveUserEntity>()
     val activeUser: LiveData<ActiveUserEntity> = _activeUser
+
+    private var _currentProgram = MutableLiveData<UserProgram>()
+    val currentProgram: LiveData<UserProgram> = _currentProgram
 
     private val _createUserStatus = MutableLiveData<Result<UserJSON>>()
     val createUserStatus: LiveData<Result<UserJSON>> = _createUserStatus
@@ -186,6 +190,10 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         return activeUser.value?.id != 0
     }
 
+    fun isValidProgramEntry(name: String, description: String): Boolean{
+        return name.isNotBlank() && description.isNotBlank()
+    }
+
     private suspend fun clearDb() {
         withContext(Dispatchers.IO) {
             repository.removeActiveUser()
@@ -329,6 +337,24 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 )
             }
         }
+    }
+
+    fun updateUserProgram(userProgram: UserProgram){
+        // call from save button in newProgramFragment when editing progam
+    }
+
+    fun addUserProgram(userProgram: UserProgram) {
+        viewModelScope.launch(Dispatchers.IO){
+            repository.createUserProgramAPI(userProgram = userProgram)}
+
+    }
+
+    fun setCurrentUserProgram(userProgram: UserProgram){
+        _currentProgram.value = userProgram
+    }
+
+    fun isUserLoggedIn(): Boolean {
+         return (activeUser.value!!.id != 0)
     }
 
     fun addUserProgramSession(userProgramSession: UserProgramSession) {

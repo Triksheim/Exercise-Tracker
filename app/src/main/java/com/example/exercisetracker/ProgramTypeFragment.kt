@@ -16,6 +16,8 @@ import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 
+const val INDOORCOLOR = "#7fe5ab"
+const val OUTDOORCOLOR ="ab7fe5"
 class ProgramTypeFragment: Fragment() {
 
     private var _binding: FragmentProgramTypeBinding? = null
@@ -38,8 +40,8 @@ class ProgramTypeFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val backColor = when (arguments?.getString("type") ?: "") {
-            "Indoor" -> "#7fe5ab"
-            "Outdoor" -> "#ab7fe5"
+            "Indoor" -> INDOORCOLOR
+            "Outdoor" -> OUTDOORCOLOR
             else -> ""
         }
         val adapter = ProgramTypeAdapter { programType ->

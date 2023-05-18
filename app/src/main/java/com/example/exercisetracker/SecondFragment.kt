@@ -17,6 +17,8 @@ import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
+
+const val OUTDOOR_TYPE_ID = -1
 class SecondFragment : Fragment() {
     private var _binding: FragmentSecondBinding? = null
     private val sharedViewModel: SharedViewModel by activityViewModels() {
@@ -59,6 +61,8 @@ class SecondFragment : Fragment() {
             }
             findNavController().navigate(R.id.action_SecondFragment_to_programTypeFragment, bundle)
         }
+
+
 
         // No network alert
         if (!sharedViewModel.networkConnectionOk.value!!) {
