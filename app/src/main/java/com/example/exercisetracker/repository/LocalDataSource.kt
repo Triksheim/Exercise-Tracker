@@ -47,6 +47,10 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
     suspend fun insertUserProgram(userProgramEntity: UserProgramEntity): Long {
         return trainingDao.insertUserProgram(userProgramEntity)
     }
+
+    suspend fun updateUserProgram(userProgramEntity: UserProgramEntity) {
+        return trainingDao.updateUserProgram(userProgramEntity)
+    }
     suspend fun getUserProgram(id: Int): Flow<UserProgramEntity> {
         return trainingDao.getUserProgramById(id)
     }

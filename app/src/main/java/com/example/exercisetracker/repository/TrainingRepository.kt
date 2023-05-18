@@ -46,6 +46,10 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun insertUserProgram(userProgramEntity: UserProgramEntity ): Long {
         return localDataSource.insertUserProgram(userProgramEntity)
     }
+
+    suspend fun updateUserProgram(userProgramEntity: UserProgramEntity) {
+        return localDataSource.updateUserProgram(userProgramEntity)
+    }
     suspend fun getUserPrograms(): Flow<List<UserProgramEntity>> {
         return localDataSource.getUserPrograms()
     }
@@ -125,6 +129,11 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun createUserProgramAPI(userProgram: UserProgram):  Result<UserProgramJSON>{
         return remoteDataSource.createUserProgram(userProgram)
     }
+
+    suspend fun updateUserProgramAPI(userProgram: UserProgram): Result<UserProgramJSON> {
+        return remoteDataSource.updateUserProgram(userProgram)
+    }
+
     suspend fun getUserProgramsAPI(userId: Int): Result<List<UserProgramJSON>> {
         return remoteDataSource.getUserPrograms(userId)
     }

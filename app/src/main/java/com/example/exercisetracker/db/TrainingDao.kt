@@ -52,6 +52,9 @@ interface TrainingDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertUserProgram(userProgramEntity: UserProgramEntity): Long
 
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun updateUserProgram(userProgram: UserProgramEntity)
+
     @Query("SELECT * FROM user_program")
     fun getAllUserPrograms(): Flow<List<UserProgramEntity>>
 

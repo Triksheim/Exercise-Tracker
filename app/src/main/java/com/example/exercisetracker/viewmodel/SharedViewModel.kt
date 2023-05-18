@@ -132,10 +132,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     }
 
 
-
-
-
-
     suspend fun login(phone: String): Boolean {
         return viewModelScope.async {
         if (users.value.isEmpty()) {
@@ -370,11 +366,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-
-    fun updateUserProgram(userProgram: UserProgram){
-        // call from save button in newProgramFragment when editing progam
-    }
-
     fun createUserProgram(userProgram: UserProgram) {
         viewModelScope.launch(Dispatchers.IO){
             val result = repository.createUserProgramAPI(userProgram = userProgram)
@@ -388,6 +379,21 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 Log.e("ERROR USER PROGRAM", "Creating user program failed")
             }
     }}
+
+    fun updateUserProgram(userProgram: UserProgram){
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.updateUserProgramAPI(userProgram = userProgram)
+            if (result.isSuccess) {
+                val updatedUserProgram = result.getOrNull()
+                updatedUserProgram?.let {repository.updateUserProgram(it.asEntity())}
+                Log.d("UPDATE USER PROGRAM", "SUCCESS")
+                getAllUserPrograms()
+            }
+            else {
+                Log.e("ERROR USER PROGRAM", "Updating user program failed")
+            }
+        }
+    }
 
     fun setCurrentUserProgram(userProgram: UserProgram){
         _currentProgram.value = userProgram
