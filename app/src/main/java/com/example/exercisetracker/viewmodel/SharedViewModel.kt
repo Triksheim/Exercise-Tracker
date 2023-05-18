@@ -6,7 +6,6 @@ import kotlinx.coroutines.launch
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.exercisetracker.db.*
 import com.example.exercisetracker.network.UserJSON
 import com.example.exercisetracker.utils.asDomainModel
@@ -132,21 +131,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
 
 
-    fun createUser(user: UserEntity)   {
-        viewModelScope.launch {
-            val result = repository.createUserAPI(user)
-            if (result.isSuccess) {
-                _networkConnectionOk.value = true
-                val newUser = result.getOrNull()
-                setActiveUser(newUser!!.asEntity().asDomainModel())
-                restart()
-            }
-            else {
-                _createUserStatus.value = result
-                Log.e("ERROR USER CREATION", "Creating user failed")
-            }
-        }
-    }
+
 
 
     suspend fun login(phone: String): Boolean {
@@ -339,15 +324,45 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
+
+    fun createUser(user: User)   {
+        viewModelScope.launch {
+            val result = repository.createUserAPI(user)
+            if (result.isSuccess) {
+                _networkConnectionOk.value = true
+                val newUser = result.getOrNull()
+                setActiveUser(newUser!!.asEntity().asDomainModel())
+                restart()
+            }
+            else {
+                _createUserStatus.value = result
+                Log.e("ERROR USER CREATION", "Creating user failed")
+            }
+        }
+    }
+
+
+
+
+
+
     fun updateUserProgram(userProgram: UserProgram){
         // call from save button in newProgramFragment when editing progam
     }
 
-    fun addUserProgram(userProgram: UserProgram) {
+    fun createUserProgram(userProgram: UserProgram) {
         viewModelScope.launch(Dispatchers.IO){
-            repository.createUserProgramAPI(userProgram = userProgram)}
-
-    }
+            val result = repository.createUserProgramAPI(userProgram = userProgram)
+            if (result.isSuccess) {
+                val newUserProgram = result.getOrNull()
+                newUserProgram?.let { repository.insertUserProgram(it.asEntity())}
+                Log.d("CREATE USER PROGRAM", "SUCCESS")
+                getAllUserPrograms()
+            }
+            else {
+                Log.e("ERROR USER PROGRAM", "Creating user program failed")
+            }
+    }}
 
     fun setCurrentUserProgram(userProgram: UserProgram){
         _currentProgram.value = userProgram
@@ -364,20 +379,67 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         _userProgramSessions.value = updatedSessions
     }
 
-    suspend fun createUserExercise(userExercise: UserExerciseEntity) {
-        viewModelScope.launch {
+    suspend fun createUserExercise(userExercise: UserExercise) {
+        viewModelScope.launch(Dispatchers.IO) {
             val result = repository.createUserExerciseAPI(userExercise)
             if (result.isSuccess) {
-                _networkConnectionOk.value = true
                 val newUserExercise = result.getOrNull()
                 newUserExercise?.let { repository.insertUserExercise(it.asEntity()) }
+                Log.d("CREATE USER EXERCISE", "SUCCESS")
+                getAllUserExercises()
             }
             else {
-                _networkConnectionOk.value = false
                 Log.e("ERROR USER EXERCISE", "Creating user exercise failed")
             }
         }
     }
+
+    suspend fun createUserProgramSession(userProgramSession: UserProgramSession) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.createUserProgramSession(userProgramSession)
+            if (result.isSuccess) {
+                val newUserProgramSession = result.getOrNull()
+                newUserProgramSession?.let { repository.insertUserProgramSession(it.asEntity()) }
+                Log.d("CREATE USER PROGRAM SESSION", "SUCCESS")
+
+            }
+            else {
+                Log.e("ERROR USER PROGRAM SESSION", "Creating user program session failed")
+            }
+        }
+    }
+
+    suspend fun createUserProgramSessionData(userProgramSessionData: UserProgramSessionData) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.createUserProgramSessionData(userProgramSessionData)
+            if (result.isSuccess) {
+                val newUserProgramSessionData = result.getOrNull()
+                newUserProgramSessionData?.let { repository.insertUserProgramSessionData(it.asEntity()) }
+                Log.d("CREATE USER PROGRAM SESSION DATA", "SUCCESS")
+
+            }
+            else {
+                Log.e("ERROR USER PROGRAM SESSION DATA", "Creating user program session data failed")
+            }
+        }
+    }
+
+    suspend fun createUserProgramSessionPhoto(userProgramSessionPhoto: UserProgramSessionPhoto) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.createUserProgramSessionPhoto(userProgramSessionPhoto)
+            if (result.isSuccess) {
+                val newUserProgramSessionPhoto = result.getOrNull()
+                newUserProgramSessionPhoto?.let { repository.insertUserProgramSessionPhoto(it.asEntity()) }
+                Log.d("CREATE USER PROGRAM SESSION PHOTO", "SUCCESS")
+
+            }
+            else {
+                Log.e("ERROR USER PROGRAM SESSION PHOTO", "Creating user program session photo failed")
+            }
+        }
+    }
+
+
 }
 class SharedViewModelFactory(private val trainingRepository: TrainingRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

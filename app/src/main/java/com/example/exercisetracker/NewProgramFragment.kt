@@ -6,15 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.exercisetracker.databinding.FragmentNewProgramBinding
 import com.example.exercisetracker.db.UserProgram
-import com.example.exercisetracker.db.UserProgramEntity
-import com.example.exercisetracker.network.UserProgramJSON
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
@@ -107,7 +104,7 @@ class NewProgramFragment: Fragment() {
     private fun addUserProgram() { // Holder det å sjekke innlogging ved hamburgermenyvalg + FrontPage? evt hamburger viser ingenting når ikke innlogget
         if(isValidProgramEntry()) {
             userProgram = createUserProgram()
-            sharedViewModel.addUserProgram(userProgram)
+            sharedViewModel.createUserProgram(userProgram)
             sharedViewModel.setCurrentUserProgram(userProgram)
         }
         val action = NewProgramFragmentDirections.actionNewProgramFragmentToProgramDetailsFragment(userProgram.id)

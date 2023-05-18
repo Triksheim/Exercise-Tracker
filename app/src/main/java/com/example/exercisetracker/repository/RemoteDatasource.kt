@@ -54,7 +54,7 @@ interface ApiService {
     suspend fun getUser(@Path("id") id: Int): UserJSON
 
     @POST("users")
-    suspend fun createUser(@Body user: UserEntity): Response<UserJSON>
+    suspend fun createUser(@Body user: User): Response<UserJSON>
 
 
     // AppProgramType
@@ -65,7 +65,7 @@ interface ApiService {
     suspend fun getAppProgramType(@Path("id") id: Int): AppProgramTypeJSON
 
     @POST("app_program_types")
-    suspend fun createAppProgramType(@Body appProgramType: AppProgramTypeEntity): Response<AppProgramTypeJSON>
+    suspend fun createAppProgramType(@Body appProgramType: AppProgramType): Response<AppProgramTypeJSON>
 
 
     // UserProgram
@@ -87,7 +87,7 @@ interface ApiService {
     suspend fun getUserProgramExercise(@Path("id") id: Int): UserProgramExerciseJSON
 
     @POST("user_program_exercises")
-    suspend fun createUserProgramExercise(@Body userProgramExercise: UserProgramExerciseEntity): Response<UserProgramExerciseJSON>
+    suspend fun createUserProgramExercise(@Body userProgramExercise: UserProgramExercise): Response<UserProgramExerciseJSON>
 
 
     // UserExercise
@@ -98,7 +98,7 @@ interface ApiService {
     suspend fun getUserExercise(@Path("id") id: Int): UserExerciseJSON
 
     @POST("user_exercises")
-    suspend fun createUserExercise(@Body userExercise: UserExerciseEntity): Response<UserExerciseJSON>
+    suspend fun createUserExercise(@Body userExercise: UserExercise): Response<UserExerciseJSON>
 
 
     // UserProgramSession
@@ -109,7 +109,7 @@ interface ApiService {
     suspend fun getUserProgramSession(@Path("id") id: Int): UserProgramSessionJSON
 
     @POST("user_program_sessions")
-    suspend fun createUserProgramSession(@Body userProgramSession: UserProgramSessionEntity): Response<UserProgramSessionJSON>
+    suspend fun createUserProgramSession(@Body userProgramSession: UserProgramSession): Response<UserProgramSessionJSON>
 
 
     // UserProgramSessionData
@@ -120,7 +120,7 @@ interface ApiService {
     suspend fun getUserProgramSessionData(@Path("id") id: Int): UserProgramSessionDataJSON
 
     @POST("user_program_session_data")
-    suspend fun createUserProgramSessionData(@Body userProgramSessionData: UserProgramSessionDataEntity): Response<UserProgramSessionDataJSON>
+    suspend fun createUserProgramSessionData(@Body userProgramSessionData: UserProgramSessionData): Response<UserProgramSessionDataJSON>
 
 
     // UserProgramSessionPhoto
@@ -131,7 +131,7 @@ interface ApiService {
     suspend fun getUserProgramSessionPhoto(@Path("id") id: Int): UserProgramSessionPhotoJSON
 
     @POST("user_program_session_photos")
-    suspend fun createUserProgramSessionPhoto(@Body userProgramSessionPhoto: UserProgramSessionPhotoEntity): Response<UserProgramSessionPhotoJSON>
+    suspend fun createUserProgramSessionPhoto(@Body userProgramSessionPhoto: UserProgramSessionPhoto): Response<UserProgramSessionPhotoJSON>
 }
 
 
@@ -162,7 +162,7 @@ class RemoteDataSource(private val apiService: ApiService) {
 
 
     // User
-    suspend fun createUser(user: UserEntity) = safeApiCall { apiService.createUser(user).bodyOrThrow() }
+    suspend fun createUser(user: User) = safeApiCall { apiService.createUser(user).bodyOrThrow() }
 
     suspend fun getUsers() = safeApiCall { apiService.getUsers() }
 
@@ -180,18 +180,28 @@ class RemoteDataSource(private val apiService: ApiService) {
     suspend fun getUserProgram(id: Int) = safeApiCall { apiService.getUserProgram(id) }
 
     // UserExercise
-    suspend fun createUserExercise(userExercise: UserExerciseEntity)
+    suspend fun createUserExercise(userExercise: UserExercise)
     = safeApiCall { apiService.createUserExercise(userExercise).bodyOrThrow() }
     suspend fun getUserExercises(userId: Int) = safeApiCall { apiService.getUserExercises(userId) }
 
     // UserProgramSession
+    suspend fun createUserProgramSession(userProgramSession: UserProgramSession)
+    = safeApiCall { apiService.createUserProgramSession(userProgramSession).bodyOrThrow() }
     suspend fun getUserProgramSessions(userProgramId: Int)
     = safeApiCall { apiService.getUserProgramSessions(userProgramId) }
 
     // UserProgramSessionData
+    suspend fun createUserProgramSessionData(userProgramSessionData: UserProgramSessionData)
+    = safeApiCall { apiService.createUserProgramSessionData(userProgramSessionData).bodyOrThrow() }
     suspend fun getAllUserProgramSessionData(userId: Int)
             = safeApiCall { apiService.getUserProgramSessionDataList(userId) }
+
+    // UserProgramSessionPhoto
+    suspend fun createUserProgramSessionPhoto(userProgramSessionPhoto: UserProgramSessionPhoto)
+    = safeApiCall { apiService.createUserProgramSessionPhoto(userProgramSessionPhoto).bodyOrThrow() }
+
 }
+
 
 
 val apiService = retrofit.create(ApiService::class.java)

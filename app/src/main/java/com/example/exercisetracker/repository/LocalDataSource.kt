@@ -89,6 +89,12 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
     suspend fun deleteAllUserProgramSessionData() {
         return trainingDao.deleteAllUserProgramSessionData()
     }
+
+    // UserProgramSessionPhoto
+    suspend fun insertUserProgramSessionPhoto(userProgramSessionPhotoEntity: UserProgramSessionPhotoEntity): Long {
+        return trainingDao.insertUserProgramSessionPhoto(userProgramSessionPhotoEntity)
+    }
+
 }
 
 
