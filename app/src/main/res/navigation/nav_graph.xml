@@ -168,12 +168,12 @@
                 app:argType="integer" />
         </action>
         <action
-            android:id="@+id/action_myProgramsFragment_to_programSessionsFragment"
-            app:destination="@id/programSessionFragment" >
-            <argument
-                android:name="programId"
-                app:argType="integer" />
-        </action>
+            android:id="@+id/action_myProgramsFragment_to_programDetailsFragment"
+            app:destination="@id/programDetailsFragment"/>
+        <action
+            android:id="@+id/action_myProgramsFragment_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
+
     </fragment>
 
     <fragment

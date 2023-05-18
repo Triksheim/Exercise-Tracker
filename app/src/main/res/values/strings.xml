@@ -51,6 +51,7 @@
     <string name="bt_my_programs">Mine treningsprogram</string>
     <string name="tv_bruke_gps">Bruke GPS?</string>
     <string name="tv_timing_text">Timing: %s</string>
+    <string name="create_new_program">Lag Nytt Program</string>
 
 
 </resources>
