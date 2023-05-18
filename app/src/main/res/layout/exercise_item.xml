@@ -6,9 +6,6 @@
 
     <data>
         <variable
-            name="viewModel"
-            type="com.example.exercisetracker.viewmodel.SharedViewModel"/>
-        <variable
             name="exercise"
             type="com.example.exercisetracker.db.UserExercise"/>
     </data>
@@ -67,6 +64,16 @@
             android:src="@drawable/add_img"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider_top"/>
+
+        <ImageButton
+            android:id="@+id/button_remove"
+            android:layout_width="@dimen/button_size_small"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:src="@drawable/remove_img"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_top"/>
+
 
         <ImageButton
             android:id="@+id/button_edit"
