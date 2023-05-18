@@ -64,6 +64,12 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
         return localDataSource.deleteUserExercises()
     }
 
+    // UserProgramExercise
+    suspend fun insertUserProgramExercise(userProgramExerciseEntity: UserProgramExerciseEntity): Long {
+        return localDataSource.insertUserProgramExercise(userProgramExerciseEntity)
+    }
+
+
     // UserProgramSession
     suspend fun insertUserProgramSession(userProgramSessionEntity: UserProgramSessionEntity): Long {
         return localDataSource.insertUserProgramSession(userProgramSessionEntity)
@@ -130,6 +136,11 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     }
     suspend fun getUserExercisesAPI(userId: Int): Result<List<UserExerciseJSON>> {
         return remoteDataSource.getUserExercises(userId)
+    }
+
+    // UserProgramExercise
+    suspend fun createUserProgramExercise(userProgramExercise: UserProgramExercise): Result<UserProgramExerciseJSON> {
+        return remoteDataSource.createUserProgramExercise(userProgramExercise)
     }
 
     // UserProgramSession

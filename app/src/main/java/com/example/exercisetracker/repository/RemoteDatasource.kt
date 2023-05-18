@@ -184,6 +184,10 @@ class RemoteDataSource(private val apiService: ApiService) {
     = safeApiCall { apiService.createUserExercise(userExercise).bodyOrThrow() }
     suspend fun getUserExercises(userId: Int) = safeApiCall { apiService.getUserExercises(userId) }
 
+    // UserProgramExercise
+    suspend fun createUserProgramExercise(userProgramExercise: UserProgramExercise)
+    = safeApiCall { apiService.createUserProgramExercise(userProgramExercise).bodyOrThrow() }
+
     // UserProgramSession
     suspend fun createUserProgramSession(userProgramSession: UserProgramSession)
     = safeApiCall { apiService.createUserProgramSession(userProgramSession).bodyOrThrow() }

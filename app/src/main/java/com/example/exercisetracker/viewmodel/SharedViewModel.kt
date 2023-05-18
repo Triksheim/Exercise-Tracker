@@ -51,6 +51,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _userProgramSessionsData = MutableStateFlow<List<UserProgramSessionData>>(emptyList())
     val userProgramSessionsData: StateFlow<List<UserProgramSessionData>> = _userProgramSessionsData
 
+    private val _userProgramSessionPhotos = MutableStateFlow<List<UserProgramSessionPhoto>>(emptyList())
+    val userProgramSessionPhotos: StateFlow<List<UserProgramSessionPhoto>> = _userProgramSessionPhotos
 
 
     init {
@@ -379,6 +381,9 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         _userProgramSessions.value = updatedSessions
     }
 
+
+
+
     suspend fun createUserExercise(userExercise: UserExercise) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.createUserExerciseAPI(userExercise)
@@ -393,6 +398,23 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             }
         }
     }
+
+    suspend fun addUserExerciseToUserProgram(userProgramExercise: UserProgramExercise) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.createUserProgramExercise(userProgramExercise)
+            if (result.isSuccess) {
+                val newUserProgramExercise = result.getOrNull()
+                newUserProgramExercise?.let {repository.insertUserProgramExercise(it.asEntity())}
+                Log.d("ADDED EXERCISE TO USER PROGRAM", "SUCCESS")
+            }
+            else {
+                Log.e("ERROR USER PROGRAM EXERCISE", "Adding exercise failed")
+            }
+        }
+    }
+
+
+
 
     suspend fun createUserProgramSession(userProgramSession: UserProgramSession) {
         viewModelScope.launch(Dispatchers.IO) {
