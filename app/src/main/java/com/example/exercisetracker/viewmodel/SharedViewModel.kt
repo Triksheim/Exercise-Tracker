@@ -49,6 +49,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     val userProgramSessionsData: StateFlow<List<UserProgramSessionData>> = _userProgramSessionsData
 
 
+
     init {
         _networkConnectionOk.value = true
         _activeUser.value = ActiveUserEntity(0,"0","0","0", 0)
@@ -60,6 +61,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         fetchUserPrograms()
         fetchUserExercises()
         fetchUserProgramSessions()
+        fetchUserProgramSessionsData()
     }
 
 
@@ -110,6 +112,16 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 .map { sessionsList -> sessionsList.map { it.asDomainModel() } }
                 .collect { sessionsList ->
                     _allSessions.value = sessionsList
+                }
+        }
+    }
+    private fun fetchUserProgramSessionsData() {
+        viewModelScope.launch {
+            repository.getAllUserProgramSessionData()
+                .flowOn(Dispatchers.IO)
+                .map { sessionsDataList -> sessionsDataList.map { it.asDomainModel() } }
+                .collect { sessionsDataList ->
+                    _userProgramSessionsData.value = sessionsDataList
                 }
         }
     }
@@ -199,6 +211,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 getAllUserPrograms()
                 getAllUserExercises()
                 if (userPrograms.value.isNotEmpty()) {
+                    getAllUserProgramSessionData()
                     for (userProgram in userPrograms.value) {
                         getAllSessionsForUserProgram(userProgram.id)
                     }
