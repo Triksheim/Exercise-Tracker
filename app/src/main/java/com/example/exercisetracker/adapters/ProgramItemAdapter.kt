@@ -1,10 +1,13 @@
 package com.example.exercisetracker.adapters
 
+
+import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.exercisetracker.R
 import com.example.exercisetracker.databinding.ProgramItemBinding
 import com.example.exercisetracker.db.UserProgram
 import com.example.exercisetracker.db.UserProgramEntity
@@ -23,14 +26,12 @@ class ProgramItemAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(userProgram: UserProgram) {
             binding.apply {
-                // Set the data to the views here, for example:
+                programTiming.text = if(userProgram.use_timing == 0) "Timing: no" else "Timing: yes"
                 programName.text = userProgram.name
                 programDescription.text = userProgram.description
-
                 root.setOnClickListener {
                     onItemClickListener(userProgram)
                 }
-
                 editProgramButton.setOnClickListener{userProgramClickListener.onEditButtonClick(userProgram)}
             }
         }

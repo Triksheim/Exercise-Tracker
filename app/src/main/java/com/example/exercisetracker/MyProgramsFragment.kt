@@ -40,13 +40,14 @@ class MyProgramsFragment : Fragment() {
 
         val userProgramClickListener = object: ProgramItemAdapter.UserProgramClickListener {
             override fun onEditButtonClick(userProgram: UserProgram) {
+                sharedViewModel.setCurrentUserProgram(userProgram)
                 val action = MyProgramsFragmentDirections
                     .actionMyProgramsFragmentToNewProgramFragment(userProgram.app_program_type_id, userProgram.id)
                 findNavController().navigate(action)
             }
         }
 
-        val adapter = ProgramItemAdapter( userProgramClickListener,
+        val adapter = ProgramItemAdapter(userProgramClickListener,
             onItemClickListener = { selectedProgram ->
                 sharedViewModel.setCurrentUserProgram(selectedProgram)
                 val action = MyProgramsFragmentDirections
