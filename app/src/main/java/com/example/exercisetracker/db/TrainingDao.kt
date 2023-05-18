@@ -72,7 +72,8 @@ interface TrainingDao {
     @Query("SELECT * FROM user_program_exercise WHERE id = :id")
     fun getUserProgramExerciseById(id: Int): Flow<UserProgramExerciseEntity>
 
-
+    @Query("DELETE FROM user_program_exercise")
+    suspend fun deleteAllUserProgramExercises()
 
 
     // UserExercise
