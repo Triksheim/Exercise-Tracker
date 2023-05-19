@@ -53,7 +53,7 @@ interface TrainingDao {
     suspend fun insertUserProgram(userProgramEntity: UserProgramEntity): Long
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun updateUserProgram(userProgram: UserProgramEntity)
+    suspend fun updateUserProgram(userProgramEntity: UserProgramEntity)
 
     @Query("SELECT * FROM user_program")
     fun getAllUserPrograms(): Flow<List<UserProgramEntity>>
@@ -63,6 +63,9 @@ interface TrainingDao {
 
     @Query("DELETE FROM user_program")
     suspend fun deleteAllUserPrograms()
+
+    @Delete
+    suspend fun deleteUserProgram(userProgramEntity: UserProgramEntity)
 
 
     // UserProgramExercise
@@ -78,6 +81,9 @@ interface TrainingDao {
     @Query("DELETE FROM user_program_exercise")
     suspend fun deleteAllUserProgramExercises()
 
+    @Delete
+    suspend fun deleteUserProgramExercise(userProgramExerciseEntity: UserProgramExerciseEntity)
+
 
     // UserExercise
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -89,8 +95,14 @@ interface TrainingDao {
     @Query("SELECT * FROM user_exercise WHERE id = :id")
     fun getUserExerciseById(id: Int): Flow<UserExerciseEntity>
 
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun updateUserExercise(userExerciseEntity: UserExerciseEntity)
+
     @Query("DELETE FROM user_exercise")
     suspend fun deleteAllUserExercises()
+
+    @Delete
+    suspend fun deleteUserExercise(userExerciseEntity: UserExerciseEntity)
 
 
     // UserProgramSession
@@ -103,8 +115,15 @@ interface TrainingDao {
     @Query("SELECT * FROM user_program_session WHERE id = :id")
     fun getUserProgramSessionById(id: Int): Flow<UserProgramSessionEntity>
 
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun updateUserProgramSession(userProgramSessionEntity: UserProgramSessionEntity)
+
     @Query("DELETE FROM user_program_session")
     suspend fun deleteAllUserProgramSessions()
+
+    @Delete
+    suspend fun deleteUserProgramSession(userProgramSessionEntity: UserProgramSessionEntity)
+
 
     // UserProgramSessionData
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -119,8 +138,11 @@ interface TrainingDao {
     @Query("SELECT * FROM user_program_session_data WHERE id = :id")
     fun getUserProgramSessionDataById(id: Int): Flow<UserProgramSessionDataEntity>
 
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun updateUserProgramSessionData(userProgramSessionDataEntity: UserProgramSessionDataEntity)
 
-
+    @Delete
+    suspend fun deleteUserProgramSessionData(userProgramSessionDataEntity: UserProgramSessionDataEntity)
 
 
     // UserProgramSessionPhoto
@@ -132,5 +154,11 @@ interface TrainingDao {
 
     @Query("SELECT * FROM user_program_session_photo WHERE id = :id")
     fun getUserProgramSessionPhotoById(id: Int): Flow<UserProgramSessionPhotoEntity>
+
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun updateUserProgramSessionPhoto(userProgramSessionPhotoEntity: UserProgramSessionPhotoEntity)
+
+    @Delete
+    suspend fun deleteUserProgramSessionPhoto(userProgramSessionPhotoEntity: UserProgramSessionPhotoEntity)
 }
 

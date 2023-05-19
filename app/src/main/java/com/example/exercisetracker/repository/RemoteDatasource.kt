@@ -81,6 +81,9 @@ interface ApiService {
     @PUT("user_programs/{id}")
     suspend fun updateUserProgram(@Path("id") id: Int, @Body userProgram: UserProgram): Response<UserProgramJSON>
 
+    @DELETE("user_programs/{id}")
+    suspend fun deleteUserProgram(@Path("id") id: Int): Response<Unit>
+
 
     // UserProgramExercise
     @GET("user_program_exercises")
@@ -91,6 +94,9 @@ interface ApiService {
 
     @POST("user_program_exercises")
     suspend fun createUserProgramExercise(@Body userProgramExercise: UserProgramExercise): Response<UserProgramExerciseJSON>
+
+    @DELETE("user_program_exercises/{id}")
+    suspend fun deleteUserProgramExercise(@Path("id") id: Int): Response<Unit>
 
 
     // UserExercise
@@ -103,6 +109,12 @@ interface ApiService {
     @POST("user_exercises")
     suspend fun createUserExercise(@Body userExercise: UserExercise): Response<UserExerciseJSON>
 
+    @PUT("user_exercises/{id}")
+    suspend fun updateUserExercise(@Path("id") id: Int, @Body userExercise: UserExercise): Response<UserExerciseJSON>
+
+    @DELETE("user_exercises/{id}")
+    suspend fun deleteUserExercise(@Path("id") id: Int): Response<Unit>
+
 
     // UserProgramSession
     @GET("user_program_sessions")
@@ -113,6 +125,12 @@ interface ApiService {
 
     @POST("user_program_sessions")
     suspend fun createUserProgramSession(@Body userProgramSession: UserProgramSession): Response<UserProgramSessionJSON>
+
+    @PUT("user_program_sessions/{id}")
+    suspend fun updateUserProgramSession(@Path("id") id: Int, @Body userProgramSession: UserProgramSession): Response<UserProgramSessionJSON>
+
+    @DELETE("user_program_sessions/{id}")
+    suspend fun deleteUserProgramSession(@Path("id") id: Int): Response<Unit>
 
 
     // UserProgramSessionData
@@ -125,6 +143,12 @@ interface ApiService {
     @POST("user_program_session_data")
     suspend fun createUserProgramSessionData(@Body userProgramSessionData: UserProgramSessionData): Response<UserProgramSessionDataJSON>
 
+    @PUT("user_program_session_data/{id}")
+    suspend fun updateUserProgramSessionData(@Path("id") id: Int, @Body userProgramSessionData: UserProgramSessionData): Response<UserProgramSessionDataJSON>
+
+    @DELETE("user_program_session_data/{id}")
+    suspend fun deleteUserProgramSessionData(@Path("id") id: Int): Response<Unit>
+
 
     // UserProgramSessionPhoto
     @GET("user_program_session_photos")
@@ -135,7 +159,14 @@ interface ApiService {
 
     @POST("user_program_session_photos")
     suspend fun createUserProgramSessionPhoto(@Body userProgramSessionPhoto: UserProgramSessionPhoto): Response<UserProgramSessionPhotoJSON>
+
+    @PUT("user_program_session_photos/{id}")
+    suspend fun updateUserProgramSessionPhoto(@Path("id") id: Int, @Body userProgramSessionPhoto: UserProgramSessionPhoto): Response<UserProgramSessionPhotoJSON>
+
+    @DELETE("user_program_session_photos/{id}")
+    suspend fun deleteUserProgramSessionPhoto(@Path("id") id: Int): Response<Unit>
 }
+
 
 
 
@@ -176,42 +207,66 @@ class RemoteDataSource(private val apiService: ApiService) {
 
     // UserProgram
     suspend fun createUserProgram(userProgram: UserProgram)
-    = safeApiCall { apiService.createUserProgram(userProgram).bodyOrThrow() }
-
+        = safeApiCall { apiService.createUserProgram(userProgram).bodyOrThrow() }
     suspend fun updateUserProgram(userProgram: UserProgram)
-    = safeApiCall { apiService.updateUserProgram(userProgram.id, userProgram).bodyOrThrow() }
+        = safeApiCall { apiService.updateUserProgram(userProgram.id, userProgram).bodyOrThrow() }
+    suspend fun getUserPrograms(userId: Int)
+        = safeApiCall { apiService.getUserPrograms(userId) }
+    suspend fun getUserProgram(id: Int)
+        = safeApiCall { apiService.getUserProgram(id) }
+    suspend fun deleteUserProgram(id: Int)
+        = safeApiCall { apiService.deleteUserProgram(id).bodyOrThrow() }
 
-    suspend fun getUserPrograms(userId: Int) = safeApiCall { apiService.getUserPrograms(userId) }
-
-    suspend fun getUserProgram(id: Int) = safeApiCall { apiService.getUserProgram(id) }
 
     // UserExercise
     suspend fun createUserExercise(userExercise: UserExercise)
-    = safeApiCall { apiService.createUserExercise(userExercise).bodyOrThrow() }
-    suspend fun getUserExercises(userId: Int) = safeApiCall { apiService.getUserExercises(userId) }
+        = safeApiCall { apiService.createUserExercise(userExercise).bodyOrThrow() }
+    suspend fun getUserExercises(userId: Int)
+        = safeApiCall { apiService.getUserExercises(userId) }
+    suspend fun updateUserExercise(userExercise: UserExercise)
+        = safeApiCall { apiService.updateUserExercise(userExercise.id, userExercise).bodyOrThrow() }
+    suspend fun deleteUserExercise(id: Int)
+        = safeApiCall { apiService.deleteUserExercise(id).bodyOrThrow() }
+
 
     // UserProgramExercise
     suspend fun createUserProgramExercise(userProgramExercise: UserProgramExercise)
-    = safeApiCall { apiService.createUserProgramExercise(userProgramExercise).bodyOrThrow() }
+        = safeApiCall { apiService.createUserProgramExercise(userProgramExercise).bodyOrThrow() }
     suspend fun getUserProgramExercises(userProgramId: Int)
-    = safeApiCall { apiService.getUserProgramExercises(userProgramId) }
+        = safeApiCall { apiService.getUserProgramExercises(userProgramId) }
+    suspend fun deleteUserProgramExercise(id: Int)
+        = safeApiCall { apiService.deleteUserProgramExercise(id).bodyOrThrow() }
+
 
     // UserProgramSession
     suspend fun createUserProgramSession(userProgramSession: UserProgramSession)
-    = safeApiCall { apiService.createUserProgramSession(userProgramSession).bodyOrThrow() }
+        = safeApiCall { apiService.createUserProgramSession(userProgramSession).bodyOrThrow() }
     suspend fun getUserProgramSessions(userProgramId: Int)
-    = safeApiCall { apiService.getUserProgramSessions(userProgramId) }
+        = safeApiCall { apiService.getUserProgramSessions(userProgramId) }
+    suspend fun updateUserProgramSession(userProgramSession: UserProgramSession)
+        = safeApiCall { apiService.updateUserProgramSession(userProgramSession.id, userProgramSession).bodyOrThrow() }
+    suspend fun deleteUserProgramSession(id: Int)
+        = safeApiCall { apiService.deleteUserProgramSession(id).bodyOrThrow() }
+
 
     // UserProgramSessionData
     suspend fun createUserProgramSessionData(userProgramSessionData: UserProgramSessionData)
-    = safeApiCall { apiService.createUserProgramSessionData(userProgramSessionData).bodyOrThrow() }
+        = safeApiCall { apiService.createUserProgramSessionData(userProgramSessionData).bodyOrThrow() }
     suspend fun getAllUserProgramSessionData(userId: Int)
-            = safeApiCall { apiService.getUserProgramSessionDataList(userId) }
+        = safeApiCall { apiService.getUserProgramSessionDataList(userId) }
+    suspend fun updateUserProgramSessionData(userProgramSessionData: UserProgramSessionData)
+        = safeApiCall { apiService.updateUserProgramSessionData(userProgramSessionData.id, userProgramSessionData).bodyOrThrow() }
+    suspend fun deleteUserProgramSessionData(id: Int)
+        = safeApiCall { apiService.deleteUserProgramSessionData(id).bodyOrThrow() }
+
 
     // UserProgramSessionPhoto
     suspend fun createUserProgramSessionPhoto(userProgramSessionPhoto: UserProgramSessionPhoto)
-    = safeApiCall { apiService.createUserProgramSessionPhoto(userProgramSessionPhoto).bodyOrThrow() }
-
+        = safeApiCall { apiService.createUserProgramSessionPhoto(userProgramSessionPhoto).bodyOrThrow() }
+    suspend fun updateUserProgramSessionPhoto(userProgramSessionPhoto: UserProgramSessionPhoto)
+        = safeApiCall { apiService.updateUserProgramSessionPhoto(userProgramSessionPhoto.id, userProgramSessionPhoto).bodyOrThrow() }
+    suspend fun deleteUserProgramSessionPhoto(id: Int)
+        = safeApiCall { apiService.deleteUserProgramSessionPhoto(id).bodyOrThrow() }
 }
 
 

@@ -2,12 +2,15 @@ package com.example.exercisetracker.repository
 import com.example.exercisetracker.db.*
 import com.example.exercisetracker.network.*
 import kotlinx.coroutines.flow.Flow
+import retrofit2.http.DELETE
+import retrofit2.http.Path
 
 
 class TrainingRepository(private val localDataSource: LocalDataSource, // database
                          private val remoteDataSource: RemoteDataSource // network
 ) {
-    // Local data source methods
+    // Local data source methods -------------------------------------------------------------
+
     // User
     suspend fun getAllUsers(): Flow<List<UserEntity>> {
         return localDataSource.getAllUsers()
@@ -30,6 +33,7 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
         return localDataSource.removeActiveUser()
     }
 
+
     // ProgramType
     suspend fun insertProgramType(appProgramTypeEntity: AppProgramTypeEntity): Long {
         return localDataSource.insertProgramType(appProgramTypeEntity)
@@ -46,7 +50,6 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun insertUserProgram(userProgramEntity: UserProgramEntity ): Long {
         return localDataSource.insertUserProgram(userProgramEntity)
     }
-
     suspend fun updateUserProgram(userProgramEntity: UserProgramEntity) {
         return localDataSource.updateUserProgram(userProgramEntity)
     }
@@ -56,6 +59,10 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun deleteUserPrograms() {
         return localDataSource.deleteUserPrograms()
     }
+    suspend fun deleteUserProgram(userProgramEntity: UserProgramEntity) {
+        return localDataSource.deleteUserProgram(userProgramEntity)
+    }
+
 
     // UserExercise
     suspend fun insertUserExercise(userExerciseEntity: UserExerciseEntity): Long {
@@ -64,9 +71,16 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun getUserExercises():Flow<List<UserExerciseEntity>> {
         return localDataSource.getUserExercises()
     }
+    suspend fun updateUserExercise(userExerciseEntity: UserExerciseEntity) {
+        return localDataSource.updateUserExercise(userExerciseEntity)
+    }
     suspend fun deleteUserExercises() {
         return localDataSource.deleteUserExercises()
     }
+    suspend fun deleteUserExercise(userExerciseEntity: UserExerciseEntity) {
+        return localDataSource.deleteUserExercise(userExerciseEntity)
+    }
+
 
     // UserProgramExercise
     suspend fun insertUserProgramExercise(userProgramExerciseEntity: UserProgramExerciseEntity): Long {
@@ -75,6 +89,10 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun deleteUserProgramExercises() {
         return localDataSource.deleteUserProgramExercises()
     }
+    suspend fun deleteUserProgramExercise(userProgramExerciseEntity: UserProgramExerciseEntity) {
+        return localDataSource.deleteUserProgramExercise(userProgramExerciseEntity)
+    }
+
 
     // UserProgramSession
     suspend fun insertUserProgramSession(userProgramSessionEntity: UserProgramSessionEntity): Long {
@@ -83,9 +101,16 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun getUserProgramSessions(): Flow<List<UserProgramSessionEntity>> {
         return localDataSource.getUserProgramSessions()
     }
+    suspend fun updateUserProgramSession(userProgramSessionEntity: UserProgramSessionEntity) {
+        return localDataSource.updateUserProgramSession(userProgramSessionEntity)
+    }
     suspend fun deleteUserProgramSessions() {
         return localDataSource.deleteUserProgramSessions()
     }
+    suspend fun deleteUserProgramSession(userProgramSessionEntity: UserProgramSessionEntity) {
+        return localDataSource.deleteUserProgramSession(userProgramSessionEntity)
+    }
+
 
     // UserProgramSessionData
     suspend fun insertUserProgramSessionData(userProgramSessionDataEntity: UserProgramSessionDataEntity): Long {
@@ -94,13 +119,26 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun getAllUserProgramSessionData(): Flow<List<UserProgramSessionDataEntity>> {
         return localDataSource.getAllUserProgramSessionData()
     }
+    suspend fun updateUserProgramSessionData(userProgramSessionDataEntity: UserProgramSessionDataEntity) {
+        return localDataSource.updateUserProgramSessionData(userProgramSessionDataEntity)
+    }
     suspend fun deleteAllUserProgramSessionData() {
         return localDataSource.deleteAllUserProgramSessionData()
     }
+    suspend fun deleteUserProgramSessionData(userProgramSessionDataEntity: UserProgramSessionDataEntity) {
+        return localDataSource.deleteUserProgramSessionData(userProgramSessionDataEntity)
+    }
+
 
     // UserProgramSessionPhoto
     suspend fun insertUserProgramSessionPhoto(userProgramSessionPhotoEntity: UserProgramSessionPhotoEntity): Long {
         return localDataSource.insertUserProgramSessionPhoto(userProgramSessionPhotoEntity)
+    }
+    suspend fun updateUserProgramSessionPhoto(userProgramSessionPhotoEntity: UserProgramSessionPhotoEntity) {
+        return localDataSource.updateUserProgramSessionPhoto(userProgramSessionPhotoEntity)
+    }
+    suspend fun deleteUserProgramSessionPhoto(userProgramSessionPhotoEntity: UserProgramSessionPhotoEntity) {
+        return localDataSource.deleteUserProgramSessionPhoto(userProgramSessionPhotoEntity)
     }
 
 
@@ -129,16 +167,17 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun createUserProgramAPI(userProgram: UserProgram):  Result<UserProgramJSON>{
         return remoteDataSource.createUserProgram(userProgram)
     }
-
     suspend fun updateUserProgramAPI(userProgram: UserProgram): Result<UserProgramJSON> {
         return remoteDataSource.updateUserProgram(userProgram)
     }
-
     suspend fun getUserProgramsAPI(userId: Int): Result<List<UserProgramJSON>> {
         return remoteDataSource.getUserPrograms(userId)
     }
     suspend fun getUserProgramAPI(id: Int): Result<UserProgramJSON> {
         return remoteDataSource.getUserProgram(id)
+    }
+    suspend fun deleteUserProgramAPI(id: Int): Result<Unit> {
+        return remoteDataSource.deleteUserProgram(id)
     }
 
     // UserExercise
@@ -148,6 +187,12 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun getUserExercisesAPI(userId: Int): Result<List<UserExerciseJSON>> {
         return remoteDataSource.getUserExercises(userId)
     }
+    suspend fun updateUserExerciseAPI(userExercise: UserExercise): Result<UserExerciseJSON> {
+        return remoteDataSource.updateUserExercise(userExercise)
+    }
+    suspend fun deleteUserExerciseAPI(id: Int): Result<Unit> {
+        return remoteDataSource.deleteUserExercise(id)
+    }
 
     // UserProgramExercise
     suspend fun createUserProgramExerciseAPI(userProgramExercise: UserProgramExercise): Result<UserProgramExerciseJSON> {
@@ -156,14 +201,22 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun getUserProgramExercisesAPI(userProgramId: Int): Result<List<UserProgramExerciseJSON>> {
         return remoteDataSource.getUserProgramExercises(userProgramId)
     }
+    suspend fun deleteUserProgramExerciseAPI(id: Int): Result<Unit> {
+        return remoteDataSource.deleteUserProgramExercise(id)
+    }
 
     // UserProgramSession
     suspend fun createUserProgramSessionAPI(userProgramSession: UserProgramSession): Result<UserProgramSessionJSON> {
         return remoteDataSource.createUserProgramSession(userProgramSession)
     }
-
     suspend fun getUserProgramSessionsAPI(userProgramId: Int): Result<List<UserProgramSessionJSON>> {
         return remoteDataSource.getUserProgramSessions(userProgramId)
+    }
+    suspend fun updateUserProgramSessionAPI(userProgramSession: UserProgramSession): Result<UserProgramSessionJSON> {
+        return remoteDataSource.updateUserProgramSession(userProgramSession)
+    }
+    suspend fun deleteUserProgramSessionAPI(id: Int): Result<Unit> {
+        return remoteDataSource.deleteUserProgramSession(id)
     }
 
     // UserProgramSessionData
@@ -173,10 +226,22 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun getALlUserProgramSessionDataAPI(userId: Int): Result<List<UserProgramSessionDataJSON>> {
         return remoteDataSource.getAllUserProgramSessionData(userId)
     }
+    suspend fun updateUserProgramSessionDataAPI(userProgramSessionData: UserProgramSessionData): Result<UserProgramSessionDataJSON> {
+        return remoteDataSource.updateUserProgramSessionData(userProgramSessionData)
+    }
+    suspend fun deleteUserProgramSessionDataAPI(id: Int): Result<Unit> {
+        return remoteDataSource.deleteUserProgramSessionData(id)
+    }
 
     // UserProgramSessionPhoto
     suspend fun createUserProgramSessionPhotoAPI(userProgramSessionPhoto: UserProgramSessionPhoto): Result<UserProgramSessionPhotoJSON> {
         return remoteDataSource.createUserProgramSessionPhoto(userProgramSessionPhoto)
+    }
+    suspend fun updateUserProgramSessionPhotoAPI(userProgramSessionPhoto: UserProgramSessionPhoto): Result<UserProgramSessionPhotoJSON> {
+        return remoteDataSource.updateUserProgramSessionPhoto(userProgramSessionPhoto)
+    }
+    suspend fun deleteUserProgramSessionPhotoAPI(id: Int): Result<Unit> {
+        return remoteDataSource.deleteUserProgramSessionPhoto(id)
     }
 
 }
