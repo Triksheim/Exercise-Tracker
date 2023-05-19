@@ -13,9 +13,11 @@ import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.exercisetracker.db.UserProgramSession
 import com.example.exercisetracker.db.UserProgramSessionEntity
 import com.example.exercisetracker.repository.TrainingApplication
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -63,22 +65,13 @@ class ProgramSessionFragment: Fragment() {
 
         val saveWorkoutButton: Button = view.findViewById(R.id.save_workout_button)
         saveWorkoutButton.setOnClickListener {
-            saveWorkoutSession()
-        }
+            // Call saveWorkoutSession inside a coroutine
+            viewLifecycleOwner.lifecycleScope.launch {
+                saveWorkoutSession()
+            }        }
     }
 
     private fun startWorkoutSession() {
-        val timestamp = System.currentTimeMillis()
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        val startTimeStr = dateFormat.format(Date(timestamp))
-        val userProgramSession = UserProgramSession(
-            id = 0,
-            user_program_id = userProgramId ?: return,
-            startTime = startTimeStr,
-            time_spent = 0,
-            description = ""
-        )
-        sharedViewModel.addUserProgramSession(userProgramSession)
         if (!isWorkoutRunning) {
             startTime = System.currentTimeMillis()
             isWorkoutRunning = true
@@ -100,13 +93,24 @@ class ProgramSessionFragment: Fragment() {
         }
     }
 
-    private fun saveWorkoutSession() {
+    private suspend fun saveWorkoutSession() {
         if (isWorkoutRunning) {
             timeSpent += ((System.currentTimeMillis() - startTime) / 1000).toInt()
             isWorkoutRunning = false
             timerHandler.removeCallbacks(timerRunnable)
+
         }
-        // Save the timeSpent to the UserProgramSession object or your data storage
+        val timestamp = System.currentTimeMillis()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val startTimeStr = dateFormat.format(Date(timestamp))
+        val userProgramSession = UserProgramSession(
+            id = 0,
+            user_program_id = userProgramId ?: return,
+            startTime = startTimeStr,
+            time_spent = 0,
+            description = ""
+        )
+        sharedViewModel.createUserProgramSession(userProgramSession)
     }
 
     private val timerRunnable = object : Runnable {
