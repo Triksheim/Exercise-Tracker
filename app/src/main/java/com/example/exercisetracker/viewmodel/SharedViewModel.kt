@@ -349,23 +349,25 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
 
 
-
+    // User
     fun createUser(user: User)   {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val result = repository.createUserAPI(user)
             if (result.isSuccess) {
-                _networkConnectionOk.value = true
+                _networkConnectionOk.postValue(true)
                 val newUser = result.getOrNull()
                 setActiveUser(newUser!!.asEntity().asDomainModel())
                 restart()
             }
             else {
-                _createUserStatus.value = result
+                _createUserStatus.postValue(result)
                 Log.e("ERROR USER CREATION", "Creating user failed")
             }
         }
     }
 
+
+    // UserProgram
     fun createUserProgram(userProgram: UserProgram) {
         viewModelScope.launch(Dispatchers.IO){
             val result = repository.createUserProgramAPI(userProgram = userProgram)
@@ -373,7 +375,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 val newUserProgram = result.getOrNull()
                 newUserProgram?.let { repository.insertUserProgram(it.asEntity())}
                 Log.d("CREATE USER PROGRAM", "SUCCESS")
-                getAllUserPrograms()
             }
             else {
                 Log.e("ERROR USER PROGRAM", "Creating user program failed")
@@ -387,10 +388,22 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 val updatedUserProgram = result.getOrNull()
                 updatedUserProgram?.let {repository.updateUserProgram(it.asEntity())}
                 Log.d("UPDATE USER PROGRAM", "SUCCESS")
-                getAllUserPrograms()
             }
             else {
                 Log.e("ERROR USER PROGRAM", "Updating user program failed")
+            }
+        }
+    }
+
+    suspend fun deleteUserProgram(userProgram: UserProgram) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.deleteUserExerciseAPI(userProgram.id)
+            if (result.isSuccess) {
+                repository.deleteUserProgram(userProgram.asEntity())
+                Log.d("DELETE USER PROGRAM", "SUCCESS")
+            }
+            else {
+                Log.e("ERROR USER PROGRAM", "Deleting user program failed")
             }
         }
     }
@@ -411,7 +424,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 val newUserExercise = result.getOrNull()
                 newUserExercise?.let { repository.insertUserExercise(it.asEntity()) }
                 Log.d("CREATE USER EXERCISE", "SUCCESS")
-                getAllUserExercises()
             }
             else {
                 Log.e("ERROR USER EXERCISE", "Creating user exercise failed")
@@ -419,6 +431,35 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
+    suspend fun updateUserExercise(userExercise: UserExercise) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.updateUserExerciseAPI(userExercise)
+            if (result.isSuccess) {
+                val updatedUserExercise = result.getOrNull()
+                updatedUserExercise?.let { repository.updateUserExercise(it.asEntity()) }
+                Log.d("UPDATE USER EXERCISE", "SUCCESS")
+            }
+            else {
+                Log.e("ERROR USER EXERCISE", "Updating user exercise failed")
+            }
+        }
+    }
+
+    suspend fun deleteUserExercise(userExercise: UserExercise) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.deleteUserExerciseAPI(userExercise.id)
+            if (result.isSuccess) {
+                repository.deleteUserExercise(userExercise.asEntity())
+                Log.d("DELETE USER EXERCISE", "SUCCESS")
+            }
+            else {
+                Log.e("ERROR USER EXERCISE", "Deleting user exercise failed")
+            }
+        }
+    }
+
+
+    // UserProgramExercise
     suspend fun addUserExerciseToUserProgram(userProgramExercise: UserProgramExercise) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.createUserProgramExerciseAPI(userProgramExercise)
@@ -433,8 +474,21 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
+    suspend fun deleteUserProgramExercise(userProgramExercise: UserProgramExercise) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.deleteUserProgramExerciseAPI(userProgramExercise.id)
+            if (result.isSuccess) {
+                repository.deleteUserProgramExercise(userProgramExercise.asEntity())
+                Log.d("DELETE USER PROGRAM EXERCISE", "SUCCESS")
+            }
+            else {
+                Log.e("ERROR USER PROGRAM EXERCISE", "Deleting user program exercise failed")
+            }
+        }
+    }
 
 
+    // UserProgramSession
     suspend fun createUserProgramSession(userProgramSession: UserProgramSession) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.createUserProgramSessionAPI(userProgramSession)
@@ -449,7 +503,35 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             }
         }
     }
+    suspend fun updateUserProgramSession(userProgramSession: UserProgramSession) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.updateUserProgramSessionAPI(userProgramSession)
+            if (result.isSuccess) {
+                val updatedUserProgramSession = result.getOrNull()
+                updatedUserProgramSession?.let { repository.updateUserProgramSession(it.asEntity()) }
+                Log.d("UPDATE USER PROGRAM SESSION", "SUCCESS")
+            }
+            else {
+                Log.e("ERROR USER PROGRAM SESSION", "Updating user program session failed")
+            }
+        }
+    }
 
+    suspend fun deleteUserProgramSession(userProgramSession: UserProgramSession) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.deleteUserProgramSessionAPI(userProgramSession.id)
+            if (result.isSuccess) {
+                repository.deleteUserProgramSession(userProgramSession.asEntity())
+                Log.d("DELETE USER PROGRAM SESSION", "SUCCESS")
+            }
+            else {
+                Log.e("ERROR USER PROGRAM SESSION", "Deleting user program session failed")
+            }
+        }
+    }
+
+
+    // UserProgramSessionData
     suspend fun createUserProgramSessionData(userProgramSessionData: UserProgramSessionData) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.createUserProgramSessionDataAPI(userProgramSessionData)
@@ -457,7 +539,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 val newUserProgramSessionData = result.getOrNull()
                 newUserProgramSessionData?.let { repository.insertUserProgramSessionData(it.asEntity()) }
                 Log.d("CREATE USER PROGRAM SESSION DATA", "SUCCESS")
-
             }
             else {
                 Log.e("ERROR USER PROGRAM SESSION DATA", "Creating user program session data failed")
@@ -465,6 +546,35 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
+    suspend fun updateUserProgramSessionData(userProgramSessionData: UserProgramSessionData) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.updateUserProgramSessionDataAPI(userProgramSessionData)
+            if (result.isSuccess) {
+                val updatedUserProgramSessionData = result.getOrNull()
+                updatedUserProgramSessionData?.let { repository.updateUserProgramSessionData(it.asEntity()) }
+                Log.d("UPDATE USER PROGRAM SESSION DATA", "SUCCESS")
+            }
+            else {
+                Log.e("ERROR USER PROGRAM SESSION DATA", "Updating user program session data failed")
+            }
+        }
+    }
+
+    suspend fun deleteUserProgramSessionData(userProgramSessionData: UserProgramSessionData) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.deleteUserProgramSessionDataAPI(userProgramSessionData.id)
+            if (result.isSuccess) {
+                repository.deleteUserProgramSessionData(userProgramSessionData.asEntity())
+                Log.d("DELETE USER PROGRAM SESSION DATA", "SUCCESS")
+            }
+            else {
+                Log.e("ERROR USER PROGRAM SESSION DATA", "Deleting user program session data failed")
+            }
+        }
+    }
+
+
+    // UserProgramSessionPhoto
     suspend fun createUserProgramSessionPhoto(userProgramSessionPhoto: UserProgramSessionPhoto) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.createUserProgramSessionPhotoAPI(userProgramSessionPhoto)
@@ -472,7 +582,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 val newUserProgramSessionPhoto = result.getOrNull()
                 newUserProgramSessionPhoto?.let { repository.insertUserProgramSessionPhoto(it.asEntity()) }
                 Log.d("CREATE USER PROGRAM SESSION PHOTO", "SUCCESS")
-
             }
             else {
                 Log.e("ERROR USER PROGRAM SESSION PHOTO", "Creating user program session photo failed")
@@ -480,8 +589,35 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
+    suspend fun updateUserProgramSessionPhoto(userProgramSessionPhoto: UserProgramSessionPhoto) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.updateUserProgramSessionPhotoAPI(userProgramSessionPhoto)
+            if (result.isSuccess) {
+                val updatedUserProgramSessionPhoto = result.getOrNull()
+                updatedUserProgramSessionPhoto?.let { repository.updateUserProgramSessionPhoto(it.asEntity()) }
+                Log.d("UPDATE USER PROGRAM SESSION PHOTO", "SUCCESS")
+            }
+            else {
+                Log.e("ERROR USER PROGRAM SESSION PHOTO", "Updating user program session photo failed")
+            }
+        }
+    }
 
+    suspend fun deleteUserProgramSessionPhoto(userProgramSessionPhoto: UserProgramSessionPhoto) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.deleteUserProgramSessionPhotoAPI(userProgramSessionPhoto.id)
+            if (result.isSuccess) {
+                repository.deleteUserProgramSessionPhoto(userProgramSessionPhoto.asEntity())
+                Log.d("DELETE USER PROGRAM SESSION PHOTO", "SUCCESS")
+            }
+            else {
+                Log.e("ERROR USER PROGRAM SESSION PHOTO", "Deleting user program session photo failed")
+            }
+        }
+    }
 }
+
+
 class SharedViewModelFactory(private val trainingRepository: TrainingRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SharedViewModel::class.java)) {
