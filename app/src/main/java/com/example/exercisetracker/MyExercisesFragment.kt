@@ -18,11 +18,12 @@ import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+const val EXERCISES_FRAGMENT = "exercisesFragment"
+
 class MyExercisesFragment: Fragment() {
 
     private var _binding: FragmentMyExercisesBinding? = null
     private val binding get() = _binding!!
-    private val addButton = 0
 
     private val sharedViewModel: SharedViewModel by activityViewModels() {
         SharedViewModelFactory(
@@ -40,6 +41,8 @@ class MyExercisesFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         val exerciseClickListener = object: ExerciseItemAdapter.ExerciseClickListener {
             override fun onEditButtonClick(exerciseId: Int) {
                 Toast.makeText(context, "Exercise: Edit button clicked", Toast.LENGTH_SHORT).show()
@@ -50,9 +53,14 @@ class MyExercisesFragment: Fragment() {
                 Toast.makeText(context, "Exercise: Add button clicked", Toast.LENGTH_SHORT).show()
                 // Not visible
             }
-        }
 
-        val adapter = ExerciseItemAdapter(exerciseClickListener, addButton)
+            override fun onRemoveButtonClick(exerciseId: Int) {
+                // Delete user_program_exercise
+            }
+
+        }
+        // From this fragment ExerciseItemAdapter is used, passing the recyclerLocation to set views
+        val adapter = ExerciseItemAdapter(exerciseClickListener, EXERCISES_FRAGMENT)
 
         lifecycleScope.launchWhenStarted {
             sharedViewModel.userExercises.collectLatest { userExercises -> adapter.submitList(userExercises)

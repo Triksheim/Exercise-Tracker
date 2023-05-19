@@ -20,6 +20,7 @@ class ProgramItemAdapter(
 
     interface UserProgramClickListener {
         fun onEditButtonClick(userProgram: UserProgram)
+        fun onStartProgramButtonClick(userProgram: UserProgram)
     }
 
     inner class ProgramViewHolder(private val binding: ProgramItemBinding) :
@@ -33,6 +34,7 @@ class ProgramItemAdapter(
                     onItemClickListener(userProgram)
                 }
                 editProgramButton.setOnClickListener{userProgramClickListener.onEditButtonClick(userProgram)}
+                startProgramButton.setOnClickListener{userProgramClickListener.onStartProgramButtonClick(userProgram)}
             }
         }
 

@@ -416,16 +416,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
          return (activeUser.value!!.id != 0)
     }
 
-    fun addUserProgramSession(userProgramSession: UserProgramSession) {
-        val updatedSessions = _userProgramSessions.value.toMutableList().apply {
-            add(userProgramSession)
-        }
-        _userProgramSessions.value = updatedSessions
-    }
 
-
-
-    // UserExercise
     suspend fun createUserExercise(userExercise: UserExercise) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.createUserExerciseAPI(userExercise)

@@ -83,7 +83,6 @@
             app:destination="@id/myProgramsFragment" />
     </fragment>
 
-
     <fragment
         android:id="@+id/programDetailsFragment"
         android:name="com.example.exercisetracker.ProgramDetailsFragment"
@@ -106,8 +105,11 @@
             app:destination="@id/newExerciseFragment" />
         <action
             android:id="@+id/action_programDetailsFragment_to_ProgramSessionFragment"
-            app:destination="@id/programSessionFragment" />
-
+            app:destination="@id/programSessionFragment">
+            <argument
+                android:name="userProgramId"
+                app:argType="integer" />
+        </action>
     </fragment>
 
     <fragment
@@ -141,9 +143,6 @@
         android:name="com.example.exercisetracker.MyExercisesFragment"
         android:label="fragment_my_exercises"
         tools:layout="@layout/fragment_my_exercises" >
-        <argument
-            android:name="userId"
-            app:argType="integer" />
         <action
             android:id="@+id/action_myExercisesFragment_to_newExerciseFragment"
             app:destination="@id/newExerciseFragment" />
@@ -168,12 +167,22 @@
                 app:argType="integer" />
         </action>
         <action
-            android:id="@+id/action_myProgramsFragment_to_programSessionsFragment"
-            app:destination="@id/programSessionFragment" >
+            android:id="@+id/action_myProgramsFragment_to_programDetailsFragment"
+            app:destination="@id/programDetailsFragment">
             <argument
-                android:name="programId"
+                android:name="userProgramId"
                 app:argType="integer" />
         </action>
+        <action
+            android:id="@+id/action_myProgramsFragment_to_programSessionFragment"
+            app:destination="@id/programSessionFragment">
+            <argument
+                android:name="programTypeId"
+                app:argType="integer" />
+        </action>
+        <action
+            android:id="@+id/action_myProgramsFragment_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
     </fragment>
 
     <fragment

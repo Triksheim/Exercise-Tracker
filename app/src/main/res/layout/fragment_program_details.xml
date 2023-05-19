@@ -44,6 +44,16 @@
             app:layout_constraintTop_toBottomOf="@id/program_type_image"
             tools:text="Program-navn"/>
 
+        <TextView
+            android:id="@+id/program_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{program.description}"
+            android:layout_marginTop="@dimen/margin_between_elements"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_add_programs"
+            tools:text="Programbeskrivelse"/>
+
         <View
             android:id="@+id/divider_top"
             android:layout_width="0dp"
@@ -52,112 +62,111 @@
             android:layout_marginBottom="@dimen/margin_between_elements"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_add_programs"/>
-
-        <TextView
-            android:id="@+id/program_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{program.description}"
-            android:layout_marginTop="@dimen/margin_between_elements"
-            app:layout_constraintStart_toStartOf="@id/divider_top"
-            app:layout_constraintTop_toBottomOf="@id/divider_top"
-            tools:text="Programbeskrivelse"/>
-
-        <TextView
-            android:id="@+id/tv_program_exercises"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/program_exercises"
-            app:layout_constraintStart_toStartOf="@id/divider_top"
             app:layout_constraintTop_toBottomOf="@id/program_description"/>
 
-        <!-- Denne recycler view viser kun text med navn på øvelse som er lagt til. Må oppdateres underveis når øvelser legges til-->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/exercise_name_recycler"
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/divider_top"
+            app:layout_constraintBottom_toTopOf="@id/button_layout">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Content below divider_top -->
+
+                <TextView
+                    android:id="@+id/tv_program_exercises"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/program_exercises"
+                    app:layout_constraintStart_toStartOf="@id/divider_top"
+                    app:layout_constraintTop_toBottomOf="@id/program_description" />
+
+                <!-- Denne recycler view viser kun text med navn på øvelse som er lagt til. Må oppdateres underveis når øvelser legges til-->
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/exercise_name_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="6dp"
+                    android:clipToPadding="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="6"
+                    tools:listItem="@layout/exercise_name_item" />
+
+                <View
+                    android:id="@+id/divider_bottom"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_margin="@dimen/side_margin"
+                    android:background="?attr/dividerHorizontal" />
+
+                <TextView
+                    android:id="@+id/no_exercise_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:text="@string/no_registered_exercises"
+                    android:layout_marginTop="@dimen/side_margin"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider_bottom" />
+
+                <TextView
+                    android:id="@+id/tv_choose_exercises"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tc_choose_exercises"
+                    android:layout_marginTop="@dimen/margin_between_elements"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider_bottom" />
+
+                <!--Denne recycler viser liste over øvelser, med ikon, navn og legg-til knapp-->
+                <!--Før bruker har lagret øvelser er den invisible-->
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/exercise_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="6dp"
+                    android:clipToPadding="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="8"
+                    tools:listItem="@layout/exercise_item" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/button_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="6dp"
-            android:clipToPadding="false"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_program_exercises"
-            tools:itemCount="6"
-            tools:listItem="@layout/exercise_name_item"/>
+            android:padding="@dimen/side_margin">
 
+            <Button
+                android:id="@+id/button_start"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:text="Start Program"
+                android:minHeight="64dp"
+                android:layout_gravity="center_vertical" />
 
-        <View
-            android:id="@+id/divider_bottom"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_margin="@dimen/side_margin"
-            android:background="?attr/dividerHorizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/exercise_name_recycler"/>
-
-        <TextView
-            android:id="@+id/no_exercise_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:text="@string/no_registered_exercises"
-            android:layout_marginTop="@dimen/side_margin"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider_bottom"
-            />
-
-        <TextView
-            android:id="@+id/tv_choose_exercises"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tc_choose_exercises"
-            android:layout_marginTop="@dimen/margin_between_elements"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider_bottom" />
-
-        <!--Denne recycler viser liste over øvelser, med ikon, navn og legg-til knapp-->
-        <!--Før bruker har lagret øvelser er den invisible-->
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/exercise_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="6dp"
-            android:clipToPadding="false"
-            android:scrollbars="vertical"
-            android:layout_marginTop="@dimen/margin_between_elements"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_choose_exercises"
-            tools:itemCount="8"
-            tools:listItem="@layout/exercise_item"/>
-
-
-        <Button
-            android:id="@+id/button_start"
-            android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:text="Start Program"
-            android:layout_marginTop="@dimen/side_margin"
-            android:layout_marginStart="@dimen/margin_between_elements"
-            app:layout_constraintTop_toBottomOf="@id/exercise_recycler"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/button_add_exercises"
-            />
-
-        <Button
-            android:id="@+id/button_add_exercises"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/create_new_exercise"
-            android:layout_marginTop="@dimen/side_margin"
-            android:layout_marginEnd="@dimen/margin_between_elements"
-            app:layout_constraintTop_toBottomOf="@id/exercise_recycler"
-            app:layout_constraintEnd_toStartOf="@id/button_start"
-            app:layout_constraintStart_toStartOf="parent"
-            />
+            <Button
+                android:id="@+id/button_add_exercises"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/create_new_exercise"
+                android:minHeight="64dp"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

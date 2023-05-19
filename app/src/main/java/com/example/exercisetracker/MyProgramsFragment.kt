@@ -41,22 +41,33 @@ class MyProgramsFragment : Fragment() {
         val userProgramClickListener = object: ProgramItemAdapter.UserProgramClickListener {
             override fun onEditButtonClick(userProgram: UserProgram) {
                 sharedViewModel.setCurrentUserProgram(userProgram)
-                val action = MyProgramsFragmentDirections
+                val actionEditProgram = MyProgramsFragmentDirections
                     .actionMyProgramsFragmentToNewProgramFragment(userProgram.app_program_type_id, userProgram.id)
-                findNavController().navigate(action)
+                findNavController().navigate(actionEditProgram)
+            }
+            override fun onStartProgramButtonClick(userProgram: UserProgram) {
+                sharedViewModel.setCurrentUserProgram(userProgram)
+                val actionStartProgram = MyProgramsFragmentDirections
+                    .actionMyProgramsFragmentToProgramSessionFragment(userProgram.id)
+                findNavController().navigate(actionStartProgram)
             }
         }
 
         val adapter = ProgramItemAdapter(userProgramClickListener,
             onItemClickListener = { selectedProgram ->
                 sharedViewModel.setCurrentUserProgram(selectedProgram)
-                val action = MyProgramsFragmentDirections
-                    .actionMyProgramsFragmentToProgramSessionsFragment(selectedProgram.id)
-                findNavController().navigate(action)
+                val actionProgramDetails = MyProgramsFragmentDirections
+                    .actionMyProgramsFragmentToProgramDetailsFragment(selectedProgram.id)
+                findNavController().navigate(actionProgramDetails)
             }
 
         )
 
+        // New program navigates back to second fragment to start creating a new Program
+        binding.buttonNewProgram.setOnClickListener{
+            val actionNewProgram = MyProgramsFragmentDirections.actionMyProgramsFragmentToSecondFragment()
+            findNavController().navigate(actionNewProgram)
+        }
         binding.programRecycler.adapter = adapter
 
         sharedViewModel.activeUser.observe(viewLifecycleOwner, Observer { activeUser ->
