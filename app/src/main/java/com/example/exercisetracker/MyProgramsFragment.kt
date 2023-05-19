@@ -45,6 +45,12 @@ class MyProgramsFragment : Fragment() {
                     .actionMyProgramsFragmentToNewProgramFragment(userProgram.app_program_type_id, userProgram.id)
                 findNavController().navigate(actionEditProgram)
             }
+            override fun onStartProgramButtonClick(userProgram: UserProgram) {
+                sharedViewModel.setCurrentUserProgram(userProgram)
+                val actionStartProgram = MyProgramsFragmentDirections
+                    .actionMyProgramsFragmentToProgramSessionFragment(userProgram.id)
+                findNavController().navigate(actionStartProgram)
+            }
         }
 
         val adapter = ProgramItemAdapter(userProgramClickListener,

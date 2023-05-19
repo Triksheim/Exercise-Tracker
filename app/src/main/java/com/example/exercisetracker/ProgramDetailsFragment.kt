@@ -69,7 +69,7 @@ class ProgramDetailsFragment: Fragment() {
             exerciseNameRecycler.adapter = adapterUpper
             exerciseRecycler.adapter = adapterBottom
             buttonStart.setOnClickListener {
-                findNavController().navigate(R.id.action_programDetailsFragment_to_newProgramFragment)
+                findNavController().navigate(R.id.action_programDetailsFragment_to_ProgramSessionFragment)
             }
             binding.buttonAddExercises.setOnClickListener{
                 findNavController().navigate(R.id.action_programDetailsFragment_to_newExerciseFragment)
