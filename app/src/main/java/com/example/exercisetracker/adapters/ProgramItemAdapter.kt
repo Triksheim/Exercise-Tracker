@@ -37,7 +37,6 @@ class ProgramItemAdapter(
                 startProgramButton.setOnClickListener{userProgramClickListener.onStartProgramButtonClick(userProgram)}
             }
         }
-
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             ProgramItemAdapter.ProgramViewHolder {

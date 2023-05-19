@@ -195,6 +195,11 @@
             app:destination="@id/myExercisesFragment"
             app:popUpTo="@id/myExercisesFragment"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_programSessionFragment_to_myStatisticsFragment"
+            app:destination="@id/myStatisticsFragment"
+            app:popUpTo="@id/myStatisticsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment

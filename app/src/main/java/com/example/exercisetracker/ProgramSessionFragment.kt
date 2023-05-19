@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.format.DateUtils.formatElapsedTime
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.exercisetracker.db.UserProgramSession
 import com.example.exercisetracker.db.UserProgramSessionEntity
@@ -21,6 +23,7 @@ import com.example.exercisetracker.repository.TrainingApplication
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class ProgramSessionFragment: Fragment() {
 
@@ -36,6 +39,7 @@ class ProgramSessionFragment: Fragment() {
     private var userProgramId: Int? = null
     private var startTime: Long = 0L
     private var timeSpent: Int = 0
+    private var pauseTime: Long = 0L
     private var isWorkoutRunning = false
     private val timerHandler = Handler(Looper.getMainLooper())
 
@@ -54,22 +58,40 @@ class ProgramSessionFragment: Fragment() {
 
         userProgramId = arguments?.getInt("programId")
 
-        val startWorkoutButton: Button = view.findViewById(R.id.start_workout_button)
-        startWorkoutButton.setOnClickListener {
+        binding.startWorkoutButton.setOnClickListener {
             startWorkoutSession()
         }
-
-        val stopPauseButton: Button = view.findViewById(R.id.stop_pause_button)
-        stopPauseButton.setOnClickListener {
-            pauseOrContinueWorkoutSession(stopPauseButton)
+        binding.stopPauseButton.setOnClickListener {
+            pauseOrContinueWorkoutSession(binding.stopPauseButton)
         }
+        binding.saveWorkoutButton.setOnClickListener {
+            if (isWorkoutRunning) {
+                timeSpent += ((System.currentTimeMillis() - startTime) / 1000).toInt()
+                isWorkoutRunning = false
+                timerHandler.removeCallbacks(timerRunnable)
 
-        val saveWorkoutButton: Button = view.findViewById(R.id.save_workout_button)
-        saveWorkoutButton.setOnClickListener {
-            // Call saveWorkoutSession inside a coroutine
+            }
+            val timestamp = System.currentTimeMillis()
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+            val startTimeStr = dateFormat.format(Date(timestamp))
+            val userProgramSession = UserProgramSession(
+                id = 0,
+                user_program_id = 0,
+                startTime = startTimeStr,
+                time_spent = timeSpent,
+                description = binding.personalDescriptionEditText.text.toString()
+            )
+
+            // Call createUserProgramSession inside a coroutine
             viewLifecycleOwner.lifecycleScope.launch {
-                saveWorkoutSession()
-            }        }
+                sharedViewModel.createUserProgramSession(userProgramSession)
+            }
+
+            // Navigate to MyStatisticsFragment
+            val action = ProgramSessionFragmentDirections
+            .actionProgramSessionFragmentToMyStatisticsFragment()
+            findNavController().navigate(action)
+        }
     }
 
     private fun startWorkoutSession() {
@@ -77,49 +99,45 @@ class ProgramSessionFragment: Fragment() {
             startTime = System.currentTimeMillis()
             isWorkoutRunning = true
             timerHandler.postDelayed(timerRunnable, 0)
+            updateElapsedTime() // Update the initial elapsed time immediately
         }
     }
+
 
     private fun pauseOrContinueWorkoutSession(stopPauseButton: Button) {
         if (isWorkoutRunning) {
             timeSpent += ((System.currentTimeMillis() - startTime) / 1000).toInt()
             isWorkoutRunning = false
+            pauseTime = System.currentTimeMillis() // Store the current time as pause time
             timerHandler.removeCallbacks(timerRunnable)
             stopPauseButton.text = "Fortsett"
         } else {
-            startTime = System.currentTimeMillis()
+            startTime = System.currentTimeMillis() - (pauseTime - startTime) // Update the start time based on pause time
             isWorkoutRunning = true
             timerHandler.postDelayed(timerRunnable, 0)
             stopPauseButton.text = "Stopp/pause"
         }
     }
 
-    private suspend fun saveWorkoutSession() {
-        if (isWorkoutRunning) {
-            timeSpent += ((System.currentTimeMillis() - startTime) / 1000).toInt()
-            isWorkoutRunning = false
-            timerHandler.removeCallbacks(timerRunnable)
 
-        }
-        val timestamp = System.currentTimeMillis()
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        val startTimeStr = dateFormat.format(Date(timestamp))
-        val userProgramSession = UserProgramSession(
-            id = 0,
-            user_program_id = userProgramId ?: return,
-            startTime = startTimeStr,
-            time_spent = 0,
-            description = ""
-        )
-        sharedViewModel.createUserProgramSession(userProgramSession)
+    private fun updateElapsedTime() {
+        val currentTime = System.currentTimeMillis()
+        val elapsedTime = currentTime - startTime + timeSpent
+        val formattedTime = formatElapsedTime(elapsedTime)
+        binding.timerText.text = formattedTime
+    }
+
+    private fun formatElapsedTime(elapsedTime: Long): String {
+        val hours = TimeUnit.MILLISECONDS.toHours(elapsedTime)
+        val minutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTime) % 60
+        val seconds = TimeUnit.MILLISECONDS.toSeconds(elapsedTime) % 60
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds)
     }
 
     private val timerRunnable = object : Runnable {
         override fun run() {
             if (isWorkoutRunning) {
-                val currentTime = System.currentTimeMillis()
-                val elapsedTime = currentTime - startTime + timeSpent
-                // Update your UI with elapsedTime
+                updateElapsedTime() // Update the elapsed time
                 timerHandler.postDelayed(this, 1000)
             }
         }
