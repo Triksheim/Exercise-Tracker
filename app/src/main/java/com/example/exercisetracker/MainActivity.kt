@@ -103,6 +103,7 @@ class MainActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp()
     }
     private fun performLogout() {
+        sharedViewModel.logout()
         // Navigate to the login screen
         navController.navigate(R.id.FirstFragment)
     }

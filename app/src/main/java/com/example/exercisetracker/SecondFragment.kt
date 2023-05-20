@@ -42,10 +42,6 @@ class SecondFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.buttonLogout.setOnClickListener {
-            sharedViewModel.logout()
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
-        }
 
         // Dersom indoor image er trykket, må innendørs program-typer vises i recyclerView
         binding.indoorImage.setOnClickListener {
