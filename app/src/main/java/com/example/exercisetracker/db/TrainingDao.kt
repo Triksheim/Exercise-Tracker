@@ -115,6 +115,9 @@ interface TrainingDao {
     @Query("SELECT * FROM user_program_session WHERE id = :id")
     fun getUserProgramSessionById(id: Int): Flow<UserProgramSessionEntity>
 
+    @Query("SELECT * FROM user_program_session WHERE user_program_id = :id")
+    fun getSessionsForProgramId(id: Int): List<UserProgramSessionEntity>
+
     @Update(onConflict = OnConflictStrategy.IGNORE)
     suspend fun updateUserProgramSession(userProgramSessionEntity: UserProgramSessionEntity)
 
@@ -138,6 +141,9 @@ interface TrainingDao {
     @Query("SELECT * FROM user_program_session_data WHERE id = :id")
     fun getUserProgramSessionDataById(id: Int): Flow<UserProgramSessionDataEntity>
 
+    @Query("SELECT * FROM user_program_session_data WHERE user_program_session_id = :id")
+    fun getDataForSessionId(id: Int): List<UserProgramSessionDataEntity>
+
     @Update(onConflict = OnConflictStrategy.IGNORE)
     suspend fun updateUserProgramSessionData(userProgramSessionDataEntity: UserProgramSessionDataEntity)
 
@@ -154,6 +160,9 @@ interface TrainingDao {
 
     @Query("SELECT * FROM user_program_session_photo WHERE id = :id")
     fun getUserProgramSessionPhotoById(id: Int): Flow<UserProgramSessionPhotoEntity>
+
+    @Query("SELECT * FROM user_program_session_photo WHERE user_program_session_id = :id")
+    fun getPhotosForSessionId(id: Int): List<UserProgramSessionPhotoEntity>
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
     suspend fun updateUserProgramSessionPhoto(userProgramSessionPhotoEntity: UserProgramSessionPhotoEntity)

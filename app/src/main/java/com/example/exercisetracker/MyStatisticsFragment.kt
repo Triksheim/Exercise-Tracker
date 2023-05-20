@@ -44,6 +44,7 @@ class MyStatisticsFragment: Fragment() {
 
         val adapter = StatisticsItemAdapter(replayClickListener)
 
+        """
         lifecycleScope.launchWhenStarted {
             sharedViewModel.userProgramSessionsData.collectLatest { userProgramSessionsData -> adapter.submitList(userProgramSessionsData)
             if (userProgramSessionsData.isEmpty()) {
@@ -51,7 +52,7 @@ class MyStatisticsFragment: Fragment() {
             }else{ binding.tvNoSessions.visibility = View.INVISIBLE }
             }
         }
-
+        """
         binding.apply{
             statisticsRecycler.adapter = adapter
             adapter.notifyDataSetChanged()

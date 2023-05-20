@@ -24,11 +24,9 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _activeUser = MutableLiveData<ActiveUserEntity>()
     val activeUser: LiveData<ActiveUserEntity> = _activeUser
 
-    private var _currentProgram = MutableLiveData<UserProgram>()
-    val currentProgram: LiveData<UserProgram> = _currentProgram
-
     private val _createUserStatus = MutableLiveData<Result<UserJSON>>()
     val createUserStatus: LiveData<Result<UserJSON>> = _createUserStatus
+
 
     private val _users = MutableStateFlow<List<User>>(emptyList())
     val users: StateFlow<List<User>> = _users
@@ -45,14 +43,24 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _allSessions = MutableStateFlow<List<UserProgramSession>>(emptyList())
     val allSessions: StateFlow<List<UserProgramSession>> = _allSessions
 
-    private val _userProgramSessions = MutableStateFlow<List<UserProgramSession>>(emptyList())
-    val userProgramSessions: StateFlow<List<UserProgramSession>> = _userProgramSessions
 
-    private val _userProgramSessionsData = MutableStateFlow<List<UserProgramSessionData>>(emptyList())
-    val userProgramSessionsData: StateFlow<List<UserProgramSessionData>> = _userProgramSessionsData
+    private var _currentProgram = MutableLiveData<UserProgram>()
+    val currentProgram: LiveData<UserProgram> = _currentProgram
 
-    private val _userProgramSessionPhotos = MutableStateFlow<List<UserProgramSessionPhoto>>(emptyList())
-    val userProgramSessionPhotos: StateFlow<List<UserProgramSessionPhoto>> = _userProgramSessionPhotos
+
+    private var _programSessions = MutableLiveData<List<UserProgramSession>>()
+    val programSessions: LiveData<List<UserProgramSession>> = _programSessions
+
+
+    private var _currentSession = MutableLiveData<UserProgramSession>()
+    val currentSession: LiveData<UserProgramSession> = _currentSession
+
+    private var _sessionData = MutableLiveData<List<UserProgramSessionData>>()
+    val sessionData: LiveData<List<UserProgramSessionData>> = _sessionData
+
+    private var _sessionPhotos = MutableLiveData<List<UserProgramSessionPhoto>>()
+    val sessionPhotos: LiveData<List<UserProgramSessionPhoto>> = _sessionPhotos
+
 
 
     init {
@@ -66,8 +74,9 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         fetchUserPrograms()
         fetchUserExercises()
         fetchUserProgramSessions()
-        fetchUserProgramSessionsData()
+
     }
+
 
 
     private fun fetchUsers() {
@@ -120,17 +129,37 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 }
         }
     }
-    private fun fetchUserProgramSessionsData() {
-        viewModelScope.launch {
-            repository.getAllUserProgramSessionData()
-                .flowOn(Dispatchers.IO)
-                .map { sessionsDataList -> sessionsDataList.map { it.asDomainModel() } }
-                .collect { sessionsDataList ->
-                    _userProgramSessionsData.value = sessionsDataList
-                }
+
+    fun getSessionsForCurrentProgram() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.getSessionsForProgramId(currentProgram.value!!.id).map { it.asDomainModel() }
+            _programSessions.postValue(result)
+            }
+        }
+
+    fun getDataForCurrentSession() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.getDataForSessionId(currentSession.value!!.id).map { it.asDomainModel() }
+            _sessionData.postValue(result)
         }
     }
 
+    fun getPhotosForCurrentSession() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.getPhotosForSessionId(currentSession.value!!.id).map { it.asDomainModel() }
+            _sessionPhotos.postValue(result)
+        }
+    }
+
+
+
+    fun setCurrentProgram(userProgram: UserProgram) {
+        _currentProgram.value = userProgram
+    }
+
+    fun setCurrentSession(userProgramSession: UserProgramSession) {
+        _currentSession.value = userProgramSession
+    }
 
     suspend fun login(phone: String): Boolean {
         return viewModelScope.async {

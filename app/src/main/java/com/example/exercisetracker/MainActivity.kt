@@ -10,6 +10,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.exercisetracker.databinding.ActivityMainBinding
@@ -43,11 +45,20 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-
         binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+
+        sharedViewModel.currentProgram.observe(this, Observer {
+            sharedViewModel.getSessionsForCurrentProgram()
+        })
+
+        sharedViewModel.currentSession.observe(this, Observer {
+            sharedViewModel.getDataForCurrentSession()
+            sharedViewModel.getPhotosForCurrentSession()
+        })
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

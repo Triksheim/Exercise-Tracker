@@ -102,6 +102,9 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
     suspend fun getUserProgramSessions(): Flow<List<UserProgramSessionEntity>> {
         return trainingDao.getAllUserProgramSessions()
     }
+    suspend fun getSessionsforProgramId(id: Int): List<UserProgramSessionEntity> {
+        return trainingDao.getSessionsForProgramId(id)
+    }
     suspend fun updateUserProgramSession(userProgramSessionEntity: UserProgramSessionEntity) {
         return trainingDao.updateUserProgramSession(userProgramSessionEntity)
     }
@@ -120,6 +123,9 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
     suspend fun getAllUserProgramSessionData(): Flow<List<UserProgramSessionDataEntity>> {
         return trainingDao.getAllUserProgramSessionData()
     }
+    suspend fun getDataForSessionId(id: Int): List<UserProgramSessionDataEntity> {
+        return trainingDao.getDataForSessionId(id)
+    }
     suspend fun updateUserProgramSessionData(userProgramSessionDataEntity: UserProgramSessionDataEntity) {
         return trainingDao.updateUserProgramSessionData(userProgramSessionDataEntity)
     }
@@ -134,6 +140,9 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
     // UserProgramSessionPhoto
     suspend fun insertUserProgramSessionPhoto(userProgramSessionPhotoEntity: UserProgramSessionPhotoEntity): Long {
         return trainingDao.insertUserProgramSessionPhoto(userProgramSessionPhotoEntity)
+    }
+    suspend fun getPhotosForSessionId(id: Int): List<UserProgramSessionPhotoEntity> {
+        return trainingDao.getPhotosForSessionId(id)
     }
     suspend fun updateUserProgramSessionPhoto(userProgramSessionPhotoEntity: UserProgramSessionPhotoEntity) {
         return trainingDao.updateUserProgramSessionPhoto(userProgramSessionPhotoEntity)

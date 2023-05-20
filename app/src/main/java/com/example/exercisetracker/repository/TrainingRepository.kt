@@ -101,6 +101,9 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun getUserProgramSessions(): Flow<List<UserProgramSessionEntity>> {
         return localDataSource.getUserProgramSessions()
     }
+    suspend fun getSessionsForProgramId(id: Int): List<UserProgramSessionEntity> {
+        return localDataSource.getSessionsforProgramId(id)
+    }
     suspend fun updateUserProgramSession(userProgramSessionEntity: UserProgramSessionEntity) {
         return localDataSource.updateUserProgramSession(userProgramSessionEntity)
     }
@@ -119,6 +122,9 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun getAllUserProgramSessionData(): Flow<List<UserProgramSessionDataEntity>> {
         return localDataSource.getAllUserProgramSessionData()
     }
+    suspend fun getDataForSessionId(id: Int): List<UserProgramSessionDataEntity> {
+        return localDataSource.getDataForSessionId(id)
+    }
     suspend fun updateUserProgramSessionData(userProgramSessionDataEntity: UserProgramSessionDataEntity) {
         return localDataSource.updateUserProgramSessionData(userProgramSessionDataEntity)
     }
@@ -133,6 +139,9 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     // UserProgramSessionPhoto
     suspend fun insertUserProgramSessionPhoto(userProgramSessionPhotoEntity: UserProgramSessionPhotoEntity): Long {
         return localDataSource.insertUserProgramSessionPhoto(userProgramSessionPhotoEntity)
+    }
+    suspend fun getPhotosForSessionId(id: Int): List<UserProgramSessionPhotoEntity> {
+        return localDataSource.getPhotosForSessionId(id)
     }
     suspend fun updateUserProgramSessionPhoto(userProgramSessionPhotoEntity: UserProgramSessionPhotoEntity) {
         return localDataSource.updateUserProgramSessionPhoto(userProgramSessionPhotoEntity)
