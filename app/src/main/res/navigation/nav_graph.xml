@@ -177,7 +177,7 @@
             android:id="@+id/action_myProgramsFragment_to_programSessionFragment"
             app:destination="@id/programSessionFragment">
             <argument
-                android:name="programTypeId"
+                android:name="userProgramId"
                 app:argType="integer" />
         </action>
         <action

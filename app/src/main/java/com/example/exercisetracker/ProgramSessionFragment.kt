@@ -56,7 +56,7 @@ class ProgramSessionFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userProgramId = arguments?.getInt("programId")
+        userProgramId = arguments?.getInt("userProgramId")
 
         val startPauseButton: Button = view.findViewById(R.id.start_pause_button)
         startPauseButton.setOnClickListener {
@@ -91,7 +91,7 @@ class ProgramSessionFragment: Fragment() {
         val startTimeStr = dateFormat.format(Date(timestamp))
         val userProgramSession = UserProgramSession(
             id = 0,
-            user_program_id = 0,
+            user_program_id = userProgramId ?: 0,
             startTime = startTimeStr,
             time_spent = timeSpent,
             description = binding.personalDescriptionEditText.text.toString()
