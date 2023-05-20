@@ -1,13 +1,15 @@
 package com.example.exercisetracker.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.exercisetracker.R
 import com.example.exercisetracker.databinding.ProgramTypeItemBinding
 import com.example.exercisetracker.db.AppProgramType
-import com.example.exercisetracker.db.AppProgramTypeEntity
+import android.content.Context
 
 class ProgramTypeAdapter(private val clickListener: (AppProgramType) -> Unit)
     : ListAdapter<AppProgramType, ProgramTypeAdapter.ProgramViewHolder>(DiffCallback) {
@@ -17,6 +19,12 @@ class ProgramTypeAdapter(private val clickListener: (AppProgramType) -> Unit)
         : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(appProgramType: AppProgramType) {
+            val resourceId = itemView.context.resources.getIdentifier(
+                appProgramType.icon,
+                "drawable",
+                itemView.context.packageName
+            )
+            binding.programIcon.setImageResource(resourceId)
             binding.program = appProgramType
             binding.executePendingBindings()
         }
@@ -33,7 +41,7 @@ class ProgramTypeAdapter(private val clickListener: (AppProgramType) -> Unit)
     override fun onBindViewHolder(holder: ProgramViewHolder, position: Int) {
         val programType = getItem(position)
 
-        val color = programType.back_color.substring(1).toInt(16)
+        val color = Color.parseColor(programType.back_color)
         holder.itemView.setBackgroundColor(color)
         holder.itemView.setOnClickListener {
             clickListener(programType)
