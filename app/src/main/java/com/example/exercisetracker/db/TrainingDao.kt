@@ -78,6 +78,9 @@ interface TrainingDao {
     @Query("SELECT * FROM user_program_exercise WHERE id = :id")
     fun getUserProgramExerciseById(id: Int): Flow<UserProgramExerciseEntity>
 
+    @Query("SELECT user_exercise_id FROM user_program_exercise WHERE user_program_id = :id")
+    suspend fun getUserExerciseIdsForProgramId(id: Int): List<Int>
+
     @Query("DELETE FROM user_program_exercise")
     suspend fun deleteAllUserProgramExercises()
 
@@ -93,7 +96,7 @@ interface TrainingDao {
     fun getAllUserExercises(): Flow<List<UserExerciseEntity>>
 
     @Query("SELECT * FROM user_exercise WHERE id = :id")
-    fun getUserExerciseById(id: Int): Flow<UserExerciseEntity>
+    fun getUserExerciseById(id: Int): UserExerciseEntity
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
     suspend fun updateUserExercise(userExerciseEntity: UserExerciseEntity)

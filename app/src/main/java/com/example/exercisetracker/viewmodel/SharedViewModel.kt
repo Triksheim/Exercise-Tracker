@@ -17,6 +17,8 @@ import kotlinx.coroutines.withContext
 
 
 class SharedViewModel(private val repository: TrainingRepository) : ViewModel() {
+    val outsideColor = "789ABCD"
+    val insideColor = "#123456"
 
     private val _networkConnectionOk = MutableLiveData<Boolean>()
     val networkConnectionOk: LiveData<Boolean> = _networkConnectionOk
@@ -47,6 +49,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private var _currentProgram = MutableLiveData<UserProgram>()
     val currentProgram: LiveData<UserProgram> = _currentProgram
 
+    private var _programExercises = MutableLiveData<List<UserExercise>>()
+    val programExercises: LiveData<List<UserExercise>> = _programExercises
 
     private var _programSessions = MutableLiveData<List<UserProgramSession>>()
     val programSessions: LiveData<List<UserProgramSession>> = _programSessions
@@ -129,6 +133,18 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 }
         }
     }
+    fun getExercisesForCurrentProgram() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val exerciseIds = repository.getUserExerciseIdsForProgramId(currentProgram.value!!.id)
+            val exercises: MutableList<UserExercise> = mutableListOf()
+            for (id in exerciseIds) {
+                val exercise = repository.getUserExerciseById(id)
+                exercises.add(exercise.asDomainModel())
+            }
+            _programExercises.postValue(exercises)
+        }
+    }
+
 
     fun getSessionsForCurrentProgram() {
         viewModelScope.launch(Dispatchers.IO) {
