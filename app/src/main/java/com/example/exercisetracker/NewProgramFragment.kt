@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.exercisetracker.databinding.FragmentNewProgramBinding
@@ -15,6 +16,7 @@ import com.example.exercisetracker.db.UserProgram
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
+import kotlinx.coroutines.launch
 
 class NewProgramFragment: Fragment() {
 
@@ -105,9 +107,17 @@ class NewProgramFragment: Fragment() {
     private fun addUserProgram() { // Holder det å sjekke innlogging ved hamburgermenyvalg + FrontPage? evt hamburger viser ingenting når ikke innlogget
         if(isValidProgramEntry()) {
             userProgram = createUserProgram()
-            sharedViewModel.createUserProgram(userProgram)
+
+            // Save user program via viewModel
+            viewLifecycleOwner.lifecycleScope.launch {
+                sharedViewModel.createUserProgram(userProgram)
+            }
+
+            // Set currentUserProgram
             sharedViewModel.setCurrentUserProgram(userProgram)
         }
+
+        // Navigate to ProgramDetails for current program
         val action = NewProgramFragmentDirections.actionNewProgramFragmentToProgramDetailsFragment(userProgram.id)
         findNavController().navigate(action)
     }

@@ -426,7 +426,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
 
     // UserProgram
-    fun createUserProgram(userProgram: UserProgram) {
+    suspend fun createUserProgram(userProgram: UserProgram) {
         viewModelScope.launch(Dispatchers.IO){
             val result = repository.createUserProgramAPI(userProgram = userProgram)
             if (result.isSuccess) {
@@ -481,7 +481,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-    fun updateUserExercise(userExercise: UserExercise) {
+    suspend fun updateUserExercise(userExercise: UserExercise) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.updateUserExerciseAPI(userExercise)
             if (result.isSuccess) {
