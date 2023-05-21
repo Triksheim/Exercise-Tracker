@@ -13,14 +13,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_between_elements">
+        android:layout_margin="@dimen/margin_between_elements">
 
         <View
             android:id="@+id/divider_top"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_margin="@dimen/side_margin"
             android:background="?attr/dividerHorizontal"
+            android:layout_marginTop="@dimen/margin_between_elements"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
@@ -29,10 +29,8 @@
             android:id="@+id/exercise_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/side_margin"
-            android:layout_marginEnd="@dimen/margin_between_elements"
-            android:src="@{exercise.photo_url}"
-            app:layout_constraintTop_toBottomOf="@id/divider_top"
+            android:layout_marginTop="@dimen/margin_between_elements"
+            app:layout_constraintTop_toBottomOf="@id/exercise_name"
             app:layout_constraintStart_toStartOf="parent"
             tools:src="@drawable/manual_img"/>
 
@@ -40,31 +38,34 @@
             android:id="@+id/exercise_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_between_elements"
+            android:layout_marginBottom="@dimen/margin_between_elements"
             android:text="@{exercise.name}"
-            app:layout_constraintStart_toEndOf="@id/exercise_icon"
+            android:textSize="16dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider_top"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="Exercise-navn"/>
 
         <TextView
             android:id="@+id/exercise_descript"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_between_elements"
+            android:layout_marginStart="@dimen/side_margin"
             android:text="@{exercise.description}"
             android:minLines="3"
             app:layout_constraintStart_toEndOf="@id/exercise_icon"
             app:layout_constraintTop_toBottomOf="@id/exercise_name"
-            tools:text="Exercise-beskrivelse bla bla bla bla bla"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Exercise-beskrivelse bla bla bla bla bla. Dette er en beskrivelse av et treningsprogram."/>
 
         <ImageButton
             android:id="@+id/button_add"
             android:layout_width="@dimen/button_size_small"
             android:layout_height="wrap_content"
             android:src="@drawable/add_img"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider_top"/>
+            app:layout_constraintStart_toEndOf="@id/button_edit"
+            app:layout_constraintTop_toBottomOf="@id/exercise_descript"/>
 
         <ImageButton
             android:id="@+id/button_remove"
@@ -72,8 +73,8 @@
             android:layout_height="wrap_content"
             android:visibility="invisible"
             android:src="@drawable/remove_img"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider_top"/>
+            app:layout_constraintStart_toEndOf="@id/button_edit"
+            app:layout_constraintTop_toBottomOf="@id/exercise_descript"/>
 
 
         <ImageButton
@@ -81,8 +82,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/edit_img"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_add"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/exercise_descript"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

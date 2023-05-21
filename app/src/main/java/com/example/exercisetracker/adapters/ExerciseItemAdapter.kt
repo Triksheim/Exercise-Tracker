@@ -35,6 +35,12 @@ class ExerciseItemAdapter(
         fun bind(userExercise: UserExercise) {
             this.userExercise = userExercise
             binding.exercise = userExercise
+            val resourceId = itemView.context.resources.getIdentifier(
+                userExercise.icon,
+                "drawable",
+                itemView.context.packageName
+            )
+            binding.exerciseIcon.setImageResource(resourceId)
             binding.executePendingBindings()
         }
 

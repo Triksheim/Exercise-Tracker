@@ -66,6 +66,13 @@ class MyExercisesFragment: Fragment() {
                 sharedViewModel.userExercises.collect {userExercises ->
                     val filteredUserExercises = userExercises.filter {it.user_id == userId}
                     adapter.submitList(filteredUserExercises)
+
+                    // Test if filteredUserExercises is empty. If empty show text "Du har ingen øvelser"
+                    binding.tvNoExercises.visibility = if (filteredUserExercises.isEmpty()) {
+                        View.VISIBLE
+                    } else {
+                        View.INVISIBLE
+                    }
                 }
             }
         })
