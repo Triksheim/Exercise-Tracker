@@ -48,17 +48,9 @@
         android:layout_height="wrap_content"
         android:text="@string/create_new_exercise"
         android:layout_marginBottom="@dimen/margin_between_elements"
-        app:layout_constraintBottom_toTopOf="@id/bt_my_programs"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <Button
-        android:id="@+id/bt_my_programs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/my_programs"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

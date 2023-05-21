@@ -84,6 +84,7 @@ class NewProgramFragment: Fragment() {
             rbOptionNo.isChecked = userProgram.use_timing == 0
             buttonSaveProgram.setOnClickListener{
                 updateUserProgram()
+                navigateToProgramDetails()
             }
         }
     }
@@ -112,14 +113,11 @@ class NewProgramFragment: Fragment() {
             viewLifecycleOwner.lifecycleScope.launch {
                 sharedViewModel.createUserProgram(userProgram)
             }
-
             // Set currentUserProgram
             sharedViewModel.setCurrentUserProgram(userProgram)
         }
-
         // Navigate to ProgramDetails for current program
-        val action = NewProgramFragmentDirections.actionNewProgramFragmentToProgramDetailsFragment(userProgram.id)
-        findNavController().navigate(action)
+        navigateToProgramDetails()
     }
 
     private fun isValidProgramEntry() = sharedViewModel.isValidProgramEntry(
@@ -138,6 +136,11 @@ class NewProgramFragment: Fragment() {
         description = binding.programDescriptInput.text.toString(),
         use_timing = useTimer,
         icon = "@drawable/runner")
+    }
+
+    private fun navigateToProgramDetails(){
+        val action = NewProgramFragmentDirections.actionNewProgramFragmentToProgramDetailsFragment(userProgram.id)
+        findNavController().navigate(action)
     }
 
 

@@ -110,19 +110,20 @@ class NewExerciseFragment: Fragment() {
     }
 
     private fun updateUserExercise() {
-        val exerciseName = binding.exerciseNameInput.toString()
-        val exerciseDescription = binding.exerciseDescriptInput.toString()
+        val exerciseName = binding.exerciseNameInput.text.toString()
+        val exerciseDescription = binding.exerciseDescriptInput.text.toString()
         if (sharedViewModel.isValidExerciseEntry(exerciseName, exerciseDescription)) {
-            viewLifecycleOwner.lifecycleScope.launch{
+            viewLifecycleOwner.lifecycleScope.launch {
                 sharedViewModel.updateUserExercise(
-                UserExercise(
-                    id = userExercise.id,
-                    user_id = userExercise.user_id,
-                    name = exerciseName,
-                    photo_url = userExercise.photo_url,
-                    description = exerciseDescription,
-                    icon = userExercise.icon,
-                    infobox_color = userExercise.infobox_color))
+                    UserExercise(
+                        id = userExercise.id,
+                        user_id = userExercise.user_id,
+                        name = exerciseName,
+                        photo_url = userExercise.photo_url,
+                        description = exerciseDescription,
+                        icon = userExercise.icon,
+                        infobox_color = userExercise.infobox_color)
+                )
             }
         }
     }

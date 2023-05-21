@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.exercisetracker.adapters.ExerciseItemAdapter
@@ -59,13 +60,15 @@ class MyExercisesFragment: Fragment() {
         // From this fragment ExerciseItemAdapter is used, passing the recyclerLocation to set views
         val adapter = ExerciseItemAdapter(exerciseClickListener, EXERCISES_FRAGMENT)
 
-        lifecycleScope.launchWhenStarted {
-            sharedViewModel.userExercises.collectLatest { userExercises -> adapter.submitList(userExercises)
-                if (userExercises.isEmpty()) {
-                    binding.tvNoExercises.visibility = View.VISIBLE
-                }else{ binding.tvNoExercises.visibility = View.INVISIBLE }
+        sharedViewModel.activeUser.observe(viewLifecycleOwner, Observer {activeUser ->
+            val userId = activeUser.id
+            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                sharedViewModel.userExercises.collect {userExercises ->
+                    val filteredUserExercises = userExercises.filter {it.user_id == userId}
+                    adapter.submitList(filteredUserExercises)
+                }
             }
-        }
+        })
 
         binding.apply {
             exerciseRecycler.adapter = adapter
@@ -73,10 +76,6 @@ class MyExercisesFragment: Fragment() {
             btNewExercise.setOnClickListener {
                 // Navigate to NewExerciseFragment
                 findNavController().navigate(R.id.action_myExercisesFragment_to_newExerciseFragment)
-            }
-            btMyPrograms.setOnClickListener {
-                // Navigate to MyProgramsFragment
-                findNavController().navigate(R.id.action_myExercisesFragment_to_myProgramsFragment)
             }
         }
     }

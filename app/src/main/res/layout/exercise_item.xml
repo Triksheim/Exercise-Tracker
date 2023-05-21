@@ -12,7 +12,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_between_elements">
 
         <View
             android:id="@+id/divider_top"
@@ -28,7 +29,8 @@
             android:id="@+id/exercise_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/side_margin"
+            android:layout_marginTop="@dimen/side_margin"
+            android:layout_marginEnd="@dimen/margin_between_elements"
             android:src="@{exercise.photo_url}"
             app:layout_constraintTop_toBottomOf="@id/divider_top"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,12 +51,11 @@
             android:id="@+id/exercise_descript"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_between_elements"
+            android:layout_marginTop="@dimen/margin_between_elements"
             android:text="@{exercise.description}"
             android:minLines="3"
             app:layout_constraintStart_toEndOf="@id/exercise_icon"
             app:layout_constraintTop_toBottomOf="@id/exercise_name"
-            app:layout_constraintEnd_toStartOf="@id/button_add"
             tools:text="Exercise-beskrivelse bla bla bla bla bla"/>
 
         <ImageButton
