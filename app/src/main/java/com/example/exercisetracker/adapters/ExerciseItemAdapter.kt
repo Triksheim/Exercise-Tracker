@@ -54,7 +54,7 @@ class ExerciseItemAdapter(
                 binding.buttonEdit.visibility = View.INVISIBLE
                 binding.buttonRemove.visibility = View.VISIBLE
                 binding.buttonRemove.setOnClickListener{
-                    exerciseClickListener.onEditButtonClick(binding.exercise!!.id) }
+                    exerciseClickListener.onRemoveButtonClick(binding.exercise!!.id) }
                 }
         }
     }
