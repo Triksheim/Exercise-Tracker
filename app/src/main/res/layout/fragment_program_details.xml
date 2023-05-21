@@ -89,7 +89,7 @@
                 <!-- Denne recycler view viser kun text med navn på øvelse som er lagt til. Må oppdateres underveis når øvelser legges til-->
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/exercise_name_recycler"
+                    android:id="@+id/program_exercise_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="6dp"
@@ -128,7 +128,7 @@
                 <!--Før bruker har lagret øvelser er den invisible-->
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/exercise_recycler"
+                    android:id="@+id/other_exercise_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="6dp"

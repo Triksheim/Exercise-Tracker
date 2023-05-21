@@ -75,8 +75,8 @@ interface TrainingDao {
     @Query("SELECT * FROM user_program_exercise")
     fun getAllUserProgramExercises(): Flow<List<UserProgramExerciseEntity>>
 
-    @Query("SELECT * FROM user_program_exercise WHERE id = :id")
-    fun getUserProgramExerciseById(id: Int): Flow<UserProgramExerciseEntity>
+    @Query("SELECT * FROM user_program_exercise WHERE user_program_id = :id")
+    fun getUserProgramExerciseById(id: Int): Flow<List<UserProgramExerciseEntity>>
 
     @Query("SELECT user_exercise_id FROM user_program_exercise WHERE user_program_id = :id")
     suspend fun getUserExerciseIdsForProgramId(id: Int): List<Int>

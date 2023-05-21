@@ -98,6 +98,9 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun deleteUserProgramExercise(userProgramExerciseEntity: UserProgramExerciseEntity) {
         return localDataSource.deleteUserProgramExercise(userProgramExerciseEntity)
     }
+    suspend fun getUserProgramExercisesById(id: Int): Flow<List<UserProgramExerciseEntity>> {
+        return localDataSource.getUserProgramExercisesById(id)
+    }
 
 
     // UserProgramSession

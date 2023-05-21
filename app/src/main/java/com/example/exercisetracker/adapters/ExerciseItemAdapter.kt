@@ -37,32 +37,35 @@ class ExerciseItemAdapter(
             binding.exercise = userExercise
             binding.executePendingBindings()
         }
+
         init {
-            // Sets views depending on what fragment and location
             when (recyclerLocation) {
                 EXERCISES_FRAGMENT -> {
                     binding.buttonAdd.visibility = View.INVISIBLE
                     binding.buttonRemove.visibility = View.INVISIBLE
                     binding.buttonEdit.visibility = View.VISIBLE
                     binding.buttonEdit.setOnClickListener {
-                        exerciseClickListener.onEditButtonClick(userExercise) }
-                     }
-
+                        exerciseClickListener.onEditButtonClick(binding.exercise!!)
+                    }
+                }
                 DETAIL_FRAGMENT_BOTTOM -> {
                     binding.buttonRemove.visibility = View.INVISIBLE
                     binding.buttonAdd.visibility = View.VISIBLE
                     binding.buttonAdd.setOnClickListener {
-                        exerciseClickListener.onAddButtonClick(userExercise) }
+                        exerciseClickListener.onAddButtonClick(binding.exercise!!)
+                    }
                     binding.buttonEdit.visibility = View.VISIBLE
                     binding.buttonEdit.setOnClickListener {
-                        exerciseClickListener.onEditButtonClick(userExercise) }
+                        exerciseClickListener.onEditButtonClick(binding.exercise!!)
+                    }
                 }
                 DETAIL_FRAGMENT_UPPER -> {
                     binding.buttonAdd.visibility = View.INVISIBLE
                     binding.buttonEdit.visibility = View.INVISIBLE
                     binding.buttonRemove.visibility = View.VISIBLE
                     binding.buttonRemove.setOnClickListener {
-                        exerciseClickListener.onEditButtonClick(userExercise) }
+                        exerciseClickListener.onRemoveButtonClick(binding.exercise!!)
+                    }
                 }
             }
         }
@@ -83,7 +86,6 @@ class ExerciseItemAdapter(
 
         val color = ContextCompat.getColor(holder.itemView.context, R.color.bg_exercise)
         holder.itemView.setBackgroundColor(color)
-
     }
 
     companion object DiffCallback: DiffUtil.ItemCallback<UserExercise>() {
@@ -95,5 +97,4 @@ class ExerciseItemAdapter(
             return oldItem.description == newItem.description
         }
     }
-
 }
