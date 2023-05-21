@@ -41,6 +41,10 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun getProgramTypes(): Flow<List<AppProgramTypeEntity>> {
         return localDataSource.getProgramTypes()
     }
+
+    suspend fun getProgramTypeById(id: Int): Flow<AppProgramTypeEntity> {
+        return localDataSource.getProgramTypeById(id)
+    }
     suspend fun deleteProgramTypes() {
         return localDataSource.deleteProgramTypes()
     }

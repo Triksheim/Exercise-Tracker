@@ -38,6 +38,9 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _userPrograms = MutableStateFlow<List<UserProgram>>(emptyList())
     val userPrograms: StateFlow<List<UserProgram>> = _userPrograms
 
+    private val _userProgramType = MutableStateFlow<AppProgramType?>(null)
+    val userProgramType: StateFlow<AppProgramType?> = _userProgramType
+
     private val _userExercises = MutableStateFlow<List<UserExercise>>(emptyList())
     val userExercises: StateFlow<List<UserExercise>> = _userExercises
 
@@ -165,6 +168,16 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.getPhotosForSessionId(currentSession.value!!.id).map { it.asDomainModel() }
             _sessionPhotos.postValue(result)
+        }
+    }
+
+    // Find ProgramType for a UserProgram and set programType to userProgramType
+    suspend fun getProgramTypeForProgram(userProgram: UserProgram) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.getProgramTypeById(userProgram.app_program_type_id)
+                .map { it.asDomainModel() }
+                .firstOrNull()
+            _userProgramType.value = result
         }
     }
 

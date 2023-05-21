@@ -1,4 +1,5 @@
 package com.example.exercisetracker.adapters
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -90,7 +91,7 @@ class ExerciseItemAdapter(
         val userExercise = getItem(position)
         holder.bind(userExercise)
 
-        val color = ContextCompat.getColor(holder.itemView.context, R.color.bg_exercise)
+        val color = Color.parseColor(userExercise.infobox_color)
         holder.itemView.setBackgroundColor(color)
     }
 

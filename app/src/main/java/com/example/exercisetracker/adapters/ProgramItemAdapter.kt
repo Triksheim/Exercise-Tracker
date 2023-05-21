@@ -1,6 +1,7 @@
 package com.example.exercisetracker.adapters
 
 
+import android.graphics.Color
 import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,11 +10,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exercisetracker.R
 import com.example.exercisetracker.databinding.ProgramItemBinding
+import com.example.exercisetracker.db.AppProgramType
 import com.example.exercisetracker.db.UserProgram
 import com.example.exercisetracker.db.UserProgramEntity
 
 
 class ProgramItemAdapter(
+    private val userProgramType: UserProgramType,
     private val userProgramClickListener: UserProgramClickListener,
     private val onItemClickListener: (UserProgram) -> Unit
 ) : ListAdapter<UserProgram, ProgramItemAdapter.ProgramViewHolder>(DiffCallback) {
@@ -23,8 +26,13 @@ class ProgramItemAdapter(
         fun onStartProgramButtonClick(userProgram: UserProgram)
     }
 
+    interface UserProgramType {
+        fun getProgramTypeForProgram(userProgram: UserProgram): AppProgramType?
+    }
+
     inner class ProgramViewHolder(private val binding: ProgramItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(userProgram: UserProgram) {
             binding.apply {
                 programTiming.text = if(userProgram.use_timing == 0) "Timing: no" else "Timing: yes"
@@ -35,6 +43,19 @@ class ProgramItemAdapter(
                 }
                 editProgramButton.setOnClickListener{userProgramClickListener.onEditButtonClick(userProgram)}
                 startProgramButton.setOnClickListener{userProgramClickListener.onStartProgramButtonClick(userProgram)}
+
+                // Set icon and backgound color corresponding the app_program_type
+                val programType = userProgramType.getProgramTypeForProgram(userProgram)
+                if (programType != null) {
+                    val resourceId = itemView.context.resources.getIdentifier(
+                        programType.icon,
+                        "drawable",
+                        itemView.context.packageName)
+                    programIcon.setImageResource(resourceId)
+                    val color = Color.parseColor(programType.back_color)
+                    itemView.setBackgroundColor(color)
+
+                }
             }
         }
     }

@@ -39,6 +39,11 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
     fun getProgramTypes(): Flow<List<AppProgramTypeEntity>> {
         return trainingDao.getAppProgramTypes()
     }
+
+    fun getProgramTypeById(id:Int): Flow<AppProgramTypeEntity> {
+        return trainingDao.getAppProgramTypeById(id)
+    }
+
     suspend fun deleteProgramTypes() {
         return trainingDao.deleteProgramTypes()
     }

@@ -28,7 +28,7 @@ interface TrainingDao {
 
 
     @Query("SELECT * FROM app_program_type WHERE id = :id")
-    fun getAppProgramTypesById(id: Int): Flow<AppProgramTypeEntity>
+    fun getAppProgramTypeById(id: Int): Flow<AppProgramTypeEntity>
 
     @Query("DELETE FROM app_program_type")
     suspend fun deleteProgramTypes()

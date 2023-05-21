@@ -12,10 +12,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.exercisetracker.adapters.ProgramItemAdapter
 import com.example.exercisetracker.databinding.FragmentMyProgramsBinding
+import com.example.exercisetracker.db.AppProgramType
 import com.example.exercisetracker.db.UserProgram
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
+
 
 class MyProgramsFragment : Fragment() {
     private var _binding: FragmentMyProgramsBinding? = null
@@ -52,27 +54,40 @@ class MyProgramsFragment : Fragment() {
                 findNavController().navigate(actionStartProgram)
             }
         }
+        // Iinitiating the adapter interface to get the programtype for each program
+        // to be recycled in ProgramItemAdapter
+        val userProgramType = object: ProgramItemAdapter.UserProgramType {
+            override fun getProgramTypeForProgram(userProgram: UserProgram): AppProgramType? {
+                viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                    sharedViewModel.getProgramTypeForProgram(userProgram)
+                    }
+                return sharedViewModel.userProgramType.value
+            }
+        }
 
-        val adapter = ProgramItemAdapter(userProgramClickListener,
+        val adapter = ProgramItemAdapter(
+            userProgramType,
+            userProgramClickListener,
             onItemClickListener = { selectedProgram ->
                 sharedViewModel.setCurrentUserProgram(selectedProgram)
                 val actionProgramDetails = MyProgramsFragmentDirections
                     .actionMyProgramsFragmentToProgramDetailsFragment(selectedProgram.id)
                 findNavController().navigate(actionProgramDetails)
             }
-
         )
 
-        // New program-button navigates back to second fragment to start creating a new Program
-        binding.buttonNewProgram.setOnClickListener{
-            val actionNewProgram = MyProgramsFragmentDirections.actionMyProgramsFragmentToSecondFragment()
-            findNavController().navigate(actionNewProgram)
+        binding.apply {
+            binding.programRecycler.adapter = adapter
+            adapter.notifyDataSetChanged()
+            // New program-button navigates back to second fragment to start creating a new Program
+            buttonNewProgram.setOnClickListener{
+                val actionNewProgram = MyProgramsFragmentDirections.actionMyProgramsFragmentToSecondFragment()
+                findNavController().navigate(actionNewProgram)
+            }
         }
-        binding.programRecycler.adapter = adapter
 
         sharedViewModel.activeUser.observe(viewLifecycleOwner, Observer { activeUser ->
             val userId = activeUser.id
-
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
                 sharedViewModel.userPrograms.collect { userPrograms ->
                     val filteredUserPrograms = userPrograms.filter { it.user_id == userId }
