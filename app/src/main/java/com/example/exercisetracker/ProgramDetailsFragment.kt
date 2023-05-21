@@ -48,17 +48,22 @@ class ProgramDetailsFragment: Fragment() {
         val exerciseClickListener = object: ExerciseItemAdapter.ExerciseClickListener {
             override fun onEditButtonClick(userExercise: UserExercise) {
                 sharedViewModel.setCurrentUserExercise(userExercise)
-                val actionEditExercise = ProgramDetailsFragmentDirections.actionProgramDetailsFragmentToNewExerciseFragment(userExercise.id)
+                val actionEditExercise =
+                    ProgramDetailsFragmentDirections.actionProgramDetailsFragmentToNewExerciseFragment(
+                        userExercise.id
+                    )
                 findNavController().navigate(actionEditExercise)
             }
 
-            override fun onAddButtonClick(exerciseId: Int) {
+            override fun onAddButtonClick(userExercise: UserExercise) {
                 Toast.makeText(context, "Exercise added to program", Toast.LENGTH_SHORT).show()
 
-                val selectedExercise = sharedViewModel.userExercises.value.find { it.id == exerciseId }
+                val selectedExercise = sharedViewModel.userExercises.value.find {
+                    it.id == userExercise.id
+                }
                 selectedExercise?.let { exercise ->
                     val newProgramExercise = UserProgramExercise(
-                        id = 0, // Provide an appropriate ID if needed
+                        id = 0,
                         user_program_id = sharedViewModel.currentProgram.value!!.id,
                         user_exercise_id = exercise.id
                     )
@@ -66,12 +71,14 @@ class ProgramDetailsFragment: Fragment() {
                 }
             }
 
-            override fun onRemoveButtonClick(exerciseId: Int) {
+            override fun onRemoveButtonClick(userExercise: UserExercise) {
                 Toast.makeText(context, "Exercise Removed from program", Toast.LENGTH_SHORT).show()
 
-                val selectedExercise = sharedViewModel.userExercises.value.find { it.id == exerciseId }
+                val selectedExercise =
+                    sharedViewModel.userExercises.value.find { it.id == userExercise.id }
                 selectedExercise?.let { exercise ->
-                    val programExercise = sharedViewModel.userProgramExercises.value?.find { it.user_exercise_id == exercise.id }
+                    val programExercise =
+                        sharedViewModel.userProgramExercises.value?.find { it.user_exercise_id == exercise.id }
                     programExercise?.let { userProgramExercise ->
                         sharedViewModel.deleteUserProgramExercise(userProgramExercise)
                     }
@@ -128,5 +135,3 @@ class ProgramDetailsFragment: Fragment() {
         _binding = null
     }
 }
-
-
