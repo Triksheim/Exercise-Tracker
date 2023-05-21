@@ -21,41 +21,50 @@ class ExerciseItemAdapter(
     : ListAdapter<UserExercise, ExerciseItemAdapter.ExerciseViewHolder>(DiffCallback) {
 
     interface ExerciseClickListener {
-        fun onEditButtonClick(exerciseId: Int)
-        fun onAddButtonClick(exerciseId: Int)
-        fun onRemoveButtonClick(exerciseId: Int)
+        fun onEditButtonClick(userExercise: UserExercise)
+        fun onAddButtonClick(userExercise: UserExercise)
+        fun onRemoveButtonClick(userExercise: UserExercise)
     }
 
-    class ExerciseViewHolder(private val binding: ExerciseItemBinding, exerciseClickListener: ExerciseClickListener,
+    class ExerciseViewHolder(private val binding: ExerciseItemBinding,
+                             exerciseClickListener: ExerciseClickListener,
                              recyclerLocation: String)
         : RecyclerView.ViewHolder(binding.root){
+        private lateinit var userExercise: UserExercise
+
         fun bind(userExercise: UserExercise) {
+            this.userExercise = userExercise
             binding.exercise = userExercise
             binding.executePendingBindings()
         }
         init {
             // Sets views depending on what fragment and location
-            if(recyclerLocation == EXERCISES_FRAGMENT) {
-                binding.buttonAdd.visibility = View.INVISIBLE
-                binding.buttonRemove.visibility = View.INVISIBLE
-                binding.buttonEdit.visibility = View.VISIBLE
-                binding.buttonEdit.setOnClickListener{
-                    exerciseClickListener.onEditButtonClick(binding.exercise!!.id)
-                }} else if (recyclerLocation == DETAIL_FRAGMENT_BOTTOM) {
-                binding.buttonRemove.visibility = View.INVISIBLE
-                binding.buttonAdd.visibility = View.VISIBLE
-                binding.buttonAdd.setOnClickListener{
-                    exerciseClickListener.onAddButtonClick(binding.exercise!!.id)}
-                binding.buttonEdit.visibility = View.VISIBLE
-                binding.buttonEdit.setOnClickListener{
-                    exerciseClickListener.onEditButtonClick(binding.exercise!!.id) }
-                } else if (recyclerLocation == DETAIL_FRAGMENT_UPPER){
-                binding.buttonAdd.visibility = View.INVISIBLE
-                binding.buttonEdit.visibility = View.INVISIBLE
-                binding.buttonRemove.visibility = View.VISIBLE
-                binding.buttonRemove.setOnClickListener{
-                    exerciseClickListener.onEditButtonClick(binding.exercise!!.id) }
+            when (recyclerLocation) {
+                EXERCISES_FRAGMENT -> {
+                    binding.buttonAdd.visibility = View.INVISIBLE
+                    binding.buttonRemove.visibility = View.INVISIBLE
+                    binding.buttonEdit.visibility = View.VISIBLE
+                    binding.buttonEdit.setOnClickListener {
+                        exerciseClickListener.onEditButtonClick(userExercise) }
+                     }
+
+                DETAIL_FRAGMENT_BOTTOM -> {
+                    binding.buttonRemove.visibility = View.INVISIBLE
+                    binding.buttonAdd.visibility = View.VISIBLE
+                    binding.buttonAdd.setOnClickListener {
+                        exerciseClickListener.onAddButtonClick(userExercise) }
+                    binding.buttonEdit.visibility = View.VISIBLE
+                    binding.buttonEdit.setOnClickListener {
+                        exerciseClickListener.onEditButtonClick(userExercise) }
                 }
+                DETAIL_FRAGMENT_UPPER -> {
+                    binding.buttonAdd.visibility = View.INVISIBLE
+                    binding.buttonEdit.visibility = View.INVISIBLE
+                    binding.buttonRemove.visibility = View.VISIBLE
+                    binding.buttonRemove.setOnClickListener {
+                        exerciseClickListener.onEditButtonClick(userExercise) }
+                }
+            }
         }
     }
 
@@ -86,4 +95,5 @@ class ExerciseItemAdapter(
             return oldItem.description == newItem.description
         }
     }
+
 }

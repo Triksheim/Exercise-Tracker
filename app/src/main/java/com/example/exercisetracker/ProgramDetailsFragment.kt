@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.exercisetracker.adapters.ExerciseItemAdapter
 import com.example.exercisetracker.databinding.FragmentProgramDetailsBinding
+import com.example.exercisetracker.db.UserExercise
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
@@ -43,17 +44,18 @@ class ProgramDetailsFragment: Fragment() {
         val programId = navigationArgs.userProgramId
 
         val exerciseClickListener = object: ExerciseItemAdapter.ExerciseClickListener {
-            override fun onEditButtonClick(exerciseId: Int) {
-                Toast.makeText(context, "Exercise update done", Toast.LENGTH_SHORT).show()
-                // navigate to "new exercise" fragment, populate fields with data from chosen exercise
+            override fun onEditButtonClick(userExercise: UserExercise) {
+                sharedViewModel.setCurrentUserExercise(userExercise)
+                val actionEditExercise = ProgramDetailsFragmentDirections.actionProgramDetailsFragmentToNewExerciseFragment(userExercise.id)
+                findNavController().navigate(actionEditExercise)
             }
 
-            override fun onAddButtonClick(exerciseId: Int) {
+            override fun onAddButtonClick(userExercise: UserExercise) {
                 Toast.makeText(context, "Exercise added to program", Toast.LENGTH_SHORT).show()
                 // Add exercise to the current program and create user_program_exercise object
             }
 
-            override fun onRemoveButtonClick(exerciseId: Int) {
+            override fun onRemoveButtonClick(userExercise: UserExercise) {
                 Toast.makeText(context, "Exercise Removed from program", Toast.LENGTH_SHORT).show()
             }
         }

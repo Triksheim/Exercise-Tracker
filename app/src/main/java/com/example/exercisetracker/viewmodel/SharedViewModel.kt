@@ -42,6 +42,9 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _userExercises = MutableStateFlow<List<UserExercise>>(emptyList())
     val userExercises: StateFlow<List<UserExercise>> = _userExercises
 
+    private var _currentUserExercise = MutableLiveData<UserExercise>()
+    val currentUserExercise: LiveData<UserExercise> = _currentUserExercise
+
     private val _allSessions = MutableStateFlow<List<UserProgramSession>>(emptyList())
     val allSessions: StateFlow<List<UserProgramSession>> = _allSessions
 
@@ -222,6 +225,22 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         return name.isNotBlank() && description.isNotBlank()
     }
 
+    fun setCurrentUserProgram(userProgram: UserProgram){
+        _currentProgram.value = userProgram
+    }
+
+    fun isUserLoggedIn(): Boolean {
+        return (activeUser.value!!.id != 0)
+    }
+
+    fun setCurrentUserExercise(userExercise: UserExercise) {
+        _currentUserExercise.value = userExercise
+    }
+
+    fun isValidExerciseEntry(name: String, description: String): Boolean{
+        return name.isNotBlank() && description.isNotBlank()
+    }
+
     private suspend fun clearDb() {
         withContext(Dispatchers.IO) {
             repository.removeActiveUser()
@@ -388,12 +407,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-
-
-
-
-
-
     // User
     fun createUser(user: User)   {
         viewModelScope.launch(Dispatchers.IO) {
@@ -453,14 +466,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-    fun setCurrentUserProgram(userProgram: UserProgram){
-        _currentProgram.value = userProgram
-    }
-
-    fun isUserLoggedIn(): Boolean {
-         return (activeUser.value!!.id != 0)
-    }
-
 
     suspend fun createUserExercise(userExercise: UserExercise) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -476,7 +481,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-    suspend fun updateUserExercise(userExercise: UserExercise) {
+    fun updateUserExercise(userExercise: UserExercise) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.updateUserExerciseAPI(userExercise)
             if (result.isSuccess) {

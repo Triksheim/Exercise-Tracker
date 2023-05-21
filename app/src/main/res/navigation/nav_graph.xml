@@ -102,7 +102,11 @@
         </action>
         <action
             android:id="@+id/action_programDetailsFragment_to_newExerciseFragment"
-            app:destination="@id/newExerciseFragment" />
+            app:destination="@id/newExerciseFragment" >
+            <argument
+                android:name="userExerciseId"
+                app:argType="integer" />
+        </action>
         <action
             android:id="@+id/action_programDetailsFragment_to_ProgramSessionFragment"
             app:destination="@id/programSessionFragment">
@@ -132,9 +136,7 @@
         <action
             android:id="@+id/action_newExerciseFragment_to_myExercisesFragment"
             app:destination="@id/myExercisesFragment">
-            <argument
-                android:name="userId"
-                app:argType="integer" />
+
         </action>
     </fragment>
 
@@ -145,7 +147,11 @@
         tools:layout="@layout/fragment_my_exercises" >
         <action
             android:id="@+id/action_myExercisesFragment_to_newExerciseFragment"
-            app:destination="@id/newExerciseFragment" />
+            app:destination="@id/newExerciseFragment">
+            <argument
+                android:name="userExerciseId"
+                app:argType="integer" />
+        </action>
         <action
             android:id="@+id/action_myExercisesFragment_to_myProgramsFragment"
             app:destination="@id/myProgramsFragment" />
