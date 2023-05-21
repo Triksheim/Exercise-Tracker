@@ -87,6 +87,7 @@ class NewProgramFragment: Fragment() {
     }
 
     private fun updateUserProgram(){
+
         if (isValidProgramEntry()) {
             sharedViewModel.updateUserProgram(
                 UserProgram(

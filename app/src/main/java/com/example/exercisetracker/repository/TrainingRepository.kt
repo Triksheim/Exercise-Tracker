@@ -68,6 +68,9 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun insertUserExercise(userExerciseEntity: UserExerciseEntity): Long {
         return localDataSource.insertUserExercise(userExerciseEntity)
     }
+    suspend fun getUserExerciseById(id: Int): UserExerciseEntity {
+        return localDataSource.getUserExerciseById(id)
+    }
     suspend fun getUserExercises():Flow<List<UserExerciseEntity>> {
         return localDataSource.getUserExercises()
     }
@@ -85,6 +88,9 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     // UserProgramExercise
     suspend fun insertUserProgramExercise(userProgramExerciseEntity: UserProgramExerciseEntity): Long {
         return localDataSource.insertUserProgramExercise(userProgramExerciseEntity)
+    }
+    suspend fun getUserExerciseIdsForProgramId(id: Int): List<Int> {
+        return localDataSource.getUserExerciseIdsForProgramId(id)
     }
     suspend fun deleteUserProgramExercises() {
         return localDataSource.deleteUserProgramExercises()

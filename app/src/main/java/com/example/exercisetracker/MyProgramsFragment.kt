@@ -63,7 +63,7 @@ class MyProgramsFragment : Fragment() {
 
         )
 
-        // New program navigates back to second fragment to start creating a new Program
+        // New program-button navigates back to second fragment to start creating a new Program
         binding.buttonNewProgram.setOnClickListener{
             val actionNewProgram = MyProgramsFragmentDirections.actionMyProgramsFragmentToSecondFragment()
             findNavController().navigate(actionNewProgram)

@@ -26,10 +26,14 @@ class ExerciseItemAdapter(
         fun onRemoveButtonClick(exerciseId: Int)
     }
 
-    class ExerciseViewHolder(private val binding: ExerciseItemBinding, exerciseClickListener: ExerciseClickListener,
+    class ExerciseViewHolder(private val binding: ExerciseItemBinding,
+                             exerciseClickListener: ExerciseClickListener,
                              recyclerLocation: String)
         : RecyclerView.ViewHolder(binding.root){
+        private lateinit var userExercise: UserExercise
+
         fun bind(userExercise: UserExercise) {
+            this.userExercise = userExercise
             binding.exercise = userExercise
             binding.executePendingBindings()
         }

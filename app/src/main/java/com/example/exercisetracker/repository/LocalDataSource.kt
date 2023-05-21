@@ -69,6 +69,9 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
     suspend fun insertUserExercise(userExerciseEntity: UserExerciseEntity): Long {
         return trainingDao.insertUserExercise(userExerciseEntity)
     }
+    suspend fun getUserExerciseById(id: Int): UserExerciseEntity {
+        return trainingDao.getUserExerciseById(id)
+    }
     suspend fun getUserExercises(): Flow<List<UserExerciseEntity>> {
         return trainingDao.getAllUserExercises()
     }
@@ -86,6 +89,9 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
     // UserProgramExercise
     suspend fun insertUserProgramExercise(userProgramExerciseEntity: UserProgramExerciseEntity): Long {
         return trainingDao.insertUserProgramExercise(userProgramExerciseEntity)
+    }
+    suspend fun getUserExerciseIdsForProgramId(id: Int): List<Int> {
+        return trainingDao.getUserExerciseIdsForProgramId(id)
     }
     suspend fun deleteUserProgramExercises() {
         return trainingDao.deleteAllUserProgramExercises()

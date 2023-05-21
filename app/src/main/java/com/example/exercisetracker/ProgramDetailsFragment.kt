@@ -15,10 +15,10 @@ import androidx.navigation.fragment.navArgs
 import com.example.exercisetracker.adapters.ExerciseItemAdapter
 import com.example.exercisetracker.databinding.FragmentProgramDetailsBinding
 import com.example.exercisetracker.db.UserProgramExercise
+import com.example.exercisetracker.db.UserExercise
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
-import kotlinx.coroutines.flow.filter
 
 const val DETAIL_FRAGMENT_UPPER = "detailFragmentUpper"
 const val DETAIL_FRAGMENT_BOTTOM = "detailFragmentBottom"
@@ -45,10 +45,11 @@ class ProgramDetailsFragment: Fragment() {
 
         val programId = navigationArgs.userProgramId
 
-        val exerciseClickListener = object : ExerciseItemAdapter.ExerciseClickListener {
-            override fun onEditButtonClick(exerciseId: Int) {
-                Toast.makeText(context, "Exercise update done", Toast.LENGTH_SHORT).show()
-                // navigate to "new exercise" fragment, populate fields with data from chosen exercise
+        val exerciseClickListener = object: ExerciseItemAdapter.ExerciseClickListener {
+            override fun onEditButtonClick(userExercise: UserExercise) {
+                sharedViewModel.setCurrentUserExercise(userExercise)
+                val actionEditExercise = ProgramDetailsFragmentDirections.actionProgramDetailsFragmentToNewExerciseFragment(userExercise.id)
+                findNavController().navigate(actionEditExercise)
             }
 
             override fun onAddButtonClick(exerciseId: Int) {

@@ -17,7 +17,7 @@ import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 
 const val INDOORCOLOR = "#7fe5ab"
-const val OUTDOORCOLOR ="ab7fe5"
+const val OUTDOORCOLOR ="#ab7fe5"
 class ProgramTypeFragment: Fragment() {
 
     private var _binding: FragmentProgramTypeBinding? = null
@@ -57,19 +57,9 @@ class ProgramTypeFragment: Fragment() {
             }
         }
 
-        //TEMPORARY NAVIGATION TO NEW PROGRAM FRAGMENT
-        binding.buttonTempNext.setOnClickListener {
-            findNavController().navigate(R.id.action_programTypeFragment_to_newProgramFragment)
-        }
-
         binding?.apply {
             programRecycler.adapter = adapter
-            buttonBack.setOnClickListener {
-                findNavController().navigate(R.id.action_programTypeFragment_to_SecondFragment)
-            }
-
             adapter.notifyDataSetChanged()
-
         }
     }
 

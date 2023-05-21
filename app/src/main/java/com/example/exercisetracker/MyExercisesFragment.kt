@@ -4,19 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.exercisetracker.adapters.ExerciseItemAdapter
 import com.example.exercisetracker.databinding.FragmentMyExercisesBinding
+import com.example.exercisetracker.db.UserExercise
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 const val EXERCISES_FRAGMENT = "exercisesFragment"
 
@@ -44,18 +42,17 @@ class MyExercisesFragment: Fragment() {
 
 
         val exerciseClickListener = object: ExerciseItemAdapter.ExerciseClickListener {
-            override fun onEditButtonClick(exerciseId: Int) {
-                Toast.makeText(context, "Exercise: Edit button clicked", Toast.LENGTH_SHORT).show()
-                // navigate to "new exercise" fragment, populate fields with data from chosen exercise
+            override fun onEditButtonClick(userExercise: UserExercise) {
+                sharedViewModel.setCurrentUserExercise(userExercise)
+                val actionEditExercise = MyExercisesFragmentDirections.actionMyExercisesFragmentToNewExerciseFragment(userExercise.id)
+                findNavController().navigate(actionEditExercise)
+            }
+            override fun onAddButtonClick(userExercise: UserExercise) {
+                // Not visible in this fragment
             }
 
-            override fun onAddButtonClick(exerciseId: Int) {
-                Toast.makeText(context, "Exercise: Add button clicked", Toast.LENGTH_SHORT).show()
-                // Not visible
-            }
-
-            override fun onRemoveButtonClick(exerciseId: Int) {
-                // Delete user_program_exercise
+            override fun onRemoveButtonClick(userExercise: UserExercise) {
+                // Not Visible in this fragment
             }
 
         }
