@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
 
         sharedViewModel.currentProgram.observe(this, Observer {
-            sharedViewModel.getExercisesForCurrentProgram()
+            sharedViewModel.fetchExercisesForCurrentProgram()
             sharedViewModel.getSessionsForCurrentProgram()
         })
 
