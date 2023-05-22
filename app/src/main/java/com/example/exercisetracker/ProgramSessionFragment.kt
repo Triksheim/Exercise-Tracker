@@ -113,7 +113,11 @@ class ProgramSessionFragment: Fragment() {
             viewLifecycleOwner.lifecycleScope.launch {
                 stopLocationUpdates()
                 saveWorkoutSession()
-                uploadLocationDataToDatabase(userProgramSessionDataList)
+
+                // Upload the location data to the database if the user selected the "Yes" option
+                if (binding.rbGpsYes.isChecked) {
+                    uploadLocationDataToDatabase(userProgramSessionDataList)
+                }
 
                 // Navigate to MyStatisticsFragment after saving the session and uploading the data
                 val action = ProgramSessionFragmentDirections
@@ -130,8 +134,8 @@ class ProgramSessionFragment: Fragment() {
     private suspend fun saveWorkoutSession() {
         if (isWorkoutRunning) {
             val currentTime = System.currentTimeMillis()
-            pauseDuration += currentTime - pauseStartTime
-            timeSpent = ((currentTime - startTime - pauseDuration) / 1000).toInt()
+            pauseDuration = currentTime - pauseStartTime
+            timeSpent += ((currentTime - startTime - pauseDuration) / 1000).toInt()
             isWorkoutRunning = false
             timerHandler.removeCallbacks(timerRunnable)
         }
@@ -150,11 +154,9 @@ class ProgramSessionFragment: Fragment() {
 
     private fun startWorkoutSession(button: Button) {
         if (!isWorkoutRunning) {
-            if (pauseStartTime > 0L) {
-                val currentTime = System.currentTimeMillis()
-                pauseDuration += currentTime - pauseStartTime
-                startTime += currentTime - pauseStartTime
-                pauseStartTime = 0L
+            if (pauseDuration > 0L) {
+                startTime += pauseDuration
+                pauseDuration = 0L
             } else {
                 startTime = System.currentTimeMillis()
             }
@@ -179,7 +181,7 @@ class ProgramSessionFragment: Fragment() {
     private fun pauseWorkoutSession(button: Button) {
         val currentTime = System.currentTimeMillis()
         pauseStartTime = currentTime
-        timeSpent = ((currentTime - startTime - pauseDuration) / 1000).toInt()
+        timeSpent += ((currentTime - startTime) / 1000).toInt()
         isWorkoutRunning = false
         timerHandler.removeCallbacks(timerRunnable)
         button.text = "Fortsett"
@@ -188,7 +190,7 @@ class ProgramSessionFragment: Fragment() {
     // Timer functions
     private fun updateElapsedTime() {
         val currentTime = System.currentTimeMillis()
-        val elapsedTime = currentTime - startTime - pauseDuration
+        val elapsedTime = currentTime - startTime + timeSpent * 1000
         val formattedTime = formatElapsedTime(elapsedTime)
         binding.timerText.text = formattedTime
     }
