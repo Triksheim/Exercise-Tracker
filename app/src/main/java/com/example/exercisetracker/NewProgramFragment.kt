@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.exercisetracker.databinding.FragmentNewProgramBinding
+import com.example.exercisetracker.db.AppProgramType
 import com.example.exercisetracker.db.UserProgram
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
@@ -25,6 +27,7 @@ class NewProgramFragment: Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var userProgram: UserProgram
+    private var programType: AppProgramType? = null
     private var useTimer = 1
 
     private val sharedViewModel: SharedViewModel by activityViewModels() {
@@ -43,9 +46,16 @@ class NewProgramFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Set programType for the new program
         val programTypeId = navigationArgs.programTypeId
         if (programTypeId == -1) {
             Log.e("NewProgramFragment", "Failed to receive programTypeId")
+        }else{
+            programType = sharedViewModel.programTypes.value.find{it.id == programTypeId}
+            if (programType == null){
+                Toast.makeText(context, "Noe gikk galt, vennligst prøv igjen", Toast.LENGTH_SHORT).show()
+                val action = NewProgramFragmentDirections.actionNewProgramFragmentToSecondFragment()
+                findNavController().navigate(action)}
         }
 
         // ProgramID is set from navargs if user navigates via edit-button on a userprogram
@@ -58,20 +68,17 @@ class NewProgramFragment: Fragment() {
         }
 
         binding.apply {
+            // Bind variable programtype in layout to chosen programType
+            programtype = programType
             timerOptions.setOnCheckedChangeListener{ group, _ ->
                 useTimer = if (rbOptionYes.isChecked ) 1 else 0
-            }
-
-            buttonBack.setOnClickListener {
-                findNavController().navigate(R.id.action_newProgramFragment_to_programTypeFragment)
-            }
-            buttonMyPrograms.setOnClickListener {
-                findNavController().navigate(R.id.action_newProgramFragment_to_myProgramsFragment)
             }
             buttonSaveProgram.setOnClickListener {
                 if (sharedViewModel.isUserLoggedIn()) {
                     addUserProgram()
-                }else {}
+                }else {
+                    showNotLoggedInMessage()
+                }
             }
         }
     }
@@ -100,12 +107,12 @@ class NewProgramFragment: Fragment() {
                     binding.programNameInput.text.toString(),
                     binding.programDescriptInput.text.toString(),
                     useTimer,
-                    "@drawable/runner")
+                    userProgram.icon)
             )
         }
     }
 
-    private fun addUserProgram() { // Holder det å sjekke innlogging ved hamburgermenyvalg + FrontPage? evt hamburger viser ingenting når ikke innlogget
+    private fun addUserProgram() {
         if(isValidProgramEntry()) {
             userProgram = createUserProgram()
 
@@ -135,12 +142,18 @@ class NewProgramFragment: Fragment() {
         name = binding.programNameInput.text.toString(),
         description = binding.programDescriptInput.text.toString(),
         use_timing = useTimer,
-        icon = "@drawable/runner")
+        icon = programType!!.icon)
     }
 
     private fun navigateToProgramDetails(){
         val action = NewProgramFragmentDirections.actionNewProgramFragmentToProgramDetailsFragment(userProgram.id)
         findNavController().navigate(action)
+    }
+
+    private fun showNotLoggedInMessage(){
+        val text ="Logg inn, eller registrer deg for å komme i gang med treningsprogram!"
+        val toast = Toast.makeText(context, text, Toast.LENGTH_SHORT)
+        toast.show()
     }
 
 
