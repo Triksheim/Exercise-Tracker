@@ -71,7 +71,7 @@ fun UserProgramSessionDataJSON.asEntity(): UserProgramSessionDataEntity {
         floatData1 = this.floatData1,
         floatData2 = this.floatData2,
         floatData3 = this.floatData3,
-        stringData1 = this.stringData1
+        textData1 = this.textData1
     )
 }
 
@@ -161,7 +161,7 @@ fun UserProgramSessionDataEntity.asDomainModel(): UserProgramSessionData {
         floatData1 = this.floatData1,
         floatData2 = this.floatData2,
         floatData3 = this.floatData3,
-        stringData1 = this.stringData1
+        textData1 = this.textData1
     )
 }
 
@@ -232,7 +232,7 @@ fun UserProgramSessionData.asEntity(): UserProgramSessionDataEntity {
         floatData1 = this.floatData1,
         floatData2 = this.floatData2,
         floatData3 = this.floatData3,
-        stringData1 = this.stringData1
+        textData1 = this.textData1
     )
 }
 

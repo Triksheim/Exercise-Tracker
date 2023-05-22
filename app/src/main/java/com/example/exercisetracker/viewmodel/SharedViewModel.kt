@@ -378,7 +378,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-
     private suspend fun getAllSessionsForUserProgram(userProgramId: Int) {
         withContext(Dispatchers.IO) {
             val result = repository.getUserProgramSessionsAPI(userProgramId)
@@ -446,7 +445,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             else {
                 Log.e("ERROR USER PROGRAM", "Creating user program failed")
             }
-    }}
+        }
+    }
 
     fun updateUserProgram(userProgram: UserProgram){
         viewModelScope.launch(Dispatchers.IO) {
@@ -547,20 +547,21 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
 
     // UserProgramSession
-    suspend fun createUserProgramSession(userProgramSession: UserProgramSession) {
-        viewModelScope.launch(Dispatchers.IO) {
+    suspend fun createUserProgramSession(userProgramSession: UserProgramSession): Int {
+        return viewModelScope.async(Dispatchers.IO) {
             val result = repository.createUserProgramSessionAPI(userProgramSession)
             if (result.isSuccess) {
                 val newUserProgramSession = result.getOrNull()
-                newUserProgramSession?.let { repository.insertUserProgramSession(it.asEntity()) }
-                Log.d("CREATE USER PROGRAM SESSION", "SUCCESS")
-
+                newUserProgramSession?.let {
+                    repository.insertUserProgramSession(it.asEntity())
+                    return@async it.id // Return the ID
+                }
             }
-            else {
-                Log.e("ERROR USER PROGRAM SESSION", "Creating user program session failed")
-            }
-        }
+            throw Exception("Creating user program session failed") // Throw an exception if the ID cannot be retrieved
+        }.await() // Wait for the coroutine to complete and return the result
     }
+
+
     suspend fun updateUserProgramSession(userProgramSession: UserProgramSession) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.updateUserProgramSessionAPI(userProgramSession)
@@ -588,8 +589,23 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-
     // UserProgramSessionData
+    suspend fun insertUserProgramSessionDataList(userProgramSessionDataList: List<UserProgramSessionData>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.insertUserProgramSessionDataListAPI(userProgramSessionDataList)
+            if (result.isSuccess) {
+                val newUserProgramSessionDataList = result.getOrNull()?.map { it.asEntity() }
+                newUserProgramSessionDataList?.let { repository.insertUserProgramSessionDataList(it) }
+                Log.d("INSERT USER PROGRAM SESSION DATA LIST", "SUCCESS")
+            } else {
+                Log.e(
+                    "ERROR USER PROGRAM SESSION DATA LIST",
+                    "Inserting user program session data list failed"
+                )
+            }
+        }
+    }
+
     suspend fun createUserProgramSessionData(userProgramSessionData: UserProgramSessionData) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.createUserProgramSessionDataAPI(userProgramSessionData)
@@ -630,7 +646,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             }
         }
     }
-
 
     // UserProgramSessionPhoto
     suspend fun createUserProgramSessionPhoto(userProgramSessionPhoto: UserProgramSessionPhoto) {

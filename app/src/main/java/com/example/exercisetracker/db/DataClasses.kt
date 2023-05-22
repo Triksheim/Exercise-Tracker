@@ -60,7 +60,7 @@ data class UserProgramSession(
 
 data class UserProgramSessionData(
     val id: Int,
-    val user_program_session_id: Int,
+    var user_program_session_id: Int,
     val floatData1: Float,
     val floatData2: Float,
     val floatData3: Float,

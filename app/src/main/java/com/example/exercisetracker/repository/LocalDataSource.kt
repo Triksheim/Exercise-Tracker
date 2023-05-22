@@ -134,6 +134,9 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
     suspend fun insertUserProgramSessionData(userProgramSessionDataEntity: UserProgramSessionDataEntity): Long {
         return trainingDao.insertUserProgramSessionData(userProgramSessionDataEntity)
     }
+    suspend fun insertUserProgramSessionDataList(userProgramSessionDataEntity: List<UserProgramSessionDataEntity>): List<Long> {
+        return trainingDao.insertUserProgramSessionDataList(userProgramSessionDataEntity)
+    }
     suspend fun getAllUserProgramSessionData(): Flow<List<UserProgramSessionDataEntity>> {
         return trainingDao.getAllUserProgramSessionData()
     }

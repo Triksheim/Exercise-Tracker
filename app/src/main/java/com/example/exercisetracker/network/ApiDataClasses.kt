@@ -57,7 +57,7 @@ data class UserProgramSessionDataJSON(
     @Json(name = "floatData1") val floatData1: Float = 0f,
     @Json(name = "floatData2") val floatData2: Float = 0f,
     @Json(name = "floatData3") val floatData3: Float = 0f,
-    @Json(name = "stringData1") val stringData1: String = "undefined"
+    @Json(name = "textData1") val textData1: String = "undefined"
 )
 
 data class UserProgramSessionPhotoJSON(

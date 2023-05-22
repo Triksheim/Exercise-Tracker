@@ -2,8 +2,6 @@ package com.example.exercisetracker.repository
 import com.example.exercisetracker.db.*
 import com.example.exercisetracker.network.*
 import kotlinx.coroutines.flow.Flow
-import retrofit2.http.DELETE
-import retrofit2.http.Path
 
 
 class TrainingRepository(private val localDataSource: LocalDataSource, // database
@@ -132,6 +130,9 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun insertUserProgramSessionData(userProgramSessionDataEntity: UserProgramSessionDataEntity): Long {
         return localDataSource.insertUserProgramSessionData(userProgramSessionDataEntity)
     }
+    suspend fun insertUserProgramSessionDataList(userProgramSessionDataEntityList: List<UserProgramSessionDataEntity>): List<Long> {
+        return localDataSource.insertUserProgramSessionDataList(userProgramSessionDataEntityList)
+    }
     suspend fun getAllUserProgramSessionData(): Flow<List<UserProgramSessionDataEntity>> {
         return localDataSource.getAllUserProgramSessionData()
     }
@@ -245,6 +246,9 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun createUserProgramSessionDataAPI(userProgramSessionData: UserProgramSessionData): Result<UserProgramSessionDataJSON> {
         return remoteDataSource.createUserProgramSessionData(userProgramSessionData)
     }
+    suspend fun insertUserProgramSessionDataListAPI(userProgramSessionDataList: List<UserProgramSessionData>): Result<List<UserProgramSessionDataJSON>> {
+        return remoteDataSource.insertUserProgramSessionDataList(userProgramSessionDataList)
+    }
     suspend fun getALlUserProgramSessionDataAPI(userId: Int): Result<List<UserProgramSessionDataJSON>> {
         return remoteDataSource.getAllUserProgramSessionData(userId)
     }
@@ -265,5 +269,4 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun deleteUserProgramSessionPhotoAPI(id: Int): Result<Unit> {
         return remoteDataSource.deleteUserProgramSessionPhoto(id)
     }
-
 }
