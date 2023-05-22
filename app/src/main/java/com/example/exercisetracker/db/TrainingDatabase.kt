@@ -79,7 +79,7 @@ data class  UserProgramSessionDataEntity(
     @ColumnInfo(name = "floatData1") val floatData1: Float,
     @ColumnInfo(name = "floatData2") val floatData2: Float,
     @ColumnInfo(name = "floatData3") val floatData3: Float,
-    @ColumnInfo(name = "stringData1") val stringData1: String
+    @ColumnInfo(name = "textData1") val textData1: String
 )
 
 @Entity(tableName = "user_program_session_photo")

@@ -64,7 +64,7 @@ data class UserProgramSessionData(
     val floatData1: Float,
     val floatData2: Float,
     val floatData3: Float,
-    val stringData1: String
+    val textData1: String
 )
 
 data class UserProgramSessionPhoto(
