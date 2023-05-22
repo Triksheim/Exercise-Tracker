@@ -76,6 +76,11 @@
             app:popUpTo="@id/programTypeFragment"
             app:popUpToInclusive="true"/>
         <action
+            android:id="@+id/action_newProgramFragment_to_secondFragment"
+            app:destination="@id/SecondFragment"
+            app:popUpTo="@id/SecondFragment"
+            app:popUpToInclusive="true"/>
+        <action
             android:id="@+id/action_newProgramFragment_to_programDetailsFragment"
             app:destination="@id/programDetailsFragment" />
         <action
