@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/startupFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.exercisetracker.FirstFragment"
+        android:id="@+id/LoginFragment"
+        android:name="com.example.exercisetracker.LoginFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/fragment_login">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
@@ -27,8 +27,8 @@
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment"
-            app:popUpTo="@id/FirstFragment"
+            app:destination="@id/LoginFragment"
+            app:popUpTo="@id/LoginFragment"
             app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_SecondFragment_to_programTypeFragment"
@@ -221,6 +221,18 @@
         <action
             android:id="@+id/action_myStatisticsFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/startupFragment"
+        android:name="com.example.exercisetracker.StartupFragment"
+        android:label="fragment_startup"
+        tools:layout="@layout/fragment_startup" >
+        <action
+            android:id="@+id/action_startupFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment" />
+        <action
+            android:id="@+id/action_startupFragment_to_myStatisticsFragment"
+            app:destination="@id/myStatisticsFragment" />
     </fragment>
 
 </navigation>

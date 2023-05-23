@@ -5,14 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.exercisetracker.databinding.FragmentFirstBinding
+
+import com.example.exercisetracker.databinding.FragmentLoginBinding
 import com.example.exercisetracker.db.User
-import com.example.exercisetracker.db.UserEntity
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
@@ -23,9 +25,9 @@ import kotlinx.coroutines.launch
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment() {
+class LoginFragment : Fragment() {
     val mainScope = MainScope()
-    private var binding: FragmentFirstBinding? = null
+    private var binding: FragmentLoginBinding? = null
     private val sharedViewModel: SharedViewModel by activityViewModels() {
         SharedViewModelFactory(
             (activity?.application as TrainingApplication).trainingRepository
@@ -37,7 +39,8 @@ class FirstFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val fragmentBinding = FragmentFirstBinding.inflate(inflater, container, false)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+        val fragmentBinding = FragmentLoginBinding.inflate(inflater, container, false)
         binding = fragmentBinding
         return fragmentBinding.root
     }
@@ -48,7 +51,7 @@ class FirstFragment : Fragment() {
         binding?.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = sharedViewModel
-            firstFragment = this@FirstFragment
+            loginFragment = this@LoginFragment
 
         }
 
@@ -69,8 +72,7 @@ class FirstFragment : Fragment() {
         }
 
         sharedViewModel.activeUser.observe(viewLifecycleOwner, Observer {
-            if (it.id != 0) {
-                Toast.makeText(context, "Velkommen, ${it.name}", Toast.LENGTH_SHORT).show()
+            if (it != null) {
                 navigateToNextFragment()
             }
         })

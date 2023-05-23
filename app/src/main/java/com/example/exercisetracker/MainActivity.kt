@@ -1,7 +1,6 @@
 package com.example.exercisetracker
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -10,7 +9,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -47,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 
 
         sharedViewModel.currentProgram.observe(this, Observer {
-            sharedViewModel.fetchExercisesForCurrentProgram()
+            sharedViewModel.flowExercisesForCurrentProgram()
             sharedViewModel.getSessionsForCurrentProgram()
         })
 
@@ -102,7 +100,7 @@ class MainActivity : AppCompatActivity() {
     private fun performLogout() {
         sharedViewModel.logout()
         // Navigate to the login screen
-        navController.navigate(R.id.FirstFragment)
+        navController.navigate(R.id.LoginFragment)
     }
 
 }

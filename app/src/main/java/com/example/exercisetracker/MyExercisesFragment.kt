@@ -61,7 +61,7 @@ class MyExercisesFragment: Fragment() {
         val adapter = ExerciseItemAdapter(exerciseClickListener, EXERCISES_FRAGMENT)
 
         sharedViewModel.activeUser.observe(viewLifecycleOwner, Observer {activeUser ->
-            val userId = activeUser.id
+            val userId = activeUser?.id
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
                 sharedViewModel.userExercises.collect {userExercises ->
                     val filteredUserExercises = userExercises.filter {it.user_id == userId}

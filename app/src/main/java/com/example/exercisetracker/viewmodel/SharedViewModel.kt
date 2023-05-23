@@ -17,20 +17,21 @@ import kotlinx.coroutines.withContext
 
 
 class SharedViewModel(private val repository: TrainingRepository) : ViewModel() {
-    val outsideColor = "789ABCD"
-    val insideColor = "#123456"
+
+    private val _startupDone = MutableLiveData<Boolean>()
+    val startupDone: LiveData<Boolean> = _startupDone
 
     private val _networkConnectionOk = MutableLiveData<Boolean>()
     val networkConnectionOk: LiveData<Boolean> = _networkConnectionOk
 
-    private val _activeUser = MutableLiveData<ActiveUserEntity>()
-    val activeUser: LiveData<ActiveUserEntity> = _activeUser
+    private val _activeUser = MutableLiveData<ActiveUserEntity?>()
+    val activeUser: LiveData<ActiveUserEntity?> = _activeUser
 
     private val _createUserStatus = MutableLiveData<Result<UserJSON>>()
     val createUserStatus: LiveData<Result<UserJSON>> = _createUserStatus
 
-    private val _users = MutableStateFlow<List<User>>(emptyList())
-    val users: StateFlow<List<User>> = _users
+    private val _users = MutableLiveData<List<UserJSON>>()
+    val users: LiveData<List<UserJSON>> = _users
 
     private val _programTypes = MutableStateFlow<List<AppProgramType>>(emptyList())
     val programTypes: StateFlow<List<AppProgramType>> = _programTypes
@@ -73,32 +74,21 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
 
     init {
+        _startupDone.value = false
         _networkConnectionOk.value = true
-        _activeUser.value = ActiveUserEntity(0,"0","0","0", 0)
         viewModelScope.launch {
             restart()
         }
-        fetchAppProgramTypes()
-        fetchUsers()
-        fetchUserPrograms()
-        fetchUserExercises()
-        fetchUserProgramSessions()
-
+        flowAppProgramTypes()
+        flowUserPrograms()
+        flowUserExercises()
+        flowUserProgramSessions()
     }
 
 
 
-    private fun fetchUsers() {
-        viewModelScope.launch {
-            repository.getAllUsers()
-                .flowOn(Dispatchers.IO)
-                .map { usersList -> usersList.map { it.asDomainModel() } }
-                .collect { usersList ->
-                    _users.value = usersList
-                }
-        }
-    }
-    private fun fetchAppProgramTypes() {
+
+    private fun flowAppProgramTypes() {
         viewModelScope.launch {
             repository.getProgramTypes()
                 .flowOn(Dispatchers.IO)
@@ -108,7 +98,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 }
         }
     }
-    private fun fetchUserPrograms() {
+    private fun flowUserPrograms() {
         viewModelScope.launch {
             repository.getUserPrograms()
                 .flowOn(Dispatchers.IO)
@@ -118,7 +108,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 }
         }
     }
-    private fun fetchUserExercises() {
+    private fun flowUserExercises() {
         viewModelScope.launch {
             repository.getUserExercises()
                 .flowOn(Dispatchers.IO)
@@ -128,7 +118,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 }
         }
     }
-    private fun fetchUserProgramSessions() {
+    private fun flowUserProgramSessions() {
         viewModelScope.launch {
             repository.getUserProgramSessions()
                 .flowOn(Dispatchers.IO)
@@ -139,7 +129,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-    fun fetchExercisesForCurrentProgram() {
+    fun flowExercisesForCurrentProgram() {
         viewModelScope.launch {
             repository.getUserProgramExercisesById(currentProgram.value!!.id)
                 .flowOn(Dispatchers.IO)
@@ -191,17 +181,17 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
     suspend fun login(phone: String): Boolean {
         return viewModelScope.async {
-        if (users.value.isEmpty()) {
-            getAllUsers()
-        }
-        for (user in users.value) {
+        getAllUsers()
+        for (user in users.value!!) {
             if (user.phone == phone) {
                 Log.d("LOGIN SUCCESS", "ID: ${user.id}")
-                setActiveUser(user)
+                setActiveUser(user.asEntity().asDomainModel())
+                _users.postValue(emptyList())
                 restart()
                 return@async true
             }
         }
+            _users.postValue(emptyList())
             return@async false
         }.await()
     }
@@ -219,15 +209,15 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
     fun logout() {
         viewModelScope.launch {
-            _activeUser.value = ActiveUserEntity(0,"0","0","0", 0)
+            _activeUser.postValue(null)
             _createUserStatus.value = Result.success(UserJSON(0,"0","0","0",0))
             clearDb()
             restart()
         }
     }
 
-    fun checkIsActiveUser(): Boolean {
-        return activeUser.value?.id != 0
+    fun isActiveUser(): Boolean {
+        return activeUser.value != null
     }
 
     fun isValidProgramEntry(name: String, description: String): Boolean{
@@ -263,14 +253,16 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
     private suspend fun restart() {
         viewModelScope.launch {
-            if (activeUser.value?.id == 0) {
-                getAllUsers()
+            if (!isActiveUser()) {
                 val resultActiveUser = repository.getActiveUser()
                 if (resultActiveUser.isSuccess) {
-                    resultActiveUser.getOrNull()?.let { login(it.phone) }
+                    val user = resultActiveUser.getOrNull()
+                    if (user != null) {
+                        _activeUser.value = user!!
+                    }
                 }
             }
-            else if (checkIsActiveUser()) {
+            else if (isActiveUser()) {
                 getAllProgramTypes()
                 getAllUserPrograms()
                 getAllUserExercises()
@@ -282,6 +274,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                     }
                 }
             }
+            _startupDone.postValue(true)
         }
     }
 
@@ -292,13 +285,11 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             if (resultUsers.isSuccess) {
                 _networkConnectionOk.postValue(true)
                 Log.d("RESULT USERS API", "SUCCESS")
-                repository.deleteAllUsers()
                 val users = resultUsers.getOrNull()
-                for (user in users!!) {
-                    repository.insertUser(user.asEntity())
-                }
+                _users.postValue(users!!)
             } else {
                 _networkConnectionOk.postValue(false)
+                _users.postValue(emptyList())
                 Log.e("ERROR USERS API", "Unable to fetch")
             }
         }
@@ -554,6 +545,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 val newUserProgramSession = result.getOrNull()
                 newUserProgramSession?.let {
                     repository.insertUserProgramSession(it.asEntity())
+                    Log.d("CREATE USER PROGRAM SESSION", "SUCCESS")
                     return@async it.id // Return the ID
                 }
             }

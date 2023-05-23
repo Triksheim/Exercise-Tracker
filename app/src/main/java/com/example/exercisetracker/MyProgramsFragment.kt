@@ -87,7 +87,7 @@ class MyProgramsFragment : Fragment() {
         }
 
         sharedViewModel.activeUser.observe(viewLifecycleOwner, Observer { activeUser ->
-            val userId = activeUser.id
+            val userId = activeUser?.id
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
                 sharedViewModel.userPrograms.collect { userPrograms ->
                     val filteredUserPrograms = userPrograms.filter { it.user_id == userId }

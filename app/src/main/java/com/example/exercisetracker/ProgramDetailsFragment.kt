@@ -124,7 +124,7 @@ class ProgramDetailsFragment: Fragment() {
             }
         }
         // Fetch the user program exercises for the current program
-        sharedViewModel.fetchExercisesForCurrentProgram()
+        sharedViewModel.flowExercisesForCurrentProgram()
     }
 
         override fun onDestroyView() {
