@@ -176,6 +176,11 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
+    fun setProgramTypeByUserProgram(userProgram: UserProgram) {
+        val programTypes = programTypes.value
+        _currentProgramType.value = programTypes.find { it.id == userProgram.app_program_type_id }
+    }
+
     fun setCurrentProgramType(programType: AppProgramType) {
         _currentProgramType.value = programType
     }

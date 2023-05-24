@@ -6,10 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.example.exercisetracker.adapters.ProgramItemAdapter
 import com.example.exercisetracker.databinding.FragmentMyProgramsBinding
 import com.example.exercisetracker.db.AppProgramType
@@ -17,6 +18,7 @@ import com.example.exercisetracker.db.UserProgram
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
+import kotlinx.coroutines.launch
 
 class MyProgramsFragment : Fragment() {
     private var _binding: FragmentMyProgramsBinding? = null
@@ -40,6 +42,7 @@ class MyProgramsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         sharedViewModel.setToolbarTitle(getString(R.string.title_my_programs))
 
+        // Override fun in Click-interface for buttons on ProgramItems
         val userProgramClickListener = object: ProgramItemAdapter.UserProgramClickListener {
             override fun onEditButtonClick(userProgram: UserProgram) {
                 sharedViewModel.setCurrentUserProgram(userProgram)
@@ -52,8 +55,8 @@ class MyProgramsFragment : Fragment() {
                 findNavController().navigate(R.id.action_myProgramsFragment_to_programSessionFragment)
             }
         }
-        // Iinitiating the adapter interface to get the programtype for each program
-        // to be recycled in ProgramItemAdapter
+
+        // Override fun in Interface to get the programtype for each program-item in ProgramItemAdapter
         val userProgramType = object: ProgramItemAdapter.UserProgramType {
             override fun getProgramTypeForProgram(userProgram: UserProgram): AppProgramType? {
                 viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -63,11 +66,13 @@ class MyProgramsFragment : Fragment() {
             }
         }
 
+        // Initialize the adapter, passing the interface objects to retrieve type, and handle button clicks
         val adapter = ProgramItemAdapter(
             userProgramType,
             userProgramClickListener,
             onItemClickListener = { selectedProgram ->
                 sharedViewModel.setCurrentUserProgram(selectedProgram)
+                sharedViewModel.setProgramTypeByUserProgram(selectedProgram)
                 findNavController().navigate(R.id.action_myProgramsFragment_to_programDetailsFragment)
             }
         )
@@ -82,15 +87,31 @@ class MyProgramsFragment : Fragment() {
             }
         }
 
+        // Get data for the adapter from the viewModel
         sharedViewModel.activeUser.observe(viewLifecycleOwner, Observer { activeUser ->
             val userId = activeUser?.id
-            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                sharedViewModel.userPrograms.collect { userPrograms ->
+            viewLifecycleOwner.lifecycleScope.launch {
+                sharedViewModel.userPrograms.flowWithLifecycle(viewLifecycleOwner.lifecycle,
+                    Lifecycle.State.STARTED)
+                    .collect { userPrograms ->
                     val filteredUserPrograms = userPrograms.filter { it.user_id == userId }
+                    //val sortedFilteredPrograms = sortProgramsByBackColor(filteredUserPrograms)
                     adapter.submitList(filteredUserPrograms)
                 }
             }
         })
+
+        /** Forsøk på å sortere myPrograms etter innendørs/utendørs. Ikke ferdig
+         fun sortProgramsByBackColor(userPrograms: List<UserProgram>): List<UserProgram> {
+            viewLifecycleOwner.lifecycleScope.launch {
+                val sortedList = userPrograms.sortedBy { userProgram ->
+                    val appProgramType = sharedViewModel.getProgramTypeForProgram(userProgram)
+                    appProgramType?.back_color
+                }
+            }
+            return emptyList()
+        }
+        */
     }
 
     override fun onDestroyView() {

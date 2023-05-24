@@ -21,12 +21,12 @@
         android:layout_marginEnd="@dimen/side_margin"
         android:layout_marginTop="@dimen/side_margin">
 
-        <!-- Image view skal  hente icon fra viewModel.userProgram.icon, eller hva det blir hetende der-->
-        <!--android:src="@{viewModel.userProgram.icon}"-->
+
         <ImageView
             android:id="@+id/program_type_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@{programType.icon}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -36,7 +36,7 @@
             android:id="@+id/tv_add_programs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{program.name}"
+            android:text="@{programType.description}"
             android:layout_marginTop="@dimen/side_margin"
             android:textSize="@dimen/header_text"
             app:layout_constraintStart_toStartOf="parent"
@@ -144,7 +144,7 @@
             android:id="@+id/button_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -152,19 +152,16 @@
 
             <Button
                 android:id="@+id/button_start"
-                android:layout_width="170dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Start Program"
-                android:minHeight="64dp"
                 android:layout_gravity="center_vertical" />
 
             <Button
                 android:id="@+id/button_add_exercises"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/create_new_exercise"
-                android:minHeight="64dp"
-                android:layout_marginStart="8dp"
                 android:layout_gravity="center_vertical" />
         </LinearLayout>
 

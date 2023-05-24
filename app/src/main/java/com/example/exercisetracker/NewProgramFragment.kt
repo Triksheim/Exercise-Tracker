@@ -52,8 +52,6 @@ class NewProgramFragment: Fragment() {
             Log.e("NewProgramFragment", "Failed to receive programTypeId")
         }
 
-        val programType = sharedViewModel.programTypes.value.find{it.id == programTypeId}
-
 
         // ProgramID is set from navargs only if user navigates via edit-button on a userprogram
         // Bind current program to edit it
@@ -74,7 +72,7 @@ class NewProgramFragment: Fragment() {
                 }
                 buttonSaveProgram.setOnClickListener {
                     if (sharedViewModel.isUserLoggedIn()) {
-                        addUserProgram(programType)
+                        addUserProgram(programType!!)
                     }else {
                         showNotLoggedInMessage()
                     }
