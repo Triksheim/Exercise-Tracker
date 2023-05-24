@@ -12,6 +12,7 @@ import com.example.exercisetracker.utils.asDomainModel
 import com.example.exercisetracker.utils.asEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 
@@ -591,23 +592,16 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     }
 
     // UserProgramSessionData
+    // Inert a list of UserProgramSessionData with async to run inserts operation in parallel
     suspend fun insertUserProgramSessionDataList(userProgramSessionDataList: List<UserProgramSessionData>) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.insertUserProgramSessionDataListAPI(userProgramSessionDataList)
-            if (result.isSuccess) {
-                val newUserProgramSessionDataList = result.getOrNull()?.map { it.asEntity() }
-                newUserProgramSessionDataList?.let { repository.insertUserProgramSessionDataList(it) }
-                Log.d("INSERT USER PROGRAM SESSION DATA LIST", "SUCCESS")
-            } else {
-                Log.e(
-                    "ERROR USER PROGRAM SESSION DATA LIST",
-                    "Inserting user program session data list failed"
-                )
-            }
+            userProgramSessionDataList.map { userProgramSessionData ->
+                async { createUserProgramSessionData(userProgramSessionData) }
+            }.awaitAll()
         }
     }
 
-    suspend fun createUserProgramSessionData(userProgramSessionData: UserProgramSessionData) {
+    private suspend fun createUserProgramSessionData(userProgramSessionData: UserProgramSessionData) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.createUserProgramSessionDataAPI(userProgramSessionData)
             if (result.isSuccess) {
