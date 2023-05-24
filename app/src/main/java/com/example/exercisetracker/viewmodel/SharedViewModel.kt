@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.exercisetracker.db.*
 import com.example.exercisetracker.network.UserJSON
+import com.example.exercisetracker.network.UserStatsJSON
 import com.example.exercisetracker.utils.asDomainModel
 import com.example.exercisetracker.utils.asEntity
 import kotlinx.coroutines.Dispatchers
@@ -54,6 +55,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _allSessions = MutableStateFlow<List<UserProgramSession>>(emptyList())
     val allSessions: StateFlow<List<UserProgramSession>> = _allSessions
 
+
     private var _currentProgram = MutableLiveData<UserProgram>()
     val currentProgram: LiveData<UserProgram> = _currentProgram
 
@@ -75,6 +77,28 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _userProgramExercises = MutableLiveData<List<UserProgramExercise>>()
     val userProgramExercises: LiveData<List<UserProgramExercise>> get() = _userProgramExercises
 
+    val displayableSessions: Flow<List<DisplayableSession>> = allSessions.map { sessions ->
+            sessions.map { session ->
+                val userProgram = repository.getUserProgram(session.user_program_id).first()
+                val programType = repository.getProgramTypeById(userProgram.app_program_type_id).first()
+                DisplayableSession(
+                    sessionId = session.id,
+                    userProgramId = session.user_program_id,
+                    sessionStartTime = session.startTime,
+                    sessionTimeSpent = session.time_spent,
+                    sessionDescription = session.description,
+                    userProgramName = userProgram.name,
+                    programTypeIcon = programType.icon
+                )
+            }
+        }
+
+    private val _userStats = MutableLiveData<UserStatsJSON>()
+    val userStats: LiveData<UserStatsJSON> = _userStats
+
+
+
+
     private var _toolbarTitle = MutableLiveData<String>()
     val toolbarTitle: LiveData<String> = _toolbarTitle
 
@@ -90,7 +114,19 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         flowUserProgramSessions()
     }
 
+    fun formatSeconds(timeSpent: String?): String {
+        if (timeSpent == null) {
+            return "00:00:00"
+        }
+        else {
+            val seconds = timeSpent.toInt()
+            val hours = seconds / 3600
+            val minutes = (seconds % 3600) / 60
+            val remainingSeconds = seconds % 60
 
+            return String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds)
+        }
+    }
 
 
     private fun flowAppProgramTypes() {
@@ -416,6 +452,21 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                     "ERROR USER PROGRAM SESSION DATA API",
                     "Unable to fetch (or no session data for UserID:${activeUser.value?.id})"
                 )
+            }
+        }
+    }
+
+    suspend fun getUserStats() {
+        withContext(Dispatchers.IO) {
+            val result = repository.getUserStatsAPI(activeUser.value!!.id)
+            if (result.isSuccess) {
+                _networkConnectionOk.postValue(true)
+                Log.d("RESULT USER STATS", "SUCCESS")
+                val stats = result.getOrNull()
+                _userStats.postValue(stats!!)
+            } else {
+                _networkConnectionOk.postValue(false)
+                Log.e("ERROR USER STATS API", "Unable to fetch")
             }
         }
     }
