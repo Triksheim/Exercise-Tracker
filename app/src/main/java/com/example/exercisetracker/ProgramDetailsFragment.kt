@@ -96,19 +96,35 @@ class ProgramDetailsFragment: Fragment() {
             binding.apply {
                 lifecycleOwner = viewLifecycleOwner
                 program = currentProgram
-                programExerciseRecycler.adapter = programExercisesAdapter
-                otherExerciseRecycler.adapter = otherExercisesAdapter
                 buttonStart.setOnClickListener {
                     findNavController().navigate(R.id.action_programDetailsFragment_to_ProgramSessionFragment)
                 }
-                binding.buttonAddExercises.setOnClickListener {
-                    findNavController().navigate(R.id.action_programDetailsFragment_to_newExerciseFragment)
-                }
-
-                programExercisesAdapter.notifyDataSetChanged()
-                otherExercisesAdapter.notifyDataSetChanged()
             }
         }
+
+        sharedViewModel.currentProgramType.observe(viewLifecycleOwner, Observer {currentType ->
+            binding.programType = currentType
+            when (currentType?.back_color) {
+                INDOORCOLOR -> binding.apply {
+                    programExerciseRecycler.adapter = programExercisesAdapter
+                    otherExerciseRecycler.adapter = otherExercisesAdapter
+                    binding.buttonAddExercises.setOnClickListener {
+                        findNavController().navigate(R.id.action_programDetailsFragment_to_newExerciseFragment)
+                    }
+
+                    programExercisesAdapter.notifyDataSetChanged()
+                    otherExercisesAdapter.notifyDataSetChanged()
+                }
+
+                OUTDOORCOLOR -> binding.apply{
+                    programExerciseRecycler.visibility = View.GONE
+                    otherExerciseRecycler.visibility = View.GONE
+                    tvChooseExercises.visibility = View.GONE
+                    buttonAddExercises.visibility = View.GONE
+                }
+            }
+        })
+
 
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {

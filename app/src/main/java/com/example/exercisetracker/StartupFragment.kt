@@ -50,7 +50,7 @@ class StartupFragment : Fragment() {
         sharedViewModel.startupDone.observe(viewLifecycleOwner, Observer {
             if (it) {
                 if (sharedViewModel.activeUser.value != null ) {
-                findNavController().navigate(R.id.action_startupFragment_to_myStatisticsFragment)
+                findNavController().navigate(R.id.action_startupFragment_to_mySessionsFragment)
             }
                 else {
                     findNavController().navigate(R.id.action_startupFragment_to_LoginFragment)

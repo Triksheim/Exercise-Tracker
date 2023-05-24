@@ -166,6 +166,11 @@ interface ApiService {
 
     @DELETE("user_program_session_photos/{id}")
     suspend fun deleteUserProgramSessionPhoto(@Path("id") id: Int): Response<Unit>
+
+
+    // UserStats
+    @GET("user_stats/{id}")
+    suspend fun getUserStats(@Path("id") id: Int): UserStatsJSON
 }
 
 
@@ -268,6 +273,10 @@ class RemoteDataSource(private val apiService: ApiService) {
         = safeApiCall { apiService.updateUserProgramSessionPhoto(userProgramSessionPhoto.id, userProgramSessionPhoto).bodyOrThrow() }
     suspend fun deleteUserProgramSessionPhoto(id: Int)
         = safeApiCall { apiService.deleteUserProgramSessionPhoto(id).bodyOrThrow() }
+
+    // UserStats
+    suspend fun getUserStats(id: Int)
+        = safeApiCall { apiService.getUserStats(id) }
 }
 
 

@@ -58,6 +58,9 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun getUserPrograms(): Flow<List<UserProgramEntity>> {
         return localDataSource.getUserPrograms()
     }
+    suspend fun getUserProgram(id: Int): Flow<UserProgramEntity> {
+        return localDataSource.getUserProgram(id)
+    }
     suspend fun deleteUserPrograms() {
         return localDataSource.deleteUserPrograms()
     }
@@ -262,5 +265,10 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     }
     suspend fun deleteUserProgramSessionPhotoAPI(id: Int): Result<Unit> {
         return remoteDataSource.deleteUserProgramSessionPhoto(id)
+    }
+
+    // UserStats
+    suspend fun getUserStatsAPI(id: Int): Result<UserStatsJSON> {
+        return remoteDataSource.getUserStats(id)
     }
 }

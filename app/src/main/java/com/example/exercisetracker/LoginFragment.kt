@@ -130,7 +130,7 @@ class LoginFragment : Fragment() {
 
 
     private fun navigateToNextFragment() {
-        findNavController().navigate(R.id.action_FirstFragment_to_myStatisticsFragment)
+        findNavController().navigate(R.id.action_LoginFragment_to_mySessionsFragment)
     }
 
     override fun onDestroyView() {

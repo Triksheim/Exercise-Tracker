@@ -70,5 +70,26 @@
     <string name="title_session_details">Treningsdata</string>
     <string name="title_program_type">Programtype</string>
     <string name="title_second_fragment">Exercise Tracker</string>
+    <string name="lastSessions">Dine siste treningsøkter</string>
+    <string name="welcomeMsg">"God dag, %s"</string>
+    <string name="last7days">7 dager</string>
+    <string name="count7days">%s stykk</string>
+    <string name="time7days">%s</string>
+    <string name="timeScale">Historikk tidshintervall</string>
+    <string name="sessionCount">Total antall treningsøkter</string>
+    <string name="trainingTime">Total treningstid (hh:mm:ss)</string>
+    <string name="last30days">30 dager</string>
+    <string name="time30days">%s</string>
+    <string name="count30days">%s stykk</string>
+    <string name="lastWeek">Denne uken</string>
+    <string name="timeWeek">%s</string>
+    <string name="countWeek">%s stykk</string>
+    <string name="lastMonth">Denne måneden</string>
+    <string name="timeMonth">%s</string>
+    <string name="countMonth">%s stykk</string>
+    <string name="lastYear">I år</string>
+    <string name="timeYear">%s</string>
+    <string name="countYear">%s stykk</string>
+    <string name="newSessionButton">Registrer treningsøkt</string>
 
 </resources>

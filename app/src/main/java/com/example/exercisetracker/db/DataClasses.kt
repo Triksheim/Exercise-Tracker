@@ -72,3 +72,13 @@ data class UserProgramSessionPhoto(
     val user_program_session_id: Int,
     val photo_url: String
 )
+
+data class DisplayableSession(
+    val sessionId: Int,
+    val userProgramId: Int,
+    val sessionDescription: String,
+    val sessionStartTime: String,
+    val sessionTimeSpent: Int,
+    val userProgramName: String,
+    val programTypeIcon: String
+)
