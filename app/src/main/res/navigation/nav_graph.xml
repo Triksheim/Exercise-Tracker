@@ -233,6 +233,22 @@
         <action
             android:id="@+id/action_startupFragment_to_myStatisticsFragment"
             app:destination="@id/myStatisticsFragment" />
+        <action
+            android:id="@+id/action_startupFragment_to_mySessionsFragment"
+            app:destination="@id/mySessionsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/mySessionsFragment"
+        android:name="com.example.exercisetracker.MySessionsFragment"
+        android:label="fragment_my_sessions"
+        tools:layout="@layout/fragment_my_sessions" >
+        <action
+            android:id="@+id/action_mySessionsFragment_to_sessionDetailsFragment"
+            app:destination="@id/sessionDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sessionDetailsFragment"
+        android:name="com.example.exercisetracker.SessionDetailsFragment"
+        android:label="SessionDetailsFragment" />
 
 </navigation>

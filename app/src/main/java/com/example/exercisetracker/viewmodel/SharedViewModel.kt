@@ -51,6 +51,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _allSessions = MutableStateFlow<List<UserProgramSession>>(emptyList())
     val allSessions: StateFlow<List<UserProgramSession>> = _allSessions
 
+
     private var _currentProgram = MutableLiveData<UserProgram>()
     val currentProgram: LiveData<UserProgram> = _currentProgram
 
@@ -72,6 +73,22 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _userProgramExercises = MutableLiveData<List<UserProgramExercise>>()
     val userProgramExercises: LiveData<List<UserProgramExercise>> get() = _userProgramExercises
 
+    val displayableSessions: Flow<List<DisplayableSession>> = allSessions.map { sessions ->
+            sessions.map { session ->
+                val userProgram = repository.getUserProgram(session.user_program_id).first()
+                val programType = repository.getProgramTypeById(userProgram.app_program_type_id).first()
+                DisplayableSession(
+                    sessionId = session.id,
+                    userProgramId = session.user_program_id,
+                    sessionStartTime = session.startTime,
+                    sessionTimeSpent = session.time_spent,
+                    sessionDescription = session.description,
+                    userProgramName = userProgram.name,
+                    programTypeIcon = programType.icon
+                )
+            }
+        }
+
 
     init {
         _startupDone.value = false
@@ -85,7 +102,14 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         flowUserProgramSessions()
     }
 
-
+    fun getUserProgramNameFromId(id: Int): String {
+        for (program in userPrograms.value) {
+            if (program.id == id) {
+                return program.name
+            }
+        }
+        return ""
+    }
 
 
     private fun flowAppProgramTypes() {
