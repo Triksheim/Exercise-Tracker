@@ -203,8 +203,13 @@ class ProgramSessionFragment: Fragment() {
     private suspend fun saveWorkoutSession(currentProgram: UserProgram) {
         if (isWorkoutRunning) {
             val currentTime = System.currentTimeMillis()
-            pauseDuration = currentTime - pauseStartTime
-            timeSpent += ((currentTime - startTime - pauseDuration) / 1000).toInt()
+            // Check if pauseDuration has been initialized. If not, don't subtract it.
+            val elapsed = if (pauseDuration > 0L) {
+                currentTime - startTime - pauseDuration
+            } else {
+                currentTime - startTime
+            }
+            timeSpent += (elapsed / 1000).toInt()
             isWorkoutRunning = false
             timerHandler.removeCallbacks(timerRunnable)
         }
