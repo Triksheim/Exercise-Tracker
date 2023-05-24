@@ -27,7 +27,6 @@ class NewProgramFragment: Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var userProgram: UserProgram
-    private var programType: AppProgramType? = null
     private var useTimer = 1
 
     private val sharedViewModel: SharedViewModel by activityViewModels() {
@@ -51,15 +50,13 @@ class NewProgramFragment: Fragment() {
         val programTypeId = navigationArgs.programTypeId
         if (programTypeId == -1) {
             Log.e("NewProgramFragment", "Failed to receive programTypeId")
-        }else{
-            programType = sharedViewModel.programTypes.value.find{it.id == programTypeId}
-            if (programType == null){
-                Toast.makeText(context, "Noe gikk galt, vennligst prøv igjen", Toast.LENGTH_SHORT).show()
-                val action = NewProgramFragmentDirections.actionNewProgramFragmentToSecondFragment()
-                findNavController().navigate(action)}
         }
 
-        // ProgramID is set from navargs if user navigates via edit-button on a userprogram
+        val programType = sharedViewModel.programTypes.value.find{it.id == programTypeId}
+
+
+        // ProgramID is set from navargs only if user navigates via edit-button on a userprogram
+        // Bind current program to edit it
         val programId = navigationArgs.programId
         if (programId > 0) {
             sharedViewModel.currentProgram.observe(this.viewLifecycleOwner) {selectedProgram ->
@@ -68,20 +65,23 @@ class NewProgramFragment: Fragment() {
             }
         }
 
-        binding.apply {
-            // Bind variable programtype in layout to chosen programType
-            programtype = programType
-            timerOptions.setOnCheckedChangeListener{ group, _ ->
-                useTimer = if (rbOptionYes.isChecked ) 1 else 0
-            }
-            buttonSaveProgram.setOnClickListener {
-                if (sharedViewModel.isUserLoggedIn()) {
-                    addUserProgram()
-                }else {
-                    showNotLoggedInMessage()
+        sharedViewModel.currentProgramType.observe(this.viewLifecycleOwner){ programType ->
+            binding.apply {
+                // Bind variable programtype in layout to chosen programType
+                programtype = programType
+                timerOptions.setOnCheckedChangeListener{ group, _ ->
+                    useTimer = if (rbOptionYes.isChecked ) 1 else 0
+                }
+                buttonSaveProgram.setOnClickListener {
+                    if (sharedViewModel.isUserLoggedIn()) {
+                        addUserProgram(programType)
+                    }else {
+                        showNotLoggedInMessage()
+                    }
                 }
             }
         }
+
     }
 
     private fun bindUserProgram(userProgram: UserProgram) {
@@ -113,9 +113,9 @@ class NewProgramFragment: Fragment() {
         }
     }
 
-    private fun addUserProgram() {
+    private fun addUserProgram(programType: AppProgramType) {
         if(isValidProgramEntry()) {
-            userProgram = createUserProgram()
+            userProgram = createUserProgram(programType)
 
             // Save user program via viewModel
             viewLifecycleOwner.lifecycleScope.launch {
@@ -133,7 +133,7 @@ class NewProgramFragment: Fragment() {
         binding.programDescriptInput.text.toString()
     )
 
-    private fun createUserProgram(): UserProgram {
+    private fun createUserProgram(programType: AppProgramType): UserProgram {
         useTimer = if (binding.rbOptionYes.isChecked) {
             1 } else { 0 }
         return UserProgram(

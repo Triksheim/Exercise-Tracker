@@ -36,6 +36,9 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _programTypes = MutableStateFlow<List<AppProgramType>>(emptyList())
     val programTypes: StateFlow<List<AppProgramType>> = _programTypes
 
+    private var _currentProgramType = MutableLiveData<AppProgramType>()
+    val currentProgramType: LiveData<AppProgramType> = _currentProgramType
+
     private val _userPrograms = MutableStateFlow<List<UserProgram>>(emptyList())
     val userPrograms: StateFlow<List<UserProgram>> = _userPrograms
 
@@ -173,7 +176,11 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-    fun setCurrentProgram(userProgram: UserProgram) {
+    fun setCurrentProgramType(programType: AppProgramType) {
+        _currentProgramType.value = programType
+    }
+
+    fun setCurrentUserProgram(userProgram: UserProgram){
         _currentProgram.value = userProgram
     }
 
@@ -224,10 +231,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
     fun isValidProgramEntry(name: String, description: String): Boolean{
         return name.isNotBlank() && description.isNotBlank()
-    }
-
-    fun setCurrentUserProgram(userProgram: UserProgram){
-        _currentProgram.value = userProgram
     }
 
     fun isUserLoggedIn(): Boolean {

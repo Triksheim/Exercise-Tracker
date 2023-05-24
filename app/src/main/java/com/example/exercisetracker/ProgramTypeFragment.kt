@@ -46,6 +46,7 @@ class ProgramTypeFragment: Fragment() {
             else -> ""
         }
         val adapter = ProgramTypeAdapter { programType ->
+            sharedViewModel.setCurrentProgramType(programType)
             val action = ProgramTypeFragmentDirections.actionProgramTypeFragmentToNewProgramFragment(programType.id)
             findNavController().navigate(action)
         }
