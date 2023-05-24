@@ -135,9 +135,6 @@ interface TrainingDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertUserProgramSessionData(userProgramSessionDataEntity: UserProgramSessionDataEntity): Long
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertUserProgramSessionDataList(userProgramSessionDataEntity: List<UserProgramSessionDataEntity>): List<Long>
-
     @Query("SELECT * FROM user_program_session_data")
     fun getAllUserProgramSessionData(): Flow<List<UserProgramSessionDataEntity>>
 

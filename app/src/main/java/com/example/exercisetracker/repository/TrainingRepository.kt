@@ -133,9 +133,6 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun insertUserProgramSessionData(userProgramSessionDataEntity: UserProgramSessionDataEntity): Long {
         return localDataSource.insertUserProgramSessionData(userProgramSessionDataEntity)
     }
-    suspend fun insertUserProgramSessionDataList(userProgramSessionDataEntityList: List<UserProgramSessionDataEntity>): List<Long> {
-        return localDataSource.insertUserProgramSessionDataList(userProgramSessionDataEntityList)
-    }
     suspend fun getAllUserProgramSessionData(): Flow<List<UserProgramSessionDataEntity>> {
         return localDataSource.getAllUserProgramSessionData()
     }
@@ -248,9 +245,6 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     // UserProgramSessionData
     suspend fun createUserProgramSessionDataAPI(userProgramSessionData: UserProgramSessionData): Result<UserProgramSessionDataJSON> {
         return remoteDataSource.createUserProgramSessionData(userProgramSessionData)
-    }
-    suspend fun insertUserProgramSessionDataListAPI(userProgramSessionDataList: List<UserProgramSessionData>): Result<List<UserProgramSessionDataJSON>> {
-        return remoteDataSource.insertUserProgramSessionDataList(userProgramSessionDataList)
     }
     suspend fun getALlUserProgramSessionDataAPI(userId: Int): Result<List<UserProgramSessionDataJSON>> {
         return remoteDataSource.getAllUserProgramSessionData(userId)

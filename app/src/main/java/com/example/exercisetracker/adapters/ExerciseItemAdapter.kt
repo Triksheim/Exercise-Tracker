@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.exercisetracker.DETAIL_FRAGMENT_BOTTOM
 import com.example.exercisetracker.DETAIL_FRAGMENT_UPPER
 import com.example.exercisetracker.EXERCISES_FRAGMENT
+import com.example.exercisetracker.PROGRAM_SESSION_FRAGMENT
 import com.example.exercisetracker.databinding.ExerciseItemBinding
 import com.example.exercisetracker.R
 import com.example.exercisetracker.db.UserExercise
@@ -73,6 +74,11 @@ class ExerciseItemAdapter(
                     binding.buttonRemove.setOnClickListener {
                         exerciseClickListener.onRemoveButtonClick(binding.exercise!!)
                     }
+                }
+                PROGRAM_SESSION_FRAGMENT -> {
+                    binding.buttonAdd.visibility = View.INVISIBLE
+                    binding.buttonRemove.visibility = View.INVISIBLE
+                    binding.buttonEdit.visibility = View.INVISIBLE
                 }
             }
         }

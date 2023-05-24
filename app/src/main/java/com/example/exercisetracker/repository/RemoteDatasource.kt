@@ -144,9 +144,6 @@ interface ApiService {
     @POST("user_program_session_data")
     suspend fun createUserProgramSessionData(@Body userProgramSessionData: UserProgramSessionData): Response<UserProgramSessionDataJSON>
 
-    @POST("user_program_session_data")
-    suspend fun insertUserProgramSessionDataList(@Body userProgramSessionDataList: List<UserProgramSessionData>): Response<List<UserProgramSessionDataJSON>>
-
     @PUT("user_program_session_data/{id}")
     suspend fun updateUserProgramSessionData(@Path("id") id: Int, @Body userProgramSessionData: UserProgramSessionData): Response<UserProgramSessionDataJSON>
 
@@ -261,8 +258,6 @@ class RemoteDataSource(private val apiService: ApiService) {
     // UserProgramSessionData
     suspend fun createUserProgramSessionData(userProgramSessionData: UserProgramSessionData)
         = safeApiCall { apiService.createUserProgramSessionData(userProgramSessionData).bodyOrThrow() }
-    suspend fun insertUserProgramSessionDataList(userProgramSessionDataList: List<UserProgramSessionData>)
-        = safeApiCall { apiService.insertUserProgramSessionDataList(userProgramSessionDataList).bodyOrThrow() }
     suspend fun getAllUserProgramSessionData(userId: Int)
         = safeApiCall { apiService.getUserProgramSessionDataList(userId) }
     suspend fun updateUserProgramSessionData(userProgramSessionData: UserProgramSessionData)

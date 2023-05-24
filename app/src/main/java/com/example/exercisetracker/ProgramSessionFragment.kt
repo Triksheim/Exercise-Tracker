@@ -3,17 +3,24 @@ package com.example.exercisetracker
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.location.Location
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -33,6 +40,11 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import com.google.android.gms.location.LocationRequest
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.exercisetracker.adapters.ExerciseItemAdapter
+import com.example.exercisetracker.db.UserExercise
+
+const val PROGRAM_SESSION_FRAGMENT = "ProgramSessionFragment"
 
 class ProgramSessionFragment: Fragment() {
 
@@ -62,11 +74,21 @@ class ProgramSessionFragment: Fragment() {
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
     private val userProgramSessionDataList = mutableListOf<UserProgramSessionData>()
 
+    // Photo and camera variables
+    private val REQUEST_IMAGE_CAPTURE = 1
+    private val REQUEST_GALLERY = 2
+    private lateinit var imageView: ImageView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentProgramSessionBinding.inflate(inflater, container, false)
+
+        // initialize RecyclerView and nested scroll
+        val recyclerView = binding.exercisesContainer
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.isNestedScrollingEnabled = false
         return binding.root
     }
 
@@ -77,6 +99,51 @@ class ProgramSessionFragment: Fragment() {
 
         val currentProgram = sharedViewModel.currentProgram.value
 
+
+        // Exercise items
+        // Set the adapter for the RecyclerView
+        // Buttons are invisible and will never be called in this fragment
+        val exerciseItemAdapter = ExerciseItemAdapter(object: ExerciseItemAdapter.ExerciseClickListener {
+            override fun onEditButtonClick(userExercise: UserExercise) {}
+            override fun onAddButtonClick(userExercise: UserExercise) {}
+            override fun onRemoveButtonClick(userExercise: UserExercise) {}
+        }, PROGRAM_SESSION_FRAGMENT)
+
+        binding.exercisesContainer.adapter = exerciseItemAdapter
+        binding.exercisesContainer.layoutManager = LinearLayoutManager(context)
+
+        // Call the function in ViewModel to fetch exercises
+        sharedViewModel.flowExercisesForCurrentProgram()
+
+        // Observe the LiveData of program exercises
+        sharedViewModel.userProgramExercises.observe(viewLifecycleOwner, Observer { programExercises ->
+            // Fetch the list of all user exercises
+            val userExercises = sharedViewModel.userExercises.value
+            // Filter the user exercises that are in the program
+            val exercisesForProgram = userExercises.filter { userExercise ->
+                programExercises.any { programExercise ->
+                    programExercise.user_exercise_id == userExercise.id
+                }
+            }
+            // Submit the new list of exercises to the adapter
+            exerciseItemAdapter.submitList(exercisesForProgram)
+        })
+
+        // Photo and image buttons
+        imageView = binding.imageviewExercise
+
+        val buttonCamera = binding.buttonCamera
+        buttonCamera.setOnClickListener {
+            dispatchTakePictureIntent()
+        }
+
+        val buttonGallery = binding.buttonGallery
+        buttonGallery.setOnClickListener {
+            dispatchGalleryIntent()
+
+        }
+
+        // GPS and location variables
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireContext())
 
@@ -136,8 +203,13 @@ class ProgramSessionFragment: Fragment() {
     private suspend fun saveWorkoutSession(currentProgram: UserProgram) {
         if (isWorkoutRunning) {
             val currentTime = System.currentTimeMillis()
-            pauseDuration = currentTime - pauseStartTime
-            timeSpent += ((currentTime - startTime - pauseDuration) / 1000).toInt()
+            // Check if pauseDuration has been initialized. If not, don't subtract it.
+            val elapsed = if (pauseDuration > 0L) {
+                currentTime - startTime - pauseDuration
+            } else {
+                currentTime - startTime
+            }
+            timeSpent += (elapsed / 1000).toInt()
             isWorkoutRunning = false
             timerHandler.removeCallbacks(timerRunnable)
         }
@@ -224,7 +296,7 @@ class ProgramSessionFragment: Fragment() {
             }.build()
             locationCallback = object : LocationCallback() {
                 override fun onLocationResult(locationResult: LocationResult) {
-                    locationResult?.lastLocation?.let { location ->
+                    locationResult.lastLocation?.let { location ->
                         // Call the function to update the location data
                         updateLocation(location)
                     }
@@ -320,6 +392,38 @@ class ProgramSessionFragment: Fragment() {
         } else {
             // Request the permission directly
             requestPermissionLauncher.launch(permission)
+        }
+    }
+
+    // Photo and camera functions
+    private fun dispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        try {
+            @Suppress("DEPRECATION")
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+        } catch (e: ActivityNotFoundException) {
+            e.localizedMessage?.let { Log.d("DEBUG", it) }
+        }
+    }
+
+    private fun dispatchGalleryIntent() {
+        val galleryIntent = Intent(
+            Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        )
+        @Suppress("DEPRECATION")
+        startActivityForResult(galleryIntent, REQUEST_GALLERY)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        @Suppress("DEPRECATION")
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
+            val bitmap = data?.extras?.get("data") as Bitmap
+            imageView.setImageBitmap(bitmap)
+        } else if (requestCode == REQUEST_GALLERY && resultCode == AppCompatActivity.RESULT_OK) {
+            imageView.setImageURI(data?.data)
+        } else {
+            Toast.makeText(context, "Feil ved visning av bilde", Toast.LENGTH_SHORT).show()
         }
     }
 }
