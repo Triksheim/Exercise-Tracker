@@ -519,7 +519,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-    suspend fun deleteUserProgram(userProgram: UserProgram) {
+     fun deleteUserProgram(userProgram: UserProgram) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.deleteUserExerciseAPI(userProgram.id)
             if (result.isSuccess) {
