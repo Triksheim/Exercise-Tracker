@@ -20,6 +20,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.exercisetracker.databinding.FragmentProgramSessionBinding
+import com.example.exercisetracker.db.UserProgram
 import com.example.exercisetracker.db.UserProgramSession
 import com.example.exercisetracker.db.UserProgramSessionData
 import com.example.exercisetracker.repository.TrainingApplication
@@ -31,6 +32,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import com.google.android.gms.location.LocationRequest
+import androidx.lifecycle.Observer
 
 class ProgramSessionFragment: Fragment() {
 
@@ -43,7 +45,6 @@ class ProgramSessionFragment: Fragment() {
 
     private val binding get() = _binding!!
 
-    private var userProgramId: Int? = null
     private var sessionId: Int? = null
 
     // Timer variables
@@ -74,7 +75,7 @@ class ProgramSessionFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         sharedViewModel.setToolbarTitle(getString(R.string.title_my_statistics))
 
-        userProgramId = arguments?.getInt("userProgramId")
+        val currentProgram = sharedViewModel.currentProgram.value
 
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireContext())
@@ -113,7 +114,7 @@ class ProgramSessionFragment: Fragment() {
             // Call saveWorkoutSession inside a coroutine
             viewLifecycleOwner.lifecycleScope.launch {
                 stopLocationUpdates()
-                saveWorkoutSession()
+                saveWorkoutSession(currentProgram!!)
 
                 // Upload the location data to the database if the user selected the "Yes" option
                 if (binding.rbGpsYes.isChecked) {
@@ -132,7 +133,7 @@ class ProgramSessionFragment: Fragment() {
         _binding = null
     }
 
-    private suspend fun saveWorkoutSession() {
+    private suspend fun saveWorkoutSession(currentProgram: UserProgram) {
         if (isWorkoutRunning) {
             val currentTime = System.currentTimeMillis()
             pauseDuration = currentTime - pauseStartTime
@@ -145,7 +146,7 @@ class ProgramSessionFragment: Fragment() {
         val startTimeStr = dateFormat.format(Date(timestamp))
         val userProgramSession = UserProgramSession(
             id = 0,
-            user_program_id = userProgramId ?: 0,
+            user_program_id = currentProgram.id,
             startTime = startTimeStr,
             time_spent = timeSpent,
             description = binding.personalDescriptionEditText.text.toString()

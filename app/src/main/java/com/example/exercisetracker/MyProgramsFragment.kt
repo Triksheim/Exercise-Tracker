@@ -49,9 +49,7 @@ class MyProgramsFragment : Fragment() {
             }
             override fun onStartProgramButtonClick(userProgram: UserProgram) {
                 sharedViewModel.setCurrentUserProgram(userProgram)
-                val actionStartProgram = MyProgramsFragmentDirections
-                    .actionMyProgramsFragmentToProgramSessionFragment(userProgram.id)
-                findNavController().navigate(actionStartProgram)
+                findNavController().navigate(R.id.action_myProgramsFragment_to_programSessionFragment)
             }
         }
         // Iinitiating the adapter interface to get the programtype for each program
@@ -70,9 +68,7 @@ class MyProgramsFragment : Fragment() {
             userProgramClickListener,
             onItemClickListener = { selectedProgram ->
                 sharedViewModel.setCurrentUserProgram(selectedProgram)
-                val actionProgramDetails = MyProgramsFragmentDirections
-                    .actionMyProgramsFragmentToProgramDetailsFragment(selectedProgram.id)
-                findNavController().navigate(actionProgramDetails)
+                findNavController().navigate(R.id.action_myProgramsFragment_to_programDetailsFragment)
             }
         )
 

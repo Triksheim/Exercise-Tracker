@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -23,7 +24,7 @@ const val DETAIL_FRAGMENT_UPPER = "detailFragmentUpper"
 const val DETAIL_FRAGMENT_BOTTOM = "detailFragmentBottom"
 
 class ProgramDetailsFragment: Fragment() {
-    private val navigationArgs: ProgramDetailsFragmentArgs by navArgs()
+    private val args: ProgramDetailsFragmentArgs by navArgs()
     private var _binding: FragmentProgramDetailsBinding? = null
     private val sharedViewModel: SharedViewModel by activityViewModels() {
         SharedViewModelFactory(
@@ -43,6 +44,7 @@ class ProgramDetailsFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         sharedViewModel.setToolbarTitle(getString(R.string.title_program_details))
 
+        // Buttons on exercise items:
         val exerciseClickListener = object: ExerciseItemAdapter.ExerciseClickListener {
             override fun onEditButtonClick(userExercise: UserExercise) {
                 sharedViewModel.setCurrentUserExercise(userExercise)
@@ -54,7 +56,6 @@ class ProgramDetailsFragment: Fragment() {
             }
 
             override fun onAddButtonClick(userExercise: UserExercise) {
-                Toast.makeText(context, "Exercise added to program", Toast.LENGTH_SHORT).show()
 
                 val selectedExercise = sharedViewModel.userExercises.value.find {
                     it.id == userExercise.id
@@ -62,7 +63,7 @@ class ProgramDetailsFragment: Fragment() {
                 selectedExercise?.let { exercise ->
                     val newProgramExercise = UserProgramExercise(
                         id = 0,
-                        user_program_id = sharedViewModel.currentProgram.value!!.id,
+                        user_program_id = args.userProgramId,
                         user_exercise_id = exercise.id
                     )
                     sharedViewModel.addUserExerciseToUserProgram(newProgramExercise)
@@ -91,21 +92,24 @@ class ProgramDetailsFragment: Fragment() {
         val otherExercisesAdapter =
             ExerciseItemAdapter(exerciseClickListener, DETAIL_FRAGMENT_BOTTOM)
 
-        binding.apply {
-            lifecycleOwner = viewLifecycleOwner
-            program = sharedViewModel.currentProgram.value
-            programExerciseRecycler.adapter = programExercisesAdapter
-            otherExerciseRecycler.adapter = otherExercisesAdapter
-            buttonStart.setOnClickListener {
-                findNavController().navigate(R.id.action_programDetailsFragment_to_ProgramSessionFragment)
-            }
-            binding.buttonAddExercises.setOnClickListener {
-                findNavController().navigate(R.id.action_programDetailsFragment_to_newExerciseFragment)
-            }
+        sharedViewModel.currentProgram.observe(this.viewLifecycleOwner) {currentProgram ->
+            binding.apply {
+                lifecycleOwner = viewLifecycleOwner
+                program = currentProgram
+                programExerciseRecycler.adapter = programExercisesAdapter
+                otherExerciseRecycler.adapter = otherExercisesAdapter
+                buttonStart.setOnClickListener {
+                    findNavController().navigate(R.id.action_programDetailsFragment_to_ProgramSessionFragment)
+                }
+                binding.buttonAddExercises.setOnClickListener {
+                    findNavController().navigate(R.id.action_programDetailsFragment_to_newExerciseFragment)
+                }
 
-            programExercisesAdapter.notifyDataSetChanged()
-            otherExercisesAdapter.notifyDataSetChanged()
+                programExercisesAdapter.notifyDataSetChanged()
+                otherExercisesAdapter.notifyDataSetChanged()
+            }
         }
+
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             sharedViewModel.userProgramExercises.observe(viewLifecycleOwner) { programExercises ->

@@ -28,7 +28,7 @@
         app:showAsAction="ifRoom">
         <menu>
             <item android:id="@+id/new_program"
-                android:title="@string/program" />
+                android:title="@string/new_program" />
             <item android:id="@+id/new_exercise"
                 android:title="@string/new_exercise" />
         </menu>
