@@ -47,6 +47,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedViewModel.setToolbarTitle(getString(R.string.title_login))
 
         binding?.apply {
             lifecycleOwner = viewLifecycleOwner

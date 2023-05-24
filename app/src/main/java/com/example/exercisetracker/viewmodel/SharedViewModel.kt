@@ -72,6 +72,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _userProgramExercises = MutableLiveData<List<UserProgramExercise>>()
     val userProgramExercises: LiveData<List<UserProgramExercise>> get() = _userProgramExercises
 
+    private var _toolbarTitle = MutableLiveData<String>()
+    val toolbarTitle: LiveData<String> = _toolbarTitle
 
     init {
         _startupDone.value = false
@@ -238,6 +240,10 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
     fun isValidExerciseEntry(name: String, description: String): Boolean{
         return name.isNotBlank() && description.isNotBlank()
+    }
+
+    fun setToolbarTitle(title:String) {
+        _toolbarTitle.value =  title
     }
 
     private suspend fun clearDb() {

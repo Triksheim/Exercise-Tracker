@@ -42,6 +42,8 @@ class NewExerciseFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedViewModel.setToolbarTitle(getString(R.string.title_new_exercise))
+
 
         binding.buttonBack.setOnClickListener {
             findNavController().navigate(R.id.action_newExerciseFragment_to_myExercisesFragment)

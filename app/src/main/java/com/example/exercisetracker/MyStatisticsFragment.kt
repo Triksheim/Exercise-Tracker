@@ -37,6 +37,7 @@ class MyStatisticsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedViewModel.setToolbarTitle(getString(R.string.title_my_statistics))
 
         val replayClickListener = object: StatisticsItemAdapter.ReplayClickListener {
             override fun onReplayButtonClicked(userProgramSessionDataId: Int) {

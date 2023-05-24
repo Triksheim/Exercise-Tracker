@@ -72,6 +72,7 @@ class ProgramSessionFragment: Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedViewModel.setToolbarTitle(getString(R.string.title_my_statistics))
 
         userProgramId = arguments?.getInt("userProgramId")
 

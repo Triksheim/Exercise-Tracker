@@ -18,7 +18,6 @@ import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 
-
 class MyProgramsFragment : Fragment() {
     private var _binding: FragmentMyProgramsBinding? = null
     private val binding get() = _binding!!
@@ -39,6 +38,7 @@ class MyProgramsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedViewModel.setToolbarTitle(getString(R.string.title_my_programs))
 
         val userProgramClickListener = object: ProgramItemAdapter.UserProgramClickListener {
             override fun onEditButtonClick(userProgram: UserProgram) {

@@ -18,11 +18,12 @@
     <item
         android:id="@+id/action_my_programs"
         android:title="@string/my_programs" />
-    <item android:id="@+id/new_session"
+    <item
+        android:id="@+id/new_session"
         android:title="@string/new_session" />
     <item
         android:id="@+id/create_new"
-        android:icon="@drawable/add_img"
+        android:icon="@drawable/add_white_img"
         android:title="@string/menu_create_new"
         app:showAsAction="ifRoom">
         <menu>
