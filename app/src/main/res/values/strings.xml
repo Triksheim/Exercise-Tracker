@@ -54,9 +54,9 @@
     <string name="create_new_program">Lag Nytt Program</string>
     <string name="btn_delete_program">Slett Program</string>
     <string name="menu_create_new">Opprett Ny</string>
-    <string name="program">Program</string>
+    <string name="new_program">Nytt Program</string>
     <string name="new_session">Start et Program</string>
-    <string name="new_exercise">Øvelse</string>
+    <string name="new_exercise">Ny Øvelse</string>
 
     <!-- TITLES -->
     <string name="title_login">Velkommen</string>
