@@ -23,7 +23,7 @@
     <string name="textview_indoor">Innendørsaktivitet</string>
     <string name="textview_outdoor">Utendørsaktivitet</string>
     <string name="button_back">Tilbake</string>
-    <string name="register_new_program">Registrer nytt treningsprogram:</string>
+    <string name="register_new_program">Registrer nytt program:</string>
     <string name="description">Beskrivelse</string>
     <string name="program_name">Programnavn</string>
     <string name="use_timer">Bruke tidtaker?</string>
@@ -53,6 +53,10 @@
     <string name="tv_timing_text">Timing: %s</string>
     <string name="create_new_program">Lag Nytt Program</string>
     <string name="btn_delete_program">Slett Program</string>
+    <string name="menu_create_new">Opprett ny</string>
+    <string name="program">Program</string>
+    <string name="new_session">Start en økt</string>
+    <string name="new_exercise">Øvelse</string>
 
 
 </resources>

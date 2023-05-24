@@ -65,10 +65,10 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here.
         return when (item.itemId) {
-            R.id.action_settings -> {
-                // Handle settings action
+            /**R.id.action_settings -> {
+                Handle settings action
                 true
-            }
+            }*/
             R.id.nav_my_statistics -> {
                 // Navigate to myExercisesFragment
                 navController.navigate(R.id.myStatisticsFragment)
