@@ -1,10 +1,18 @@
 package com.example.exercisetracker
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -26,6 +34,10 @@ class NewExerciseFragment: Fragment() {
     private val binding get() = _binding!!
     private lateinit var userExercise: UserExercise
 
+    private val REQUEST_IMAGE_CAPTURE = 1
+    private val REQUEST_GALLERY = 2
+
+    private lateinit var imageView: ImageView
 
     private val sharedViewModel: SharedViewModel by activityViewModels() {
         SharedViewModelFactory(
@@ -44,6 +56,7 @@ class NewExerciseFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         sharedViewModel.setToolbarTitle(getString(R.string.title_new_exercise))
 
+        imageView = binding.imageviewExercise
 
         binding.buttonBack.setOnClickListener {
             findNavController().navigate(R.id.action_newExerciseFragment_to_myExercisesFragment)
@@ -51,10 +64,12 @@ class NewExerciseFragment: Fragment() {
 
         val buttonCamera = binding.buttonCamera
         buttonCamera.setOnClickListener {
+            dispatchTakePictureIntent()
         }
 
         val buttonGallery = binding.buttonGallery
         buttonGallery.setOnClickListener {
+            dispatchGalleryIntent()
 
         }
 
@@ -96,6 +111,11 @@ class NewExerciseFragment: Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun bindUserExercise(userExercise: UserExercise){
         binding.apply {
             exerciseNameInput.setText(userExercise.name, TextView.BufferType.SPANNABLE)
@@ -108,7 +128,6 @@ class NewExerciseFragment: Fragment() {
 
             }
         }
-
     }
 
     private fun updateUserExercise() {
@@ -136,8 +155,34 @@ class NewExerciseFragment: Fragment() {
         findNavController().navigate(action)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun dispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        try {
+            @Suppress("DEPRECATION")
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+        } catch (e: ActivityNotFoundException) {
+            e.localizedMessage?.let { Log.d("DEBUG", it) }
+        }
+    }
+
+    private fun dispatchGalleryIntent() {
+        val galleryIntent = Intent(
+            Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        )
+        @Suppress("DEPRECATION")
+        startActivityForResult(galleryIntent, REQUEST_GALLERY)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        @Suppress("DEPRECATION")
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
+            val bitmap = data?.extras?.get("data") as Bitmap
+            imageView.setImageBitmap(bitmap)
+        } else if (requestCode == REQUEST_GALLERY && resultCode == AppCompatActivity.RESULT_OK) {
+            imageView.setImageURI(data?.data)
+        } else {
+            Toast.makeText(context, "Feil ved visning av bilde", Toast.LENGTH_SHORT).show()
+        }
     }
 }
