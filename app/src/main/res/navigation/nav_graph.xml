@@ -245,6 +245,12 @@
         <action
             android:id="@+id/action_mySessionsFragment_to_sessionDetailsFragment"
             app:destination="@id/sessionDetailsFragment" />
+        <action
+            android:id="@+id/action_mySessionsFragment_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_mySessionsFragment_to_myProgramsFragment"
+            app:destination="@id/myProgramsFragment" />
     </fragment>
     <fragment
         android:id="@+id/sessionDetailsFragment"

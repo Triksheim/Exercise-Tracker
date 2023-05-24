@@ -39,7 +39,14 @@ class MySessionsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewModel = sharedViewModel
+            newSessionButton.setOnClickListener{
+                findNavController().navigate(R.id.action_mySessionsFragment_to_myProgramsFragment)
+            }
 
+        }
         val adapter = SessionItemAdapter { session ->
             sharedViewModel.setCurrentSession(UserProgramSession(session.sessionId, session.userProgramId, session.sessionDescription, session.sessionStartTime, session.sessionTimeSpent))
             findNavController().navigate(R.id.action_mySessionsFragment_to_sessionDetailsFragment)
@@ -48,8 +55,14 @@ class MySessionsFragment : Fragment() {
 
 
         val recyclerView = binding.sessionsRecyclerView
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val layoutManager = LinearLayoutManager(requireContext())
+        layoutManager.reverseLayout = true
+        layoutManager.stackFromEnd = true
+        recyclerView.layoutManager = layoutManager
+        //recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
+
+
 
         val dividerItemDecoration = DividerItemDecoration(requireContext(),
             (recyclerView.layoutManager as LinearLayoutManager).orientation)

@@ -10,12 +10,14 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.exercisetracker.databinding.ActivityMainBinding
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val sharedViewModel: SharedViewModel by viewModels {
@@ -43,6 +45,13 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+        sharedViewModel.activeUser.observe(this, Observer {
+            if (sharedViewModel.activeUser.value != null) {
+                lifecycleScope.launch {
+                    sharedViewModel.getUserStats()
+                }
+            }
+        })
 
         sharedViewModel.currentProgram.observe(this, Observer {
             sharedViewModel.flowExercisesForCurrentProgram()
@@ -75,7 +84,7 @@ class MainActivity : AppCompatActivity() {
             }*/
             R.id.nav_my_statistics -> {
                 // Navigate to myExercisesFragment
-                navController.navigate(R.id.myStatisticsFragment)
+                navController.navigate(R.id.mySessionsFragment)
                 true
             }
             R.id.nav_my_exercises -> {

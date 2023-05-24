@@ -272,4 +272,9 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun deleteUserProgramSessionPhotoAPI(id: Int): Result<Unit> {
         return remoteDataSource.deleteUserProgramSessionPhoto(id)
     }
+
+    // UserStats
+    suspend fun getUserStatsAPI(id: Int): Result<UserStatsJSON> {
+        return remoteDataSource.getUserStats(id)
+    }
 }
