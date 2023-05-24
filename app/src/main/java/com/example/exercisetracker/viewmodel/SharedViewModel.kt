@@ -89,6 +89,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             }
         }
 
+    private var _toolbarTitle = MutableLiveData<String>()
+    val toolbarTitle: LiveData<String> = _toolbarTitle
 
     init {
         _startupDone.value = false
@@ -102,14 +104,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         flowUserProgramSessions()
     }
 
-    fun getUserProgramNameFromId(id: Int): String {
-        for (program in userPrograms.value) {
-            if (program.id == id) {
-                return program.name
-            }
-        }
-        return ""
-    }
+
 
 
     private fun flowAppProgramTypes() {
@@ -262,6 +257,10 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
     fun isValidExerciseEntry(name: String, description: String): Boolean{
         return name.isNotBlank() && description.isNotBlank()
+    }
+
+    fun setToolbarTitle(title:String) {
+        _toolbarTitle.value =  title
     }
 
     private suspend fun clearDb() {

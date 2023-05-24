@@ -45,6 +45,7 @@ class NewProgramFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedViewModel.setToolbarTitle(getString(R.string.title_new_program))
 
         // Set programType for the new program
         val programTypeId = navigationArgs.programTypeId

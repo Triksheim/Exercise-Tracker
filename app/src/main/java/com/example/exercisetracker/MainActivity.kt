@@ -54,6 +54,10 @@ class MainActivity : AppCompatActivity() {
             sharedViewModel.getPhotosForCurrentSession()
         })
 
+        sharedViewModel.toolbarTitle.observe(this, Observer {title ->
+            binding.toolbar.title = title
+        })
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -65,10 +69,10 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here.
         return when (item.itemId) {
-            R.id.action_settings -> {
-                // Handle settings action
+            /**R.id.action_settings -> {
+                Handle settings action
                 true
-            }
+            }*/
             R.id.nav_my_statistics -> {
                 // Navigate to myExercisesFragment
                 navController.navigate(R.id.myStatisticsFragment)
@@ -83,6 +87,22 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(R.id.myProgramsFragment)
                 true
             }
+            R.id.new_session -> {
+                // Navigate to NewSessionFragment
+                navController.navigate(R.id.myProgramsFragment)
+                true
+            }
+            R.id.new_program -> {
+                // Navigate to SecondFragment (choose out-/indoor activity)
+            navController.navigate(R.id.SecondFragment)
+                true
+            }
+            R.id.new_exercise -> {
+                // Navigate to NewExerciseFragment
+            navController.navigate(R.id.newExerciseFragment)
+                true
+            }
+
             R.id.nav_logout -> {
                 // Handle logout action
                 performLogout()

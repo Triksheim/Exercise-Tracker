@@ -42,6 +42,8 @@ class SecondFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedViewModel.setToolbarTitle(getString(R.string.title_second_fragment))
+
 
         // Dersom indoor image er trykket, må innendørs program-typer vises i recyclerView
         binding.indoorImage.setOnClickListener {
