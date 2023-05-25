@@ -78,38 +78,75 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here.
         return when (item.itemId) {
-            /**R.id.action_settings -> {
-                Handle settings action
-                true
-            }*/
-            R.id.nav_my_statistics -> {
-                // Navigate to myExercisesFragment
-                navController.navigate(R.id.mySessionsFragment)
-                true
+            R.id.nav_home_statistics -> {
+                // Check if the current destination is the mySessionsFragment
+                if (navController.currentDestination?.id == R.id.mySessionsFragment) {
+                    // Pop up to the MyExercisesFragment
+                    navController.popBackStack(R.id.mySessionsFragment, true)
+                } else {
+                    // Navigate to myExercisesFragment
+                    navController.navigate(R.id.mySessionsFragment)
+                    true
+                }
             }
+            /**
+            R.id.nav_all_sessions -> {
+
+                // Check if the current destination is the allSessionsFragment
+                if(navController.currentDestination?.id == R.id.allSessionsFragment) {
+                    // Pop up to the allSessionsFragment
+                    navController.popBackStack(R.id.allSessionsFragment, true)
+                } else {
+                    // Navigate to allSessionsFragment
+                    navController.navigate(R.id.allSessionsFragment)
+                    true
+                }
+
+            }
+             */
             R.id.nav_my_exercises -> {
-                // Navigate to myExercisesFragment
-                navController.navigate(R.id.myExercisesFragment)
-                true
+                // Check if the current destination is the myExercisesFragment
+                if(navController.currentDestination?.id == R.id.myExercisesFragment) {
+                    // Pop up to the MyExercisesFragment
+                    navController.popBackStack(R.id.myExercisesFragment, true)
+                } else {
+                    // Navigate to myExercisesFragment
+                    navController.navigate(R.id.myExercisesFragment)
+                    true
+                }
             }
             R.id.action_my_programs -> {
-                navController.navigate(R.id.myProgramsFragment)
-                true
-            }
-            R.id.new_session -> {
-                // Navigate to NewSessionFragment
-                navController.navigate(R.id.myProgramsFragment)
-                true
+                // Check if the current destination is the myProgramsFragment
+                if(navController.currentDestination?.id == R.id.myProgramsFragment) {
+                    // Pop up to the myProgramsFragment
+                    navController.popBackStack(R.id.myProgramsFragment, true)
+                } else {
+                    // Navigate to myProgramsFragment
+                    navController.navigate(R.id.myProgramsFragment)
+                    true
+                }
             }
             R.id.new_program -> {
-                // Navigate to SecondFragment (choose out-/indoor activity)
-            navController.navigate(R.id.SecondFragment)
-                true
+                // Check if the current destination is the SecondFragment
+                if(navController.currentDestination?.id == R.id.SecondFragment) {
+                    // Pop up to the SecondFragment
+                    navController.popBackStack(R.id.SecondFragment, true)
+                } else {
+                    // Navigate to SecondFragment
+                    navController.navigate(R.id.SecondFragment)
+                    true
+                }
             }
             R.id.new_exercise -> {
-                // Navigate to NewExerciseFragment
-            navController.navigate(R.id.newExerciseFragment)
-                true
+                // Check if the current destination is the newExerciseFragment
+                if(navController.currentDestination?.id == R.id.newExerciseFragment) {
+                    // Pop up to the newExerciseFragment
+                    navController.popBackStack(R.id.newExerciseFragment, true)
+                } else {
+                    // Navigate to newExerciseFragment
+                    navController.navigate(R.id.newExerciseFragment)
+                    true
+                }
             }
 
             R.id.nav_logout -> {

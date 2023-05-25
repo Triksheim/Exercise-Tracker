@@ -93,5 +93,6 @@
     <string name="newSessionButton">Registrer treningsøkt</string>
     <string name="button_update_exercise">Oppdater Øvelse</string>
     <string name="button_update_program">Oppdater Program</string>
+    <string name="home">Hjem</string>
 
 </resources>
