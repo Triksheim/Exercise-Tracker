@@ -70,7 +70,8 @@ class MyProgramsFragment : Fragment() {
             onItemClickListener = { selectedProgram ->
                 sharedViewModel.setCurrentUserProgram(selectedProgram)
                 sharedViewModel.setProgramTypeByUserProgram(selectedProgram)
-                findNavController().navigate(R.id.action_myProgramsFragment_to_programDetailsFragment)
+                val action = MyProgramsFragmentDirections.actionMyProgramsFragmentToProgramDetailsFragment(selectedProgram.id)
+                findNavController().navigate(action)
             }
         )
 
