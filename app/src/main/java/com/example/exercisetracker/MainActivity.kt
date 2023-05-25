@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
             }
-            /**
+
             R.id.nav_all_sessions -> {
 
                 // Check if the current destination is the allSessionsFragment
@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
             }
-             */
+
             R.id.nav_my_exercises -> {
                 // Check if the current destination is the myExercisesFragment
                 if(navController.currentDestination?.id == R.id.myExercisesFragment) {

@@ -259,5 +259,13 @@
         android:id="@+id/sessionDetailsFragment"
         android:name="com.example.exercisetracker.SessionDetailsFragment"
         android:label="SessionDetailsFragment" />
+    <fragment
+        android:id="@+id/allSessionsFragment"
+        android:name="com.example.exercisetracker.AllSessionsFragment"
+        android:label="AllSessionsFragment" >
+        <action
+            android:id="@+id/action_allSessionsFragment_to_sessionDetailsFragment"
+            app:destination="@id/sessionDetailsFragment" />
+    </fragment>
 
 </navigation>

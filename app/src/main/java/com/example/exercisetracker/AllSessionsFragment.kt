@@ -45,7 +45,7 @@ class AllSessionsFragment : Fragment() {
         val adapter = SessionItemAdapter { session ->
             sharedViewModel.setCurrentSession(UserProgramSession(session.sessionId!!, session.userProgramId!!, session.sessionDescription!!, session.sessionStartTime!!, session.sessionTimeSpent!!))
             sharedViewModel.setCurrentDisplayableSession(session)
-            findNavController().navigate(R.id.action_mySessionsFragment_to_sessionDetailsFragment)
+            findNavController().navigate(R.id.action_allSessionsFragment_to_sessionDetailsFragment)
         }
 
 
