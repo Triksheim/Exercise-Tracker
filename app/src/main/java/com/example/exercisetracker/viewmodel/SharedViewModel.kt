@@ -45,9 +45,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _userPrograms = MutableStateFlow<List<UserProgram>>(emptyList())
     val userPrograms: StateFlow<List<UserProgram>> = _userPrograms
 
-    private val _userProgramType = MutableStateFlow<AppProgramType?>(null)
-    val userProgramType: StateFlow<AppProgramType?> = _userProgramType
-
     private val _userExercises = MutableStateFlow<List<UserExercise>>(emptyList())
     val userExercises: StateFlow<List<UserExercise>> = _userExercises
 
@@ -250,13 +247,13 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     }
 
     // Find ProgramType for a UserProgram and set programType to userProgramType
-    suspend fun getProgramTypeForProgram(userProgram: UserProgram) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.getProgramTypeById(userProgram.app_program_type_id)
-                .map { it.asDomainModel() }
-                .firstOrNull()
-            _userProgramType.value = result
+    fun getProgramTypeForProgram(userProgram: UserProgram): AppProgramType? {
+        val programTypes = programTypes.value
+        val result = programTypes.find { it.id == userProgram.app_program_type_id }
+        if (result == null) {
+            Log.d("PROGRAM_TYPE", "FAILED TO GET TYPE FOR PROGRAM")
         }
+        return result
     }
 
     fun setProgramTypeByUserProgram(userProgram: UserProgram) {
@@ -575,9 +572,9 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-     fun deleteUserProgram(userProgram: UserProgram) {
+     private suspend fun deleteUserProgram(userProgram: UserProgram) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.deleteUserExerciseAPI(userProgram.id)
+            val result = repository.deleteUserProgramAPI(userProgram.id)
             if (result.isSuccess) {
                 repository.deleteUserProgram(userProgram.asEntity())
                 Log.d("DELETE USER PROGRAM", "SUCCESS")
@@ -587,7 +584,10 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             }
         }
     }
-
+    fun deleteProgram(userProgram: UserProgram) {
+        viewModelScope.launch{
+            deleteUserProgram(userProgram)}
+    }
 
     suspend fun createUserExercise(userExercise: UserExercise) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -617,7 +617,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-    suspend fun deleteUserExercise(userExercise: UserExercise) {
+    private suspend fun deleteUserExercise(userExercise: UserExercise) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.deleteUserExerciseAPI(userExercise.id)
             if (result.isSuccess) {
@@ -625,9 +625,14 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 Log.d("DELETE USER EXERCISE", "SUCCESS")
             }
             else {
-                Log.e("ERROR USER EXERCISE", "Deleting user exercise failed")
+                Log.e("ERROR USER EXERCISE", "Deleting user exercise {userExercise.id} failed")
             }
         }
+    }
+
+    fun deleteExercise(userExercise: UserExercise){
+        viewModelScope.launch{
+            deleteUserExercise(userExercise)}
     }
 
 

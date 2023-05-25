@@ -59,10 +59,7 @@ class MyProgramsFragment : Fragment() {
         // Override fun in Interface to get the programtype for each program-item in ProgramItemAdapter
         val userProgramType = object: ProgramItemAdapter.UserProgramType {
             override fun getProgramTypeForProgram(userProgram: UserProgram): AppProgramType? {
-                viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                    sharedViewModel.getProgramTypeForProgram(userProgram)
-                    }
-                return sharedViewModel.userProgramType.value
+                return sharedViewModel.getProgramTypeForProgram(userProgram)
             }
         }
 
@@ -73,7 +70,8 @@ class MyProgramsFragment : Fragment() {
             onItemClickListener = { selectedProgram ->
                 sharedViewModel.setCurrentUserProgram(selectedProgram)
                 sharedViewModel.setProgramTypeByUserProgram(selectedProgram)
-                findNavController().navigate(R.id.action_myProgramsFragment_to_programDetailsFragment)
+                val action = MyProgramsFragmentDirections.actionMyProgramsFragmentToProgramDetailsFragment(selectedProgram.id)
+                findNavController().navigate(action)
             }
         )
 
@@ -95,23 +93,20 @@ class MyProgramsFragment : Fragment() {
                     Lifecycle.State.STARTED)
                     .collect { userPrograms ->
                     val filteredUserPrograms = userPrograms.filter { it.user_id == userId }
-                    //val sortedFilteredPrograms = sortProgramsByBackColor(filteredUserPrograms)
-                    adapter.submitList(filteredUserPrograms)
+                    val sortedFilteredPrograms = sortProgramsByBackColor(filteredUserPrograms)
+                    adapter.submitList(sortedFilteredPrograms)
                 }
             }
         })
 
-        /** Forsøk på å sortere myPrograms etter innendørs/utendørs. Ikke ferdig
-         fun sortProgramsByBackColor(userPrograms: List<UserProgram>): List<UserProgram> {
-            viewLifecycleOwner.lifecycleScope.launch {
-                val sortedList = userPrograms.sortedBy { userProgram ->
-                    val appProgramType = sharedViewModel.getProgramTypeForProgram(userProgram)
-                    appProgramType?.back_color
-                }
-            }
-            return emptyList()
+    }
+
+    private fun sortProgramsByBackColor(userPrograms: List<UserProgram>): List<UserProgram> {
+        val sortedList = userPrograms.sortedBy { userProgram ->
+            val appProgramType = sharedViewModel.getProgramTypeForProgram(userProgram)
+            appProgramType?.back_color
         }
-        */
+        return sortedList
     }
 
     override fun onDestroyView() {

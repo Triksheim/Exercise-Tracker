@@ -20,7 +20,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.exercisetracker.databinding.FragmentNewExerciseBinding
 import com.example.exercisetracker.db.UserExercise
-import com.example.exercisetracker.db.UserExerciseEntity
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
@@ -56,24 +55,8 @@ class NewExerciseFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         sharedViewModel.setToolbarTitle(getString(R.string.title_new_exercise))
 
-        imageView = binding.imageviewExercise
-
-        binding.buttonBack.setOnClickListener {
-            findNavController().navigate(R.id.action_newExerciseFragment_to_myExercisesFragment)
-        }
-
-        val buttonCamera = binding.buttonCamera
-        buttonCamera.setOnClickListener {
-            dispatchTakePictureIntent()
-        }
-
-        val buttonGallery = binding.buttonGallery
-        buttonGallery.setOnClickListener {
-            dispatchGalleryIntent()
-
-        }
-
         // ExerciseID is set from navargs if user navigates via edit-button on a userExercise
+        // Bind view for Edit Exercise
         val exerciseId =navigationArgs.userExerciseId
         if (exerciseId > 0) {
             sharedViewModel.currentUserExercise.observe(this.viewLifecycleOwner) {selectedExercise ->
@@ -81,6 +64,20 @@ class NewExerciseFragment: Fragment() {
                 bindUserExercise(userExercise)
             }
         }
+
+        // Bind View for New Exercise
+        binding.buttonDelete.visibility = View.GONE
+        imageView = binding.imageviewExercise
+
+        val buttonCamera = binding.buttonCamera
+        buttonCamera.setOnClickListener {
+            dispatchTakePictureIntent()
+        }
+        val buttonGallery = binding.buttonGallery
+        buttonGallery.setOnClickListener {
+            dispatchGalleryIntent()
+        }
+
 
         // Make sure userId is valid before using it
         if (sharedViewModel.activeUser.value!!.id != 0) {
@@ -97,7 +94,7 @@ class NewExerciseFragment: Fragment() {
                     photo_url = "https://wfa-media.com/exercise23/img/exercise1.png", // Set a default value or get it from the UI
                     description = description,
                     icon = "ic_launcher_foreground", // Set a default value or get it from the UI
-                    infobox_color = "#FE0980" // Set a default value or get it from the UI
+                    infobox_color = INDOORCOLOR
                 )
 
                 // Save the exercise to the database
@@ -118,14 +115,30 @@ class NewExerciseFragment: Fragment() {
 
     private fun bindUserExercise(userExercise: UserExercise){
         binding.apply {
+            imageView = imageviewExercise
+
+            val buttonCamera = buttonCamera
+            buttonCamera.setOnClickListener {
+                dispatchTakePictureIntent()
+            }
+            val buttonGallery = buttonGallery
+            buttonGallery.setOnClickListener {
+                dispatchGalleryIntent()
+            }
+
             exerciseNameInput.setText(userExercise.name, TextView.BufferType.SPANNABLE)
             exerciseDescriptInput.setText(userExercise.description, TextView.BufferType.SPANNABLE)
             val resourceId = resources.getIdentifier(userExercise.icon, "drawable", null)
             imageviewExercise.setImageResource(resourceId)
+            buttonSaveExercise.text = getString(R.string.button_update_exercise)
             buttonSaveExercise.setOnClickListener{
                 updateUserExercise()
                 navigateToMyExercises()
-
+            }
+            buttonDelete.visibility = View.VISIBLE
+            buttonDelete.setOnClickListener {
+                sharedViewModel.deleteExercise(userExercise)
+                navigateToMyExercises()
             }
         }
     }

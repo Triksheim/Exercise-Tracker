@@ -112,37 +112,26 @@
 
         <Button
             android:id="@+id/button_save_exercise"
-            android:layout_width="170dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Lagre Øvelse"
-            android:layout_marginBottom="@dimen/side_margin"
-            app:layout_constraintTop_toBottomOf="@id/exercise_descript"
+            android:layout_marginBottom="@dimen/margin_between_elements"
+            app:layout_constraintBottom_toTopOf="@id/button_delete"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/button_back"
-            />
-
-        <Button
-            android:id="@+id/button_back"
-            android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:text="@string/button_back"
-            android:layout_marginBottom="@dimen/side_margin"
-            app:layout_constraintTop_toBottomOf="@id/exercise_descript"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/button_save_exercise"
             />
 
         <!-- Delete button is set to visible when navigating from "edit-exercise" option in-->
         <Button
             android:id="@+id/button_delete"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Slett Øvelse"
             android:layout_marginBottom="@dimen/side_margin"
-            android:visibility="invisible"
-            app:layout_constraintTop_toBottomOf="@id/button_back"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/button_save_exercise"
+            app:layout_constraintStart_toStartOf="parent"
             />
         </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

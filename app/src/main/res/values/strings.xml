@@ -95,5 +95,8 @@
     <string name="totalDistance">Distanse: %skm</string>
     <string name="sessionProgramName">Program navn: %s</string>
     <string name="sessionHeight">Høyde: %sm</string>
+    <string name="button_update_exercise">Oppdater Øvelse</string>
+    <string name="button_update_program">Oppdater Program</string>
+    <string name="home">Hjem</string>
 
 </resources>
