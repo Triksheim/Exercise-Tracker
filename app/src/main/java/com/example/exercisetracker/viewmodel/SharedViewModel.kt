@@ -16,6 +16,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
+import kotlin.math.abs
 
 
 class SharedViewModel(private val repository: TrainingRepository) : ViewModel() {
@@ -75,7 +76,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private var _sessionPhotos = MutableLiveData<List<UserProgramSessionPhoto>>()
     val sessionPhotos: LiveData<List<UserProgramSessionPhoto>> = _sessionPhotos
 
-    private val _userProgramExercises = MutableLiveData<List<UserProgramExercise>>()
+    private var _userProgramExercises = MutableLiveData<List<UserProgramExercise>>()
     val userProgramExercises: LiveData<List<UserProgramExercise>> get() = _userProgramExercises
 
     val displayableSessions: Flow<List<DisplayableSession>> = allSessions.map { sessions ->
@@ -89,15 +90,23 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                     sessionTimeSpent = session.time_spent,
                     sessionDescription = session.description,
                     userProgramName = userProgram.name,
-                    programTypeIcon = programType.icon
+                    programTypeIcon = programType.icon,
+                    sessionDistance = 0F,
+                    sessionHeight = 0F
+
                 )
             }
         }
 
-    private val _userStats = MutableLiveData<UserStatsJSON>()
+    private var _currentDisplayableSession = MutableLiveData<DisplayableSession>()
+    val currentDisplayableSession: LiveData<DisplayableSession> = _currentDisplayableSession
+
+
+    private var _userStats = MutableLiveData<UserStatsJSON>()
     val userStats: LiveData<UserStatsJSON> = _userStats
 
-
+    private var _sessionDistance = MutableLiveData<Float>()
+    val sessionDistance: LiveData<Float> = _sessionDistance
 
 
     private var _toolbarTitle = MutableLiveData<String>()
@@ -114,6 +123,43 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         flowUserExercises()
         flowUserProgramSessions()
     }
+
+    fun calcSessionDistanceAndHeight() {
+        var totalDistance = 0F
+        var totalHeight = 0F
+        val numOfDatapoints = sessionData.value!!.size
+        if (numOfDatapoints > 1) {
+            for (i in 0 until numOfDatapoints - 1) {
+                val distance = haversineDistance(
+                    sessionData.value!![i].floatData1.toDouble(), sessionData.value!![i].floatData2.toDouble(),
+                    sessionData.value!![i+1].floatData1.toDouble(), sessionData.value!![i+1].floatData2.toDouble()
+                )
+                val height = heightDifference(sessionData.value!![i].floatData3, sessionData.value!![i+1].floatData3)
+                totalDistance += distance
+                totalHeight += height
+            }
+            _currentDisplayableSession.value!!.sessionDistance = totalDistance
+            _currentDisplayableSession.value!!.sessionHeight = totalHeight
+
+        }
+    }
+
+
+
+
+    fun haversineDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Float {
+        val r = 6371 // average radius of the earth in km
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
+        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        return (r * c).toFloat() // Kilometer
+    }
+
+    fun heightDifference(height1: Float, height2: Float): Float {
+        return abs(height1 - height2)
+    }
+
 
     fun formatSeconds(timeSpent: String?): String {
         if (timeSpent == null) {
@@ -230,6 +276,10 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         _currentSession.value = userProgramSession
     }
 
+    fun setCurrentDisplayableSession(displayableSession: DisplayableSession) {
+        _currentDisplayableSession.value = displayableSession
+    }
+
     suspend fun login(phone: String): Boolean {
         return viewModelScope.async {
         getAllUsers()
@@ -299,6 +349,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             repository.deleteUserExercises()
             repository.deleteUserPrograms()
             repository.deleteUserProgramSessions()
+            repository.deleteAllUserProgramSessionData()
         }
     }
 
@@ -310,6 +361,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                     val user = resultActiveUser.getOrNull()
                     if (user != null) {
                         _activeUser.value = user!!
+                        restart()
                     }
                 }
             }
@@ -318,10 +370,14 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 getAllUserPrograms()
                 getAllUserExercises()
                 if (userPrograms.value.isNotEmpty()) {
-                    getAllUserProgramSessionData()
                     for (userProgram in userPrograms.value) {
                         getAllUserExercisesForUserProgram(userProgram.id)
                         getAllSessionsForUserProgram(userProgram.id)
+                    }
+                    if (allSessions.value.isNotEmpty()) {
+                        for (session in allSessions.value) {
+                            getAllSessionDataForSessionId(session.id)
+                        }
                     }
                 }
             }
@@ -439,19 +495,19 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     }
 
 
-    private suspend fun getAllUserProgramSessionData() {
+    private suspend fun getAllSessionDataForSessionId(sessionId: Int) {
         withContext(Dispatchers.IO) {
-            val result = repository.getALlUserProgramSessionDataAPI(activeUser.value!!.id)
+            val result = repository.getALlUserProgramSessionDataAPI(sessionId)
             if (result.isSuccess) {
                 Log.d("RESULT USER PROGRAM SESSIONS DATA", "SUCCESS")
-                val sessionsData = result.getOrNull()
-                for (sessionData in sessionsData!!) {
-                    repository.insertUserProgramSessionData(sessionData.asEntity())
+                val sessionData = result.getOrNull()
+                for (data in sessionData!!) {
+                    repository.insertUserProgramSessionData(data.asEntity())
                 }
             } else {
                 Log.e(
                     "ERROR USER PROGRAM SESSION DATA API",
-                    "Unable to fetch (or no session data for UserID:${activeUser.value?.id})"
+                    "Unable to fetch (or no session data for SessionID:${sessionId})"
                 )
             }
         }

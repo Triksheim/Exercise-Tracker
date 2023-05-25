@@ -63,6 +63,10 @@ class MainActivity : AppCompatActivity() {
             sharedViewModel.getPhotosForCurrentSession()
         })
 
+        sharedViewModel.sessionData.observe(this, Observer {
+            sharedViewModel.calcSessionDistanceAndHeight()
+        })
+
         sharedViewModel.toolbarTitle.observe(this, Observer {title ->
             binding.toolbar.title = title
         })

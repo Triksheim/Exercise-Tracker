@@ -109,7 +109,7 @@ interface TrainingDao {
 
 
     // UserProgramSession
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUserProgramSession(userProgramSessionEntity: UserProgramSessionEntity): Long
 
     @Query("SELECT * FROM user_program_session")
@@ -132,7 +132,7 @@ interface TrainingDao {
 
 
     // UserProgramSessionData
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUserProgramSessionData(userProgramSessionDataEntity: UserProgramSessionDataEntity): Long
 
     @Query("SELECT * FROM user_program_session_data")

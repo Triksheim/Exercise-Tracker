@@ -74,11 +74,14 @@ data class UserProgramSessionPhoto(
 )
 
 data class DisplayableSession(
-    val sessionId: Int,
-    val userProgramId: Int,
-    val sessionDescription: String,
-    val sessionStartTime: String,
-    val sessionTimeSpent: Int,
-    val userProgramName: String,
-    val programTypeIcon: String
+    val sessionId: Int? = null,
+    val userProgramId: Int? = null,
+    val sessionDescription: String? = null,
+    val sessionStartTime: String? = null,
+    val sessionTimeSpent: Int? = null,
+    val userProgramName: String? = null,
+    val programTypeIcon: String? = null,
+    var sessionDistance: Float? = null,
+    var sessionHeight: Float? = null,
 )
+

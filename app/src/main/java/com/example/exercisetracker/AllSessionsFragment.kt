@@ -1,6 +1,5 @@
 package com.example.exercisetracker
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,17 +11,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.exercisetracker.adapters.SessionItemAdapter
-import com.example.exercisetracker.databinding.FragmentMySessionsBinding
-import com.example.exercisetracker.databinding.FragmentProgramTypeBinding
+import com.example.exercisetracker.databinding.FragmentAllSessionsBinding
 import com.example.exercisetracker.db.UserProgramSession
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 
-class MySessionsFragment : Fragment() {
-    private var _binding: FragmentMySessionsBinding? = null
+class AllSessionsFragment : Fragment() {
+    private var _binding: FragmentAllSessionsBinding? = null
     private val sharedViewModel: SharedViewModel by activityViewModels() {
         SharedViewModelFactory(
             (activity?.application as TrainingApplication).trainingRepository
@@ -33,7 +30,7 @@ class MySessionsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         (activity as AppCompatActivity).supportActionBar?.show()
-        _binding = FragmentMySessionsBinding.inflate(inflater, container, false)
+        _binding = FragmentAllSessionsBinding.inflate(inflater, container, false)
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,9 +39,7 @@ class MySessionsFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = sharedViewModel
-            newSessionButton.setOnClickListener{
-                findNavController().navigate(R.id.action_mySessionsFragment_to_myProgramsFragment)
-            }
+
 
         }
         val adapter = SessionItemAdapter { session ->
@@ -60,7 +55,6 @@ class MySessionsFragment : Fragment() {
         layoutManager.reverseLayout = true
         layoutManager.stackFromEnd = true
         recyclerView.layoutManager = layoutManager
-        //recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
 
@@ -72,8 +66,7 @@ class MySessionsFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             sharedViewModel.displayableSessions.collect { sessions ->
-                val limitedSessions = if (sessions.size > 5) sessions.takeLast(5) else sessions
-                adapter.submitList(limitedSessions)
+                adapter.submitList(sessions)
             }
         }
     }

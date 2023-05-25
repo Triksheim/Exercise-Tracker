@@ -246,8 +246,8 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
     suspend fun createUserProgramSessionDataAPI(userProgramSessionData: UserProgramSessionData): Result<UserProgramSessionDataJSON> {
         return remoteDataSource.createUserProgramSessionData(userProgramSessionData)
     }
-    suspend fun getALlUserProgramSessionDataAPI(userId: Int): Result<List<UserProgramSessionDataJSON>> {
-        return remoteDataSource.getAllUserProgramSessionData(userId)
+    suspend fun getALlUserProgramSessionDataAPI(sessionId: Int): Result<List<UserProgramSessionDataJSON>> {
+        return remoteDataSource.getAllUserProgramSessionData(sessionId)
     }
     suspend fun updateUserProgramSessionDataAPI(userProgramSessionData: UserProgramSessionData): Result<UserProgramSessionDataJSON> {
         return remoteDataSource.updateUserProgramSessionData(userProgramSessionData)

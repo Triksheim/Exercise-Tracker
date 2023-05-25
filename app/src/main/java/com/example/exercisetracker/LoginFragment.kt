@@ -20,13 +20,13 @@ import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class LoginFragment : Fragment() {
-    val mainScope = MainScope()
     private var binding: FragmentLoginBinding? = null
     private val sharedViewModel: SharedViewModel by activityViewModels() {
         SharedViewModelFactory(
@@ -74,7 +74,10 @@ class LoginFragment : Fragment() {
 
         sharedViewModel.activeUser.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                navigateToNextFragment()
+                lifecycleScope.launch {
+                    delay(1500) // Small delay to get user data before navigating
+                    findNavController().navigate(R.id.action_LoginFragment_to_mySessionsFragment)
+                }
             }
         })
 
@@ -129,9 +132,6 @@ class LoginFragment : Fragment() {
 
 
 
-    private fun navigateToNextFragment() {
-        findNavController().navigate(R.id.action_LoginFragment_to_mySessionsFragment)
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

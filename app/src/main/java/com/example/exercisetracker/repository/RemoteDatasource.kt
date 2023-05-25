@@ -136,7 +136,7 @@ interface ApiService {
 
     // UserProgramSessionData
     @GET("user_program_session_data")
-    suspend fun getUserProgramSessionDataList(@Query("user_id")userId: Int): List<UserProgramSessionDataJSON>
+    suspend fun getUserProgramSessionDataList(@Query("user_program_session_id")sessionId: Int): List<UserProgramSessionDataJSON>
 
     @GET("user_program_session_data/{id}")
     suspend fun getUserProgramSessionData(@Path("id") id: Int): UserProgramSessionDataJSON
@@ -258,8 +258,8 @@ class RemoteDataSource(private val apiService: ApiService) {
     // UserProgramSessionData
     suspend fun createUserProgramSessionData(userProgramSessionData: UserProgramSessionData)
         = safeApiCall { apiService.createUserProgramSessionData(userProgramSessionData).bodyOrThrow() }
-    suspend fun getAllUserProgramSessionData(userId: Int)
-        = safeApiCall { apiService.getUserProgramSessionDataList(userId) }
+    suspend fun getAllUserProgramSessionData(sessionId: Int)
+        = safeApiCall { apiService.getUserProgramSessionDataList(sessionId) }
     suspend fun updateUserProgramSessionData(userProgramSessionData: UserProgramSessionData)
         = safeApiCall { apiService.updateUserProgramSessionData(userProgramSessionData.id, userProgramSessionData).bodyOrThrow() }
     suspend fun deleteUserProgramSessionData(id: Int)

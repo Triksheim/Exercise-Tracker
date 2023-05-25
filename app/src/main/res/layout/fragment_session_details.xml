@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.exercisetracker.viewmodel.SharedViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".SessionDetailsFragment">
+
+        <TextView
+            android:id="@+id/totalDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/totalDistance(viewModel.currentDisplayableSession.sessionDistance)}"
+            app:layout_constraintStart_toStartOf="@+id/sessionProgramName"
+            app:layout_constraintTop_toBottomOf="@+id/sessionProgramName"
+            tools:text="distance" />
+
+        <TextView
+            android:id="@+id/sessionProgramName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:text="@{@string/sessionProgramName(viewModel.currentDisplayableSession.userProgramName)}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="program name" />
+
+        <TextView
+            android:id="@+id/totalHeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/sessionHeight(viewModel.currentDisplayableSession.sessionHeight)}"
+            app:layout_constraintStart_toStartOf="@+id/totalDistance"
+            app:layout_constraintTop_toBottomOf="@+id/totalDistance"
+            tools:text="height" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

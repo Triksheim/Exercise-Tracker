@@ -9,11 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.exercisetracker.databinding.FragmentStartupBinding
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class StartupFragment : Fragment() {
     private var binding: FragmentStartupBinding? = null
@@ -50,7 +53,10 @@ class StartupFragment : Fragment() {
         sharedViewModel.startupDone.observe(viewLifecycleOwner, Observer {
             if (it) {
                 if (sharedViewModel.activeUser.value != null ) {
-                findNavController().navigate(R.id.action_startupFragment_to_mySessionsFragment)
+                    lifecycleScope.launch {
+                        delay(2500) // Small delay to get user data before navigating
+                        findNavController().navigate(R.id.action_startupFragment_to_mySessionsFragment)
+                    }
             }
                 else {
                     findNavController().navigate(R.id.action_startupFragment_to_LoginFragment)
