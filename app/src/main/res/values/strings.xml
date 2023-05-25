@@ -91,5 +91,7 @@
     <string name="timeYear">%s</string>
     <string name="countYear">%s stykk</string>
     <string name="newSessionButton">Registrer treningsøkt</string>
+    <string name="button_update_exercise">Oppdater Øvelse</string>
+    <string name="button_update_program">Oppdater Program</string>
 
 </resources>
