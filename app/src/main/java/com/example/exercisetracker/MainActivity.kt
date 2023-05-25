@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() {
                 // Check if the current destination is the myExercisesFragment
                 if(navController.currentDestination?.id == R.id.myExercisesFragment) {
                     // Pop up to the MyExercisesFragment
-                    navController.popBackStack(R.id.myExercisesFragment, true)
+                    navController.popBackStack(R.id.myExercisesFragment, false)
                 } else {
                     // Navigate to myExercisesFragment
                     navController.navigate(R.id.myExercisesFragment)
@@ -119,7 +119,7 @@ class MainActivity : AppCompatActivity() {
                 // Check if the current destination is the myProgramsFragment
                 if(navController.currentDestination?.id == R.id.myProgramsFragment) {
                     // Pop up to the myProgramsFragment
-                    navController.popBackStack(R.id.myProgramsFragment, true)
+                    navController.popBackStack(R.id.myProgramsFragment, false)
                 } else {
                     // Navigate to myProgramsFragment
                     navController.navigate(R.id.myProgramsFragment)
@@ -130,7 +130,7 @@ class MainActivity : AppCompatActivity() {
                 // Check if the current destination is the SecondFragment
                 if(navController.currentDestination?.id == R.id.SecondFragment) {
                     // Pop up to the SecondFragment
-                    navController.popBackStack(R.id.SecondFragment, true)
+                    navController.popBackStack(R.id.SecondFragment, false)
                 } else {
                     // Navigate to SecondFragment
                     navController.navigate(R.id.SecondFragment)
@@ -141,7 +141,7 @@ class MainActivity : AppCompatActivity() {
                 // Check if the current destination is the newExerciseFragment
                 if(navController.currentDestination?.id == R.id.newExerciseFragment) {
                     // Pop up to the newExerciseFragment
-                    navController.popBackStack(R.id.newExerciseFragment, true)
+                    navController.popBackStack(R.id.newExerciseFragment, false)
                 } else {
                     // Navigate to newExerciseFragment
                     navController.navigate(R.id.newExerciseFragment)
