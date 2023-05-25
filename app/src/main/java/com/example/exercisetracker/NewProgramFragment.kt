@@ -90,7 +90,7 @@ class NewProgramFragment: Fragment() {
             rbOptionYes.isChecked = userProgram.use_timing == 1
             rbOptionNo.isChecked = userProgram.use_timing == 0
             buttonSaveProgram.visibility = View.VISIBLE
-            buttonSaveProgram.setText("Oppdater Program")
+            buttonSaveProgram.setText(getString(R.string.button_update_program))
             buttonSaveProgram.setOnClickListener{
                 updateUserProgram()
                 navigateToProgramDetails()
@@ -98,7 +98,7 @@ class NewProgramFragment: Fragment() {
             buttonDelete.visibility = View.VISIBLE
             buttonDelete.setOnClickListener {
                 // Husk å legge til en popup med "er du sikker på at du vil slette program"
-                sharedViewModel.deleteUserProgram(userProgram)
+                sharedViewModel.deleteProgram(userProgram)
                 findNavController().navigate(R.id.action_newProgramFragment_to_myProgramsFragment)
             }
         }

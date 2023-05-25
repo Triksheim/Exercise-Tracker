@@ -519,9 +519,9 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-     fun deleteUserProgram(userProgram: UserProgram) {
+     private suspend fun deleteUserProgram(userProgram: UserProgram) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.deleteUserExerciseAPI(userProgram.id)
+            val result = repository.deleteUserProgramAPI(userProgram.id)
             if (result.isSuccess) {
                 repository.deleteUserProgram(userProgram.asEntity())
                 Log.d("DELETE USER PROGRAM", "SUCCESS")
@@ -531,7 +531,10 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             }
         }
     }
-
+    fun deleteProgram(userProgram: UserProgram) {
+        viewModelScope.launch{
+            deleteUserProgram(userProgram)}
+    }
 
     suspend fun createUserExercise(userExercise: UserExercise) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -561,7 +564,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-    suspend fun deleteUserExercise(userExercise: UserExercise) {
+    private suspend fun deleteUserExercise(userExercise: UserExercise) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.deleteUserExerciseAPI(userExercise.id)
             if (result.isSuccess) {
@@ -569,9 +572,14 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 Log.d("DELETE USER EXERCISE", "SUCCESS")
             }
             else {
-                Log.e("ERROR USER EXERCISE", "Deleting user exercise failed")
+                Log.e("ERROR USER EXERCISE", "Deleting user exercise {userExercise.id} failed")
             }
         }
+    }
+
+    fun deleteExercise(userExercise: UserExercise){
+        viewModelScope.launch{
+            deleteUserExercise(userExercise)}
     }
 
 
