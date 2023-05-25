@@ -59,32 +59,42 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="Exercise-beskrivelse bla bla bla bla bla. Dette er en beskrivelse av et treningsprogram."/>
 
-        <ImageButton
-            android:id="@+id/button_add"
-            android:layout_width="@dimen/button_size_small"
+        <LinearLayout
+            android:id="@+id/button_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/add_img"
-            app:layout_constraintStart_toEndOf="@id/button_edit"
-            app:layout_constraintTop_toBottomOf="@id/exercise_descript"/>
-
-        <ImageButton
-            android:id="@+id/button_remove"
-            android:layout_width="@dimen/button_size_small"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:src="@drawable/remove_img"
-            app:layout_constraintStart_toEndOf="@id/button_edit"
-            app:layout_constraintTop_toBottomOf="@id/exercise_descript"/>
-
-
-        <ImageButton
-            android:id="@+id/button_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/edit_img"
-            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@id/exercise_descript"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageButton
+                android:id="@+id/button_add"
+                android:layout_width="@dimen/button_size_small"
+                android:layout_height="wrap_content"
+                android:src="@drawable/add_img"
+                app:layout_constraintEnd_toStartOf="@id/button_remove"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <ImageButton
+                android:id="@+id/button_remove"
+                android:layout_width="@dimen/button_size_small"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:src="@drawable/delete_bin_img"
+                app:layout_constraintEnd_toStartOf="@id/button_remove"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+            <ImageButton
+                android:id="@+id/button_edit"
+                android:layout_width="@dimen/button_size_small"
+                android:layout_height="wrap_content"
+                android:src="@drawable/edit_img"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
