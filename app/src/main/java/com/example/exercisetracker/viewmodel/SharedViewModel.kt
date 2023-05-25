@@ -44,9 +44,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _userPrograms = MutableStateFlow<List<UserProgram>>(emptyList())
     val userPrograms: StateFlow<List<UserProgram>> = _userPrograms
 
-    private val _userProgramType = MutableStateFlow<AppProgramType?>(null)
-    val userProgramType: StateFlow<AppProgramType?> = _userProgramType
-
     private val _userExercises = MutableStateFlow<List<UserExercise>>(emptyList())
     val userExercises: StateFlow<List<UserExercise>> = _userExercises
 
@@ -204,13 +201,13 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     }
 
     // Find ProgramType for a UserProgram and set programType to userProgramType
-    suspend fun getProgramTypeForProgram(userProgram: UserProgram) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.getProgramTypeById(userProgram.app_program_type_id)
-                .map { it.asDomainModel() }
-                .firstOrNull()
-            _userProgramType.value = result
+    fun getProgramTypeForProgram(userProgram: UserProgram): AppProgramType? {
+        val programTypes = programTypes.value
+        val result = programTypes.find { it.id == userProgram.app_program_type_id }
+        if (result == null) {
+            Log.d("PROGRAM_TYPE", "FAILED TO GET TYPE FOR PROGRAM")
         }
+        return result
     }
 
     fun setProgramTypeByUserProgram(userProgram: UserProgram) {
