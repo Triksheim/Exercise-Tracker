@@ -18,6 +18,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -61,6 +62,7 @@ class ProgramSessionFragment: Fragment() {
     private var sessionId: Int? = null
 
     // Timer variables
+    private var useTiming: Int = 0
     private var startTime: Long = 0L
     private var timeSpent: Int = 0
     private var pauseStartTime: Long = 0L
@@ -69,6 +71,7 @@ class ProgramSessionFragment: Fragment() {
     private val timerHandler = Handler(Looper.getMainLooper())
 
     // GPS variables
+    private var useLocation: Boolean = false
     private var locationRequest: LocationRequest? = null
     private var locationCallback: LocationCallback? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -99,6 +102,7 @@ class ProgramSessionFragment: Fragment() {
         sharedViewModel.setToolbarTitle(getString(R.string.title_my_statistics))
 
         val currentProgram = sharedViewModel.currentProgram.value
+        useTiming = currentProgram?.use_timing ?: 0
 
         val appProgramTypeDescription: TextView = binding.appProgramTypeDescription
         val userProgramName: TextView = binding.userProgramName
@@ -114,13 +118,10 @@ class ProgramSessionFragment: Fragment() {
             override fun onAddButtonClick(userExercise: UserExercise) {}
             override fun onRemoveButtonClick(userExercise: UserExercise) {}
         }, PROGRAM_SESSION_FRAGMENT)
-
         binding.exercisesContainer.adapter = exerciseItemAdapter
         binding.exercisesContainer.layoutManager = LinearLayoutManager(context)
-
         // Call the function in ViewModel to fetch exercises
         sharedViewModel.flowExercisesForCurrentProgram()
-
         // Observe the LiveData of program exercises
         sharedViewModel.userProgramExercises.observe(viewLifecycleOwner, Observer { programExercises ->
             // Fetch the list of all user exercises
@@ -158,18 +159,36 @@ class ProgramSessionFragment: Fragment() {
             when (checkedId) {
                 R.id.rb_gps_yes -> {
                     // The "Yes" option is selected
-                        if (checkLocationPermission()) {
-                            // Location permission granted, start location updates
-                            startLocationUpdates()
-                        } else {
+                    useLocation = true
+                        if (!checkLocationPermission()) {
                             // Location permission not granted
                             requestLocationPermission()
+                        }
+                        if (isWorkoutRunning) {
+                            startLocationUpdates()
                         }
                     }
                 R.id.rb_gps_no -> {
                     // The "No" option is selected
+                    useLocation = false
                     stopLocationUpdates()
                 }
+            }
+        }
+
+        // Hides timer and gps when program does not use timing
+        val timerTextView: TextView = binding.timerText
+        val gpsTextView: TextView = binding.tvUseGps
+        val gpsRadioGroup: RadioGroup = binding.gpsOptions
+        if (currentProgram != null) {
+            if (useTiming == 0) {
+                timerTextView.visibility = View.GONE
+                gpsTextView.visibility = View.GONE
+                gpsRadioGroup.visibility = View.GONE
+            } else {
+                timerTextView.visibility = View.VISIBLE
+                gpsTextView.visibility = View.VISIBLE
+                gpsRadioGroup.visibility = View.VISIBLE
             }
         }
 
@@ -179,7 +198,6 @@ class ProgramSessionFragment: Fragment() {
                 pauseOrContinueWorkoutSession(startPauseButton)
             } else {
                 startWorkoutSession(startPauseButton)
-                startLocationUpdates()
             }
         }
 
@@ -190,13 +208,13 @@ class ProgramSessionFragment: Fragment() {
                 saveWorkoutSession(currentProgram!!)
 
                 // Upload the location data to the database if the user selected the "Yes" option
-                if (binding.rbGpsYes.isChecked) {
+                if (useLocation && useTiming == 1) {
                     uploadLocationDataToDatabase(userProgramSessionDataList)
                 }
 
                 // Navigate to MyStatisticsFragment after saving the session and uploading the data
                 val action = ProgramSessionFragmentDirections
-                    .actionProgramSessionFragmentToMyStatisticsFragment()
+                    .actionProgramSessionFragmentToAllSessionsFragment()
                 findNavController().navigate(action)
             }
         }
@@ -208,20 +226,23 @@ class ProgramSessionFragment: Fragment() {
 
     private suspend fun saveWorkoutSession(currentProgram: UserProgram) {
         if (isWorkoutRunning) {
-            val currentTime = System.currentTimeMillis()
-            // Check if pauseDuration has been initialized. If not, don't subtract it.
-            val elapsed = if (pauseDuration > 0L) {
-                currentTime - startTime - pauseDuration
-            } else {
-                currentTime - startTime
+            if (useTiming == 1) {
+                val currentTime = System.currentTimeMillis()
+                // Check if pauseDuration has been initialized. If not, don't subtract it.
+                val elapsed = if (pauseDuration > 0L) {
+                    currentTime - startTime - pauseDuration
+                } else {
+                    currentTime - startTime
+                }
+                timeSpent += (elapsed / 1000).toInt()
+                timerHandler.removeCallbacks(timerRunnable)
             }
-            timeSpent += (elapsed / 1000).toInt()
             isWorkoutRunning = false
-            timerHandler.removeCallbacks(timerRunnable)
         }
-        val timestamp = System.currentTimeMillis()
+
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        val startTimeStr = dateFormat.format(Date(timestamp))
+        val startTimeStr = dateFormat.format(Date(startTime))
+
         val userProgramSession = UserProgramSession(
             id = 0,
             user_program_id = currentProgram.id,
@@ -234,36 +255,45 @@ class ProgramSessionFragment: Fragment() {
 
     private fun startWorkoutSession(button: Button) {
         if (!isWorkoutRunning) {
-            if (pauseDuration > 0L) {
-                startTime += pauseDuration
-                pauseDuration = 0L
-            } else {
-                startTime = System.currentTimeMillis()
+            if (useTiming == 1) {
+                if (pauseDuration > 0L) {
+                    startTime += pauseDuration
+                    pauseDuration = 0L
+                } else {
+                    startTime = System.currentTimeMillis()
+                }
+                timerHandler.postDelayed(timerRunnable, 0)
+                updateElapsedTime()
+                timerHandler.postDelayed(timerRunnable, 0)
+
+                if (useLocation) {
+                    startLocationUpdates()
+                }
             }
             isWorkoutRunning = true
-            timerHandler.postDelayed(timerRunnable, 0)
-            updateElapsedTime()
             button.text = "Pause"
-            startLocationUpdates()
         }
     }
 
     private fun pauseOrContinueWorkoutSession(button: Button) {
         if (isWorkoutRunning) {
             pauseWorkoutSession(button)
-            stopLocationUpdates()
         } else {
             startWorkoutSession(button)
-            startLocationUpdates()
         }
     }
 
     private fun pauseWorkoutSession(button: Button) {
-        val currentTime = System.currentTimeMillis()
-        pauseStartTime = currentTime
-        timeSpent += ((currentTime - startTime) / 1000).toInt()
-        isWorkoutRunning = false
-        timerHandler.removeCallbacks(timerRunnable)
+        if (useTiming == 1) {
+            val currentTime = System.currentTimeMillis()
+            pauseStartTime = currentTime
+            timeSpent += ((currentTime - startTime) / 1000).toInt()
+            isWorkoutRunning = false
+            timerHandler.removeCallbacks(timerRunnable)
+            if (useLocation) {
+                stopLocationUpdates()
+            }
+        }
         button.text = "Fortsett"
     }
 
@@ -347,7 +377,6 @@ class ProgramSessionFragment: Fragment() {
         // Add the UserProgramSessionData object to the list
         userProgramSessionDataList.add(userProgramSessionData)
     }
-
 
     private fun uploadLocationDataToDatabase(userProgramSessionDataList: List<UserProgramSessionData>) {
         // Update the user_program_session_id of each location data in the list
