@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FFFF0000</color>
     <color name="recycler_border">#FF999999</color>
+    <color name="border">#FF999999</color>
 
     <!--Forslag.. kan endres. Abi: Lag tema!-->
     <color name="bg_exercise">#FFE0ECDE</color>
