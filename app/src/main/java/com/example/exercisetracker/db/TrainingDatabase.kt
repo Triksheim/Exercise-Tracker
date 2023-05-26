@@ -1,7 +1,9 @@
 package com.example.exercisetracker.db
+import androidx.room.*
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+
 
 
 @Entity(tableName = "active_user")
@@ -89,22 +91,20 @@ data class UserProgramSessionPhotoEntity(
     @ColumnInfo(name = "photo_url") val photo_url: String
 )
 
+@Entity(tableName = "user_stats")
+data class UserStatsEntity(
+    @PrimaryKey @ColumnInfo(name = "user_id") val userId: String,
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "last_7_days_session_count") val last7DaysSessionCount: String,
+    @ColumnInfo(name = "last_7_days_time_spent") val last7DaysTimeSpent: String,
+    @ColumnInfo(name = "current_week_session_count") val currentWeekSessionCount: String,
+    @ColumnInfo(name = "current_week_time_spent") val currentWeekTimeSpent: String,
+    @ColumnInfo(name = "current_month_session_count") val currentMonthSessionCount: String,
+    @ColumnInfo(name = "current_month_time_spent") val currentMonthTimeSpent: String,
+    @ColumnInfo(name = "last_30_days_session_count") val last30DaysSessionCount: String,
+    @ColumnInfo(name = "last_30_days_time_spent") val last30DaysTimeSpent: String,
+    @ColumnInfo(name = "current_year_session_count") val currentYearSessionCount: String,
+    @ColumnInfo(name = "current_year_time_spent") val currentYearTimeSpent: String
+)
 
 
-data class Exercise(
-    val id: Int,
-    val user_id: Int,
-    val name: String,
-    val photo_url: String,
-    val description: String,
-    val icon: String,
-    val infobox_color: String)
-
-data class Program(
-    val id: Int,
-    val user_id: Int,
-    val app_program_type_id: Int,
-    val name: String,
-    val description: String,
-    val use_timing: Int,
-    val icon: String)

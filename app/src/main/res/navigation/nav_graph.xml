@@ -242,6 +242,9 @@
         <action
             android:id="@+id/action_mySessionsFragment_to_myProgramsFragment"
             app:destination="@id/myProgramsFragment" />
+        <action
+            android:id="@+id/action_mySessionsFragment_self"
+            app:destination="@id/mySessionsFragment" />
     </fragment>
     <fragment
         android:id="@+id/sessionDetailsFragment"

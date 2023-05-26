@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+        /*
         sharedViewModel.activeUser.observe(this, Observer {
             if (sharedViewModel.activeUser.value != null) {
                 lifecycleScope.launch {
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
-
+*/
         sharedViewModel.currentProgram.observe(this, Observer {
             sharedViewModel.flowExercisesForCurrentProgram()
             sharedViewModel.getSessionsForCurrentProgram()

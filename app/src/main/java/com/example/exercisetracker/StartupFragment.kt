@@ -37,9 +37,6 @@ class StartupFragment : Fragment() {
     }
 
 
-
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sharedViewModel.setToolbarTitle(getString(R.string.title_login))
@@ -55,7 +52,7 @@ class StartupFragment : Fragment() {
                 if (sharedViewModel.activeUser.value != null ) {
                     lifecycleScope.launch {
                         delay(2500) // Small delay to get user data before navigating
-                        findNavController().navigate(R.id.action_startupFragment_to_mySessionsFragment)
+                        findNavController().navigate(R.id.mySessionsFragment)
                     }
             }
                 else {
@@ -66,9 +63,6 @@ class StartupFragment : Fragment() {
 
 
     }
-
-
-
 
 
     override fun onDestroyView() {
