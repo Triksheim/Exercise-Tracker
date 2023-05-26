@@ -12,38 +12,272 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/side_margin"
+        android:layout_marginEnd="@dimen/side_margin"
         tools:context=".SessionDetailsFragment">
 
-        <TextView
-            android:id="@+id/totalDistance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{@string/totalDistance(viewModel.currentDisplayableSession.sessionDistance)}"
-            app:layout_constraintStart_toStartOf="@+id/sessionProgramName"
-            app:layout_constraintTop_toBottomOf="@+id/sessionProgramName"
-            tools:text="distance" />
-
-        <TextView
-            android:id="@+id/sessionProgramName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:text="@{@string/sessionProgramName(viewModel.currentDisplayableSession.userProgramName)}"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardHeader"
+            android:layout_height="120dp"
+            android:layout_width="match_parent"
+            android:padding="@dimen/margin_between_elements"
+            android:layout_marginBottom="@dimen/margin_between_elements"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="program name" />
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/border"
+            app:cardElevation="1dp">
 
-        <TextView
-            android:id="@+id/totalHeight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{@string/sessionHeight(viewModel.currentDisplayableSession.sessionHeight)}"
-            app:layout_constraintStart_toStartOf="@+id/totalDistance"
-            app:layout_constraintTop_toBottomOf="@+id/totalDistance"
-            tools:text="height" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <fragment
+                <ImageView
+                    android:id="@+id/sessionIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:scaleType="fitXY"
+                    android:adjustViewBounds="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/sessionProgramName"
+                    tools:src="@drawable/roing_img"/>
+
+                <ImageView
+                    android:id="@+id/sessionPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:adjustViewBounds="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/sessionProgramName"
+                    tools:src="@drawable/img_outdoor_runner"/>
+
+                <TextView
+                    android:id="@+id/sessionProgramName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/margin_between_elements"
+                    android:text="@{@string/sessionProgramName(viewModel.currentDisplayableSession.userProgramName)}"
+                    android:textSize="@dimen/header_text"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    tools:text="program name" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardTime"
+            android:layout_height="100dp"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/margin_between_elements"
+            android:layout_marginEnd="@dimen/margin_between_elements"
+            android:layout_marginBottom="@dimen/margin_between_elements"
+            android:padding="@dimen/margin_between_elements"
+            app:layout_constraintTop_toBottomOf="@id/cardHeader"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/cardDistance"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/border"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/timeHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_between_elements"
+                android:text="@string/time"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+               />
+
+            <TextView
+                android:id="@+id/totalTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_between_elements"
+                android:text="@{@string/trainingTime(viewModel.currentDisplayableSession.sessionTimeSpent)}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="time" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardDistance"
+            android:layout_height="100dp"
+            android:layout_width="0dp"
+            android:padding="@dimen/margin_between_elements"
+            android:layout_marginTop="@dimen/margin_between_elements"
+            android:layout_marginBottom="@dimen/margin_between_elements"
+            app:layout_constraintTop_toBottomOf="@id/cardHeader"
+            app:layout_constraintStart_toEndOf="@id/cardTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/border"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/distanceHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_between_elements"
+                    android:text="@string/distance"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/totalDistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_between_elements"
+                    android:text="@{@string/totalDistance(viewModel.currentDisplayableSession.sessionDistance)}"
+                    app:layout_constraintStart_toEndOf="@+id/cardTime"
+                    app:layout_constraintTop_toBottomOf="@id/sessionProgramName"
+                    tools:text="distance" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardHeight"
+            android:layout_height="100dp"
+            android:layout_width="0dp"
+            android:padding="@dimen/margin_between_elements"
+            android:layout_marginEnd="@dimen/margin_between_elements"
+            android:layout_marginBottom="@dimen/margin_between_elements"
+            android:layout_marginTop="@dimen/margin_between_elements"
+            app:layout_constraintTop_toBottomOf="@id/cardTime"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/cardSpeed"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/border"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/heightHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_between_elements"
+                    android:text="@string/height"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/totalHeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_between_elements"
+                    android:text="@{@string/sessionHeight(viewModel.currentDisplayableSession.sessionHeight)}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="height" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardSpeed"
+            android:layout_height="100dp"
+            android:layout_width="0dp"
+            android:padding="@dimen/margin_between_elements"
+            android:layout_marginEnd="@dimen/margin_between_elements"
+            android:layout_marginBottom="@dimen/margin_between_elements"
+            android:layout_marginTop="@dimen/margin_between_elements"
+            app:layout_constraintTop_toBottomOf="@id/cardDistance"
+            app:layout_constraintStart_toEndOf="@id/cardHeight"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/border"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/speedHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_between_elements"
+                    android:text="Fart"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/avgSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_between_elements"
+                    android:text="@{@string/sessionHeight(viewModel.currentDisplayableSession.sessionAvgSpeed)}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="snittfart" />
+
+                <TextView
+                    android:id="@+id/maxSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_between_elements"
+                    android:text="@{@string/sessionHeight(viewModel.currentDisplayableSession.sessionAvgSpeed)}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="maxfart" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/exercise_recycler"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:padding="8dp"
+            android:scrollbars="vertical"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardTime"
+            app:layout_constraintBottom_toBottomOf="@id/map"
+            tools:listitem="@layout/exercise_item"/>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:visibility="gone"
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="0dp"
@@ -55,8 +289,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.40"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintWidth_percent="0.95" />
-
+            app:layout_constraintWidth_percent="0.95"
+            tools:layout="@android:layout/list_content" />
+        <!--tools:layout layout kun synlig her i layot editor-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

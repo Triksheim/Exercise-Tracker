@@ -117,6 +117,7 @@ class ProgramDetailsFragment: Fragment() {
                 }
 
                 OUTDOORCOLOR -> binding.apply{
+                    tvProgramExercises.visibility = View.GONE
                     programExerciseRecycler.visibility = View.GONE
                     otherExerciseRecycler.visibility = View.GONE
                     tvChooseExercises.visibility = View.GONE

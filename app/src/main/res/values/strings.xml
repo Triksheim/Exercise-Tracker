@@ -92,11 +92,14 @@
     <string name="countYear">%s stykk</string>
     <string name="newSessionButton">Registrer treningsøkt</string>
     <string name="userStats">Treningshistorikk</string>
-    <string name="totalDistance">Distanse: %skm</string>
-    <string name="sessionProgramName">Program navn: %s</string>
-    <string name="sessionHeight">Høyde: %sm</string>
+    <string name="totalDistance"> %skm</string>
+    <string name="sessionProgramName"> %s</string>
+    <string name="sessionHeight"> %sm</string>
     <string name="button_update_exercise">Oppdater Øvelse</string>
     <string name="button_update_program">Oppdater Program</string>
     <string name="home">Hjem</string>
+    <string name="distance">Distanse</string>
+    <string name="time">Tid</string>
+    <string name="height">Høyde</string>
 
 </resources>

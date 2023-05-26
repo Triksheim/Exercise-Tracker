@@ -41,6 +41,9 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Tittel på toolbar settes når displayableSessions observeres fra viewModel
+        //sharedViewModel.setToolbarTitle(displayableSessions.userProgramName)
+
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = sharedViewModel
