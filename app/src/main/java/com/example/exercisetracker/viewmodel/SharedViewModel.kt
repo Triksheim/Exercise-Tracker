@@ -335,6 +335,12 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
+    fun refreshData() {
+        viewModelScope.launch {
+            restart()
+        }
+    }
+
     fun logout() {
         viewModelScope.launch {
             _activeUser.postValue(null)

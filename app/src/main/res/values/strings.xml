@@ -101,5 +101,6 @@
     <string name="distance">Distanse</string>
     <string name="time">Tid</string>
     <string name="height">Høyde</string>
+    <string name="refresh_data">Oppdater data</string>
 
 </resources>

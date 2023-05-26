@@ -32,6 +32,9 @@
         </menu>
     </item>
     <item
+        android:id="@+id/nav_reload_data"
+        android:title="@string/refresh_data" />
+    <item
         android:id="@+id/nav_logout"
         android:title="@string/nav_logout" />
 </menu>
