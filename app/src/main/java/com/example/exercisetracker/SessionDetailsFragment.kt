@@ -41,12 +41,40 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Tittel på toolbar settes når displayableSessions observeres fra viewModel
-        //sharedViewModel.setToolbarTitle(displayableSessions.userProgramName)
+        sharedViewModel.setToolbarTitle(getString(R.string.title_session_details))
 
-        binding.apply {
-            lifecycleOwner = viewLifecycleOwner
-            viewModel = sharedViewModel
+        sharedViewModel.currentDisplayableSession.observe(viewLifecycleOwner) {displayableSession ->
+            binding.apply {
+                lifecycleOwner = viewLifecycleOwner
+                viewModel = sharedViewModel
+
+                when (displayableSession.useTiming) {
+                    0 -> cardTime.visibility = View.GONE
+                    1->  cardTime.visibility = View.VISIBLE
+                }
+                when (displayableSession.useGps) {
+                    0 -> {
+                        cardDistance.visibility = View.GONE
+                        cardHeight.visibility = View.GONE
+                        cardSpeed.visibility = View.GONE
+                    }
+                    1 -> {
+                        cardDistance.visibility = View.VISIBLE
+                        cardHeight.visibility = View.VISIBLE
+                        cardSpeed.visibility = View.VISIBLE
+                    }
+                }
+                when (displayableSession.programTypeBackColor) {
+                    OUTDOORCOLOR -> {
+                        exerciseRecycler.visibility = View.GONE
+                        map.visibility = View.VISIBLE
+                    }
+                    INDOORCOLOR -> {
+                        exerciseRecycler.visibility = View.VISIBLE
+                        map.visibility = View.GONE
+                    }
+                }
+            }
         }
 
         sharedViewModel.sessionData.observe(viewLifecycleOwner) { sessionList ->
