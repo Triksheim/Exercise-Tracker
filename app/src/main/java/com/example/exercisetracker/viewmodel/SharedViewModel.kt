@@ -84,12 +84,19 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                     sessionId = session.id,
                     userProgramId = session.user_program_id,
                     sessionStartTime = session.startTime,
+                    useTiming = userProgram.use_timing, // 0=false, 1=true
                     sessionTimeSpent = session.time_spent,
                     sessionDescription = session.description,
                     userProgramName = userProgram.name,
+                    userProgramDescription = userProgram.description,
+                    programTypeDescription = programType.description,
                     programTypeIcon = programType.icon,
-                    sessionDistance = 0F,
-                    sessionHeight = 0F
+                    programTypeBackColor = programType.back_color,
+                    useGps = 0, // Default 0, Set to 1 if gps cords are found
+                    sessionDistance = 0F, // Set if gps cords found
+                    sessionHeight = 0F,  // Set if gps cords found
+                    sessionAvgSpeed = 0F // Set after distance is set
+
 
                 )
             }
@@ -121,7 +128,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         flowUserProgramSessions()
     }
 
-    fun calcSessionDistanceAndHeight() {
+    fun setSessionDistanceAndHeight() {
         var totalDistance = 0F
         var totalHeight = 0F
         val numOfDatapoints = sessionData.value!!.size
@@ -135,13 +142,21 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 totalDistance += distance
                 totalHeight += height
             }
-            _currentDisplayableSession.value!!.sessionDistance = totalDistance
-            _currentDisplayableSession.value!!.sessionHeight = totalHeight
+            _currentDisplayableSession.value?.useGps = 1
+            _currentDisplayableSession.value?.sessionDistance = totalDistance
+            _currentDisplayableSession.value?.sessionHeight = totalHeight
+            setAverageSpeed()
 
         }
     }
 
 
+    fun setAverageSpeed() {
+        val timeInHours = currentDisplayableSession.value?.sessionTimeSpent?.toFloat()?.div(3600)
+        val distance = currentDisplayableSession.value?.sessionDistance
+        val speed = timeInHours?.let { distance?.div(it) }
+        _currentDisplayableSession.value?.sessionAvgSpeed = speed
+    }
 
 
     fun haversineDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Float {

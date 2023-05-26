@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         sharedViewModel.sessionData.observe(this, Observer {
-            sharedViewModel.calcSessionDistanceAndHeight()
+            sharedViewModel.setSessionDistanceAndHeight()
         })
 
         sharedViewModel.toolbarTitle.observe(this, Observer {title ->
