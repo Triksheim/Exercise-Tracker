@@ -78,10 +78,16 @@ data class DisplayableSession(
     val userProgramId: Int? = null,
     val sessionDescription: String? = null,
     val sessionStartTime: String? = null,
+    val useTiming: Int? = null,
     val sessionTimeSpent: Int? = null,
     val userProgramName: String? = null,
+    val userProgramDescription: String? = null,
     val programTypeIcon: String? = null,
+    val programTypeDescription: String? = null,
+    val programTypeBackColor: String? = null,
+    var useGps: Int? = null,
     var sessionDistance: Float? = null,
     var sessionHeight: Float? = null,
+    var sessionAvgSpeed: Float? =null
 )
 
