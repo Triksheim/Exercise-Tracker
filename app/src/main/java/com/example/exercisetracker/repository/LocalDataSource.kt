@@ -165,6 +165,18 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
         return trainingDao.deleteUserProgramSessionPhoto(userProgramSessionPhotoEntity)
     }
 
+
+    // UserStats
+    suspend fun insertUserStats(userStatsEntity: UserStatsEntity): Long {
+        return trainingDao.insertUserStats(userStatsEntity)
+    }
+    fun getUserStats(): Flow<UserStatsEntity> {
+        return trainingDao.getUserStats()
+    }
+    suspend fun deleteUserStats() {
+        return trainingDao.deleteUserStats()
+    }
+
 }
 
 

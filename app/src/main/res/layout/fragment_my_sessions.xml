@@ -116,13 +116,13 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@{@string/count30days(viewModel.userStats.last30days.sessionCount)}" />
+                        android:text="@{@string/count30days(viewModel.userStats.last30Days.sessionCount)}" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@{@string/time30days(viewModel.formatSeconds(viewModel.userStats.last30days.timeSpent))}" />
+                        android:text="@{@string/time30days(viewModel.formatSeconds(viewModel.userStats.last30Days.timeSpent))}" />
                 </TableRow>
 
                 <TableRow

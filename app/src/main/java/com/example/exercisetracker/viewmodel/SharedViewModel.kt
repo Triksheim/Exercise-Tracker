@@ -106,8 +106,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     val currentDisplayableSession: LiveData<DisplayableSession> = _currentDisplayableSession
 
 
-    private var _userStats = MutableLiveData<UserStatsJSON>()
-    val userStats: LiveData<UserStatsJSON> = _userStats
+    private var _userStats = MutableStateFlow<UserStats?>(null)
+    val userStats: StateFlow<UserStats?> = _userStats
 
     private var _sessionDistance = MutableLiveData<Float>()
     val sessionDistance: LiveData<Float> = _sessionDistance
@@ -126,6 +126,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         flowUserPrograms()
         flowUserExercises()
         flowUserProgramSessions()
+        flowUserStats()
     }
 
     fun setSessionDistanceAndHeight() {
@@ -240,6 +241,20 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
+    fun flowUserStats() {
+        viewModelScope.launch {
+            repository.getUserStats()
+                .flowOn(Dispatchers.IO)
+                .map { userStats ->  userStats?.asDomainModel() }
+                .collect { userStats ->
+                    userStats?.let {
+                        _userStats.value = it
+                    }
+                }
+        }
+    }
+
+
     fun getSessionsForCurrentProgram() {
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.getSessionsForProgramId(currentProgram.value!!.id).map { it.asDomainModel() }
@@ -320,6 +335,12 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
+    fun refreshData() {
+        viewModelScope.launch {
+            restart()
+        }
+    }
+
     fun logout() {
         viewModelScope.launch {
             _activeUser.postValue(null)
@@ -362,6 +383,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             repository.deleteUserPrograms()
             repository.deleteUserProgramSessions()
             repository.deleteAllUserProgramSessionData()
+            repository.deleteUserStats()
         }
     }
 
@@ -390,11 +412,13 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                         for (session in allSessions.value) {
                             getAllSessionDataForSessionId(session.id)
                         }
+                        getUserStats()
                     }
                 }
             }
             _startupDone.postValue(true)
         }
+
     }
 
 
@@ -532,7 +556,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 _networkConnectionOk.postValue(true)
                 Log.d("RESULT USER STATS", "SUCCESS")
                 val stats = result.getOrNull()
-                _userStats.postValue(stats!!)
+                repository.insertUserStats(stats!!.asEntity())
+                //_userStats.postValue(stats!!)
             } else {
                 _networkConnectionOk.postValue(false)
                 Log.e("ERROR USER STATS API", "Unable to fetch")

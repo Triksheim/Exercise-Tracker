@@ -15,8 +15,9 @@ import androidx.room.RoomDatabase
         UserProgramSessionEntity::class,
         UserProgramSessionDataEntity::class,
         UserProgramSessionPhotoEntity::class,
+        UserStatsEntity::class,
     ],
-    version = 7,
+    version = 8,
     exportSchema = false
 )
 abstract class TrainingDatabase : RoomDatabase() {

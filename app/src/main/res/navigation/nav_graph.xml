@@ -8,15 +8,10 @@
     <fragment
         android:id="@+id/LoginFragment"
         android:name="com.example.exercisetracker.LoginFragment"
-        android:label="@string/first_fragment_label"
+        android:label="@string/login_fragment_label"
         tools:layout="@layout/fragment_login">
 
-        <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
-        <action
-            android:id="@+id/action_FirstFragment_to_myStatisticsFragment"
-            app:destination="@id/myStatisticsFragment" />
+
         <action
             android:id="@+id/action_LoginFragment_to_mySessionsFragment"
             app:destination="@id/mySessionsFragment" />
@@ -25,20 +20,13 @@
     <fragment
         android:id="@+id/SecondFragment"
         android:name="com.example.exercisetracker.SecondFragment"
-        android:label="@string/second_fragment_label"
+        android:label="@string/inn_out_fragment_label"
         tools:layout="@layout/fragment_second">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/LoginFragment"
-            app:popUpTo="@id/LoginFragment"
-            app:popUpToInclusive="true"/>
-        <action
             android:id="@+id/action_SecondFragment_to_programTypeFragment"
             app:destination="@id/programTypeFragment" />
-        <action
-            android:id="@+id/action_SecondFragment_to_newProgramFragment"
-            app:destination="@id/newProgramFragment" />
+
     </fragment>
 
     <fragment
@@ -210,9 +198,9 @@
             app:popUpTo="@id/myExercisesFragment"
             app:popUpToInclusive="true"/>
         <action
-            android:id="@+id/action_programSessionFragment_to_myStatisticsFragment"
-            app:destination="@id/myStatisticsFragment"
-            app:popUpTo="@id/myStatisticsFragment"
+            android:id="@+id/action_programSessionFragment_to_allSessionsFragment"
+            app:destination="@id/allSessionsFragment"
+            app:popUpTo="@id/allSessionsFragment"
             app:popUpToInclusive="true" />
     </fragment>
 
@@ -254,6 +242,9 @@
         <action
             android:id="@+id/action_mySessionsFragment_to_myProgramsFragment"
             app:destination="@id/myProgramsFragment" />
+        <action
+            android:id="@+id/action_mySessionsFragment_self"
+            app:destination="@id/mySessionsFragment" />
     </fragment>
     <fragment
         android:id="@+id/sessionDetailsFragment"

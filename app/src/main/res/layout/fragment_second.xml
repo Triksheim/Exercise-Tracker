@@ -31,7 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textview_activity_type"
         app:layout_constraintBottom_toTopOf="@id/outdoor_image"
-        app:srcCompat="@drawable/img_indoor_gym" />
+        app:srcCompat="@mipmap/ic_indoor_foreground" />
 
     <TextView
         android:id="@+id/indoor_text"

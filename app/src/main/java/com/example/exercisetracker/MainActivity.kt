@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+        /*
         sharedViewModel.activeUser.observe(this, Observer {
             if (sharedViewModel.activeUser.value != null) {
                 lifecycleScope.launch {
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
-
+*/
         sharedViewModel.currentProgram.observe(this, Observer {
             sharedViewModel.flowExercisesForCurrentProgram()
             sharedViewModel.getSessionsForCurrentProgram()
@@ -67,7 +68,7 @@ class MainActivity : AppCompatActivity() {
             sharedViewModel.setSessionDistanceAndHeight()
         })
 
-        sharedViewModel.toolbarTitle.observe(this, Observer {title ->
+        sharedViewModel.toolbarTitle.observe(this, Observer { title ->
             binding.toolbar.title = title
         })
 
@@ -97,7 +98,7 @@ class MainActivity : AppCompatActivity() {
             R.id.nav_all_sessions -> {
 
                 // Check if the current destination is the allSessionsFragment
-                if(navController.currentDestination?.id == R.id.allSessionsFragment) {
+                if (navController.currentDestination?.id == R.id.allSessionsFragment) {
                     // Pop up to the allSessionsFragment
                     navController.popBackStack(R.id.allSessionsFragment, true)
                 } else {
@@ -110,7 +111,7 @@ class MainActivity : AppCompatActivity() {
 
             R.id.nav_my_exercises -> {
                 // Check if the current destination is the myExercisesFragment
-                if(navController.currentDestination?.id == R.id.myExercisesFragment) {
+                if (navController.currentDestination?.id == R.id.myExercisesFragment) {
                     // Pop up to the MyExercisesFragment
                     navController.popBackStack(R.id.myExercisesFragment, false)
                 } else {
@@ -121,7 +122,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.action_my_programs -> {
                 // Check if the current destination is the myProgramsFragment
-                if(navController.currentDestination?.id == R.id.myProgramsFragment) {
+                if (navController.currentDestination?.id == R.id.myProgramsFragment) {
                     // Pop up to the myProgramsFragment
                     navController.popBackStack(R.id.myProgramsFragment, false)
                 } else {
@@ -132,7 +133,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.new_program -> {
                 // Check if the current destination is the SecondFragment
-                if(navController.currentDestination?.id == R.id.SecondFragment) {
+                if (navController.currentDestination?.id == R.id.SecondFragment) {
                     // Pop up to the SecondFragment
                     navController.popBackStack(R.id.SecondFragment, false)
                 } else {
@@ -143,7 +144,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.new_exercise -> {
                 // Check if the current destination is the newExerciseFragment
-                if(navController.currentDestination?.id == R.id.newExerciseFragment) {
+                if (navController.currentDestination?.id == R.id.newExerciseFragment) {
                     // Pop up to the newExerciseFragment
                     navController.popBackStack(R.id.newExerciseFragment, false)
                 } else {
@@ -152,6 +153,12 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
             }
+
+            R.id.nav_reload_data -> {
+                performDataRefresh()
+                true
+            }
+
 
             R.id.nav_logout -> {
                 // Handle logout action
@@ -171,6 +178,10 @@ class MainActivity : AppCompatActivity() {
         sharedViewModel.logout()
         // Navigate to the login screen
         navController.navigate(R.id.LoginFragment)
+    }
+
+    private fun performDataRefresh() {
+        sharedViewModel.refreshData()
     }
 
 }

@@ -172,5 +172,16 @@ interface TrainingDao {
 
     @Delete
     suspend fun deleteUserProgramSessionPhoto(userProgramSessionPhotoEntity: UserProgramSessionPhotoEntity)
+
+
+    // UserStats
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertUserStats(userStatsEntity: UserStatsEntity): Long
+
+    @Query("SELECT * FROM user_stats")
+    fun getUserStats(): Flow<UserStatsEntity>
+
+    @Query("DELETE FROM user_stats")
+    suspend fun deleteUserStats()
 }
 

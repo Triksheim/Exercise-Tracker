@@ -73,6 +73,22 @@ data class UserProgramSessionPhoto(
     val photo_url: String
 )
 
+data class UserStats(
+    val userId: String,
+    val name: String,
+    val last7Days: Stats,
+    val currentWeek: Stats,
+    val currentMonth: Stats,
+    val last30Days: Stats,
+    val currentYear: Stats
+)
+
+data class Stats(
+    val sessionCount: String,
+    val timeSpent: String
+)
+
+
 data class DisplayableSession(
     val sessionId: Int? = null,
     val userProgramId: Int? = null,

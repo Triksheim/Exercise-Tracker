@@ -164,6 +164,16 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
         return localDataSource.deleteUserProgramSessionPhoto(userProgramSessionPhotoEntity)
     }
 
+    // UserStats
+    suspend fun insertUserStats(userStatsEntity: UserStatsEntity): Long {
+        return localDataSource.insertUserStats(userStatsEntity)
+    }
+    fun getUserStats(): Flow<UserStatsEntity> {
+        return localDataSource.getUserStats()
+    }
+    suspend fun deleteUserStats() {
+        return localDataSource.deleteUserStats()
+    }
 
 
 

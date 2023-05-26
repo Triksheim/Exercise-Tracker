@@ -83,6 +83,55 @@ fun UserProgramSessionPhotoJSON.asEntity(): UserProgramSessionPhotoEntity {
     )
 }
 
+fun UserStatsJSON.asEntity(): UserStatsEntity {
+    return UserStatsEntity(
+        userId = this.id,
+        name = this.name,
+        last7DaysSessionCount = this.last7Days.sessionCount,
+        last7DaysTimeSpent = this.last7Days.timeSpent,
+        currentWeekSessionCount = this.currentWeek.sessionCount,
+        currentWeekTimeSpent = this.currentWeek.timeSpent,
+        currentMonthSessionCount = this.currentMonth.sessionCount,
+        currentMonthTimeSpent = this.currentMonth.timeSpent,
+        last30DaysSessionCount = this.last30days.sessionCount,
+        last30DaysTimeSpent = this.last30days.timeSpent,
+        currentYearSessionCount = this.currentYear.sessionCount,
+        currentYearTimeSpent = this.currentYear.timeSpent
+    )
+}
+
+fun UserStatsEntity?.asDomainModel(): UserStats? {
+    return this?.let {
+        UserStats(
+            userId = it.userId,
+            name = it.name,
+            last7Days = Stats(
+                sessionCount = it.last7DaysSessionCount,
+                timeSpent = it.last7DaysTimeSpent
+            ),
+            currentWeek = Stats(
+                sessionCount = it.currentWeekSessionCount,
+                timeSpent = it.currentWeekTimeSpent
+            ),
+            currentMonth = Stats(
+                sessionCount = it.currentMonthSessionCount,
+                timeSpent = it.currentMonthTimeSpent
+            ),
+            last30Days = Stats(
+                sessionCount = it.last30DaysSessionCount,
+                timeSpent = it.last30DaysTimeSpent
+            ),
+            currentYear = Stats(
+                sessionCount = it.currentYearSessionCount,
+                timeSpent = it.currentYearTimeSpent
+            )
+        )
+    }
+}
+
+
+
+
 fun ActiveUserEntity.asDomainModel(): ActiveUser {
     return ActiveUser(
         id = this.id,
