@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.example.exercisetracker.adapters.ExerciseItemAdapter
 import com.example.exercisetracker.databinding.FragmentSessionDetailsBinding
 import com.example.exercisetracker.db.DisplayableSession
@@ -50,14 +48,20 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
 
         sharedViewModel.setToolbarTitle(getString(R.string.title_session_details))
 
-        sharedViewModel.currentDisplayableSession.observe(viewLifecycleOwner) {displayableSession ->
+        sharedViewModel.currentDisplayableSession.observe(viewLifecycleOwner) { displayableSession ->
             binding.apply {
                 lifecycleOwner = viewLifecycleOwner
                 viewModel = sharedViewModel
 
+                val resourceId = resources.getIdentifier(
+                    displayableSession.programTypeIcon,
+                    "drawable", requireContext().packageName
+                )
+                sessionIcon.setImageResource(resourceId)
+
                 when (displayableSession.useTiming) {
                     0 -> cardTime.visibility = View.GONE
-                    1->  cardTime.visibility = View.VISIBLE
+                    1 -> cardTime.visibility = View.VISIBLE
                 }
                 when (displayableSession.useGps) {
                     0 -> {
@@ -90,22 +94,22 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
                 updateMap(sessionList)
             }
         }
-
-
     }
 
     private fun bindExerciseRecycler(displayableSession: DisplayableSession) {
         val adapter = ExerciseItemAdapter(getExerciseClickListener(), SESSION_DETAILS)
         val recyclerView = binding.exerciseRecycler
         recyclerView.adapter = adapter
-        binding.viewModel = sharedViewModel
+        // Set exercises "programExercises"  for the program in this session
         sharedViewModel.userProgramExercises.observe(this.viewLifecycleOwner) { userProgramExercises ->
             val programExercises = userProgramExercises.filter{ it.user_program_id == displayableSession.userProgramId}
             sharedViewModel.setProgramExercises(programExercises)
         }
+        // Get "programExercises"  for the program in this session, send to adapter
         sharedViewModel.programExercises.observe(this.viewLifecycleOwner) {programExercises ->
             adapter.submitList(programExercises)
         }
+        adapter.notifyDataSetChanged()
     }
 
     private fun getExerciseClickListener(): ExerciseItemAdapter.ExerciseClickListener {

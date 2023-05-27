@@ -1,5 +1,6 @@
 package com.example.exercisetracker
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.example.exercisetracker.db.UserProgram
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
 class NewProgramFragment: Fragment() {
@@ -84,6 +86,14 @@ class NewProgramFragment: Fragment() {
     }
 
     private fun bindUserProgram(userProgram: UserProgram) {
+        val positiveButtonClick = { dialog: DialogInterface, which: Int ->
+            sharedViewModel.deleteProgram(userProgram)
+            findNavController().navigate(R.id.action_newProgramFragment_to_myProgramsFragment)
+        }
+        val negativeButtonClick =  { dialog: DialogInterface, which: Int ->
+            Toast.makeText(requireContext(), getString(R.string.canceled), Toast.LENGTH_SHORT).show()
+        }
+
         binding.apply{
             programNameInput.setText(userProgram.name, TextView.BufferType.SPANNABLE)
             programDescriptInput.setText(userProgram.description, TextView.BufferType.SPANNABLE)
@@ -97,9 +107,12 @@ class NewProgramFragment: Fragment() {
             }
             buttonDelete.visibility = View.VISIBLE
             buttonDelete.setOnClickListener {
-                // Husk å legge til en popup med "er du sikker på at du vil slette program"
-                sharedViewModel.deleteProgram(userProgram)
-                findNavController().navigate(R.id.action_newProgramFragment_to_myProgramsFragment)
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(getString(R.string.delete_program))
+                    .setMessage(getString(R.string.confirmation_delete_program))
+                    .setPositiveButton(getString(R.string.delete_program), positiveButtonClick)
+                    .setNegativeButton(getString(R.string.cancel), negativeButtonClick)
+                    .show()
             }
         }
     }

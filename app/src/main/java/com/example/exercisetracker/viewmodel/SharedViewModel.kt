@@ -289,14 +289,17 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
     fun setProgramExercises(userProgramExercises: List<UserProgramExercise>) {
         val userExercises = userExercises.value
-
         val result = userExercises.filter {userExercise ->
             userProgramExercises.any {userProgramExercise ->
                 userExercise.id == userProgramExercise.user_exercise_id
             }
         }
+        if (result == null) {
+            Log.d("PROGRAM EXERCISES", "NO EXERCISES RETERIVED FOR PROGRAM_SESSION")
+        }
+        // Temp message to see what is returned
+        Log.d("PROGRAM EXERCISES", "${result}")
         _programExercises.value = result
-
     }
 
     fun setProgramTypeByUserProgram(userProgram: UserProgram) {
