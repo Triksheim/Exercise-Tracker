@@ -98,6 +98,7 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
         val adapter = ExerciseItemAdapter(getExerciseClickListener(), SESSION_DETAILS)
         val recyclerView = binding.exerciseRecycler
         recyclerView.adapter = adapter
+        binding.viewModel = sharedViewModel
         sharedViewModel.userProgramExercises.observe(this.viewLifecycleOwner) { userProgramExercises ->
             val programExercises = userProgramExercises.filter{ it.user_program_id == displayableSession.userProgramId}
             sharedViewModel.setProgramExercises(programExercises)
