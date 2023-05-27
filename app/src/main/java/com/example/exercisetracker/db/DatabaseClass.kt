@@ -21,7 +21,7 @@ import androidx.room.RoomDatabase
         UserProgramSessionPhotoEntityOffline::class,
 
     ],
-    version = 11,
+    version = 12,
     exportSchema = false
 )
 abstract class TrainingDatabase : RoomDatabase() {
@@ -36,7 +36,7 @@ abstract class TrainingDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     TrainingDatabase:: class.java,
-                    "item"
+                    "training_database"
                 )
                     .fallbackToDestructiveMigration()
                     .build()

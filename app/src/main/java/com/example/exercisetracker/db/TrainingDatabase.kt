@@ -65,7 +65,17 @@ data class UserExerciseEntity(
     @ColumnInfo(name = "infobox_color") val infobox_color: String
 )
 
-@Entity(tableName = "user_program_session")
+@Entity(
+    tableName = "user_program_session",
+    foreignKeys = [
+        ForeignKey(
+            entity = UserProgramEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["user_program_id"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class UserProgramSessionEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "user_program_id") val user_program_id: Int,
@@ -74,7 +84,17 @@ data class UserProgramSessionEntity(
     @ColumnInfo(name = "time_spent") val time_spent: Int
 )
 
-@Entity(tableName = "user_program_session_data")
+@Entity(
+    tableName = "user_program_session_data",
+    foreignKeys = [
+        ForeignKey(
+            entity = UserProgramSessionEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["user_program_session_id"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class  UserProgramSessionDataEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "user_program_session_id") val user_program_session_id: Int,
@@ -84,7 +104,17 @@ data class  UserProgramSessionDataEntity(
     @ColumnInfo(name = "textData1") val textData1: String
 )
 
-@Entity(tableName = "user_program_session_photo")
+@Entity(
+    tableName = "user_program_session_photo",
+    foreignKeys = [
+        ForeignKey(
+            entity = UserProgramSessionEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["user_program_session_id"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class UserProgramSessionPhotoEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "user_program_session_id") val user_program_session_id: Int,
