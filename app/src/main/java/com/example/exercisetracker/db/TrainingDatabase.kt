@@ -25,16 +25,7 @@ data class AppProgramTypeEntity(
     @ColumnInfo(name = "back_color") val back_color: String
 )
 
-@Entity(tableName = "user")
-data class UserEntity(
-    @PrimaryKey(autoGenerate = false)
-    @ColumnInfo(name = "id", ) val id: Int,
-    @ColumnInfo(name = "phone") val phone: String,
-    @ColumnInfo(name = "email") val email: String,
-    @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "birth_year") val birth_year: Int
 
-)
 
 @Entity(tableName = "user_program")
 data class UserProgramEntity(

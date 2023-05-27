@@ -9,17 +9,6 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
 ) {
     // Local data source methods -------------------------------------------------------------
 
-    // User
-    suspend fun getAllUsers(): Flow<List<UserEntity>> {
-        return localDataSource.getAllUsers()
-    }
-    suspend fun insertUser(userEntity: UserEntity): Long {
-        return localDataSource.insertUser(userEntity)
-    }
-    suspend fun deleteAllUsers() {
-        return localDataSource.deleteAllUsers()
-    }
-
     // ActiveUser
     suspend fun addActiveUser(activeUserEntity: ActiveUserEntity) {
         return localDataSource.addActiveUser(activeUserEntity)

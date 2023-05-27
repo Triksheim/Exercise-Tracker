@@ -3,15 +3,6 @@ package com.example.exercisetracker.utils
 import com.example.exercisetracker.db.*
 import com.example.exercisetracker.network.*
 
-fun UserJSON.asEntity(): UserEntity {
-    return UserEntity(
-        id = this.id,
-        phone = this.phone,
-        email = this.email,
-        name = this.name,
-        birth_year = this.birth_year
-    )
-}
 
 fun AppProgramTypeJSON.asEntity(): AppProgramTypeEntity {
     return AppProgramTypeEntity(
@@ -129,7 +120,15 @@ fun UserStatsEntity?.asDomainModel(): UserStats {
 }
 
 
-
+fun UserJSON.asDomainModel(): User {
+    return User(
+        id = this.id,
+        phone = this.phone,
+        email = this.email,
+        name = this.name,
+        birth_year = this.birth_year
+    )
+}
 
 
 
@@ -152,15 +151,6 @@ fun AppProgramTypeEntity.asDomainModel(): AppProgramType {
     )
 }
 
-fun UserEntity.asDomainModel(): User {
-    return User(
-        id = this.id,
-        phone = this.phone,
-        email = this.email,
-        name = this.name,
-        birth_year = this.birth_year
-    )
-}
 
 fun UserProgramEntity.asDomainModel(): UserProgram {
     return UserProgram(
@@ -223,15 +213,6 @@ fun UserProgramSessionPhotoEntity.asDomainModel(): UserProgramSessionPhoto {
     )
 }
 
-fun User.asEntity(): UserEntity {
-    return UserEntity(
-        id = this.id,
-        phone = this.phone,
-        email = this.email,
-        name = this.name,
-        birth_year = this.birth_year
-    )
-}
 
 fun UserProgram.asEntity(): UserProgramEntity {
     return UserProgramEntity(

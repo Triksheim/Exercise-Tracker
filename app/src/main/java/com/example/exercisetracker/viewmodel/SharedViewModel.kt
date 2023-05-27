@@ -337,7 +337,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         for (user in users.value!!) {
             if (user.phone == phone) {
                 Log.d("LOGIN SUCCESS", "ID: ${user.id}")
-                setActiveUser(user.asEntity().asDomainModel())
+                setActiveUser(user.asDomainModel())
                 _users.postValue(emptyList())
                 restart()
                 return@async true
@@ -660,7 +660,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             if (result.isSuccess) {
                 _networkConnectionOk.postValue(true)
                 val newUser = result.getOrNull()
-                setActiveUser(newUser!!.asEntity().asDomainModel())
+                setActiveUser(newUser!!.asDomainModel())
                 restart()
             }
             else {
