@@ -627,11 +627,12 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 }
             }
             else {
-
+                /*
                  Log.e(
                     "ERROR USER PROGRAM SESSION DATA API",
                     "Unable to fetch (or no session data for SessionID:${sessionId})"
                 )
+                */
             }
         }
     }
