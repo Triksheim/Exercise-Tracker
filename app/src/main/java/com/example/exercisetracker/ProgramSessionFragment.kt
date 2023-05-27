@@ -63,11 +63,12 @@ class ProgramSessionFragment: Fragment() {
 
     // Timer variables
     private var useTiming: Int = 0
+    private var timeSpent: Long = 0L
     private var startTime: Long = 0L
-    private var timeSpent: Int = 0
-    private var pauseStartTime: Long = 0L
+    private var isRunning = false
+    private var isPaused = false
     private var pauseDuration: Long = 0L
-    private var isWorkoutRunning = false
+    private var pauseStartTime: Long = 0L
     private val timerHandler = Handler(Looper.getMainLooper())
 
     // GPS variables
@@ -164,7 +165,7 @@ class ProgramSessionFragment: Fragment() {
                             // Location permission not granted
                             requestLocationPermission()
                         }
-                        if (isWorkoutRunning) {
+                        if (isRunning) {
                             startLocationUpdates()
                         }
                     }
@@ -194,7 +195,7 @@ class ProgramSessionFragment: Fragment() {
 
         val startPauseButton: Button = view.findViewById(R.id.start_pause_button)
         startPauseButton.setOnClickListener {
-            if (isWorkoutRunning) {
+            if (isRunning) {
                 pauseOrContinueWorkoutSession(startPauseButton)
             } else {
                 startWorkoutSession(startPauseButton)
@@ -225,19 +226,8 @@ class ProgramSessionFragment: Fragment() {
     }
 
     private suspend fun saveWorkoutSession(currentProgram: UserProgram) {
-        if (isWorkoutRunning) {
-            if (useTiming == 1) {
-                val currentTime = System.currentTimeMillis()
-                // Check if pauseDuration has been initialized. If not, don't subtract it.
-                val elapsed = if (pauseDuration > 0L) {
-                    currentTime - startTime - pauseDuration
-                } else {
-                    currentTime - startTime
-                }
-                timeSpent += (elapsed / 1000).toInt()
-                timerHandler.removeCallbacks(timerRunnable)
-            }
-            isWorkoutRunning = false
+        if (isRunning) {
+            pauseWorkoutSession(binding.startPauseButton) // This will update timeSpent
         }
 
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
@@ -247,36 +237,34 @@ class ProgramSessionFragment: Fragment() {
             id = 0,
             user_program_id = currentProgram.id,
             startTime = startTimeStr,
-            time_spent = timeSpent,
+            time_spent = timeSpent.toInt(),
             description = binding.personalDescriptionEditText.text.toString()
         )
         sessionId = sharedViewModel.createUserProgramSession(userProgramSession)
     }
 
     private fun startWorkoutSession(button: Button) {
-        if (!isWorkoutRunning) {
-            if (useTiming == 1) {
-                if (pauseDuration > 0L) {
-                    startTime += pauseDuration
-                    pauseDuration = 0L
-                } else {
-                    startTime = System.currentTimeMillis()
-                }
-                timerHandler.postDelayed(timerRunnable, 0)
-                updateElapsedTime()
-                timerHandler.postDelayed(timerRunnable, 0)
-
-                if (useLocation) {
-                    startLocationUpdates()
-                }
-            }
-            isWorkoutRunning = true
-            button.text = "Pause"
+        if (!isPaused) {
+            startTime = System.currentTimeMillis()
         }
+        if (useTiming == 1) {
+            // Calculate pauseDuration if it's not the first run
+            if (pauseStartTime != 0L) {
+                pauseDuration += System.currentTimeMillis() - pauseStartTime
+                pauseStartTime = 0L
+            }
+            timerHandler.postDelayed(timerRunnable, 0)
+            if (useLocation) {
+                startLocationUpdates()
+            }
+        }
+        isRunning = true
+        isPaused = false
+        button.text = "Pause"
     }
 
     private fun pauseOrContinueWorkoutSession(button: Button) {
-        if (isWorkoutRunning) {
+        if (isRunning) {
             pauseWorkoutSession(button)
         } else {
             startWorkoutSession(button)
@@ -285,11 +273,11 @@ class ProgramSessionFragment: Fragment() {
 
     private fun pauseWorkoutSession(button: Button) {
         if (useTiming == 1) {
-            val currentTime = System.currentTimeMillis()
-            pauseStartTime = currentTime
-            timeSpent += ((currentTime - startTime) / 1000).toInt()
-            isWorkoutRunning = false
+            pauseStartTime = System.currentTimeMillis()
+            isRunning = false
+            isPaused = true
             timerHandler.removeCallbacks(timerRunnable)
+
             if (useLocation) {
                 stopLocationUpdates()
             }
@@ -299,22 +287,17 @@ class ProgramSessionFragment: Fragment() {
 
     // Timer functions
     private fun updateElapsedTime() {
-        val currentTime = System.currentTimeMillis()
-        val elapsedTime = currentTime - startTime + timeSpent * 1000
-        val formattedTime = formatElapsedTime(elapsedTime)
-        binding.timerText.text = formattedTime
-    }
-
-    private fun formatElapsedTime(elapsedTime: Long): String {
-        val hours = TimeUnit.MILLISECONDS.toHours(elapsedTime)
-        val minutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTime) % 60
-        val seconds = TimeUnit.MILLISECONDS.toSeconds(elapsedTime) % 60
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds)
+        val elapsedTimeInSeconds = timeSpent / 1000
+        val hours = elapsedTimeInSeconds / 3600
+        val minutes = (elapsedTimeInSeconds % 3600) / 60
+        val seconds = elapsedTimeInSeconds % 60
+        binding.timerText.text = String.format("%02d:%02d:%02d", hours, minutes, seconds)
     }
 
     private val timerRunnable = object : Runnable {
         override fun run() {
-            if (isWorkoutRunning) {
+            if (isRunning) {
+                timeSpent = System.currentTimeMillis() - startTime - pauseDuration
                 updateElapsedTime() // Update the elapsed time
                 timerHandler.postDelayed(this, 1000)
             }
@@ -354,7 +337,7 @@ class ProgramSessionFragment: Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (isWorkoutRunning) {
+        if (isRunning) {
             startLocationUpdates()
         }
     }

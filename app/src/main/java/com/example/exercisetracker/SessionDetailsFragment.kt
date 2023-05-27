@@ -53,6 +53,7 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
 
         sharedViewModel.setToolbarTitle(getString(R.string.title_session_details))
 
+        // Observe currentDiaplayableSession, bind viewmodel and views
         sharedViewModel.currentDisplayableSession.observe(this.viewLifecycleOwner) { displayableSession ->
             binding.apply {
                 lifecycleOwner = viewLifecycleOwner
@@ -64,6 +65,7 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
                 )
                 sessionIcon.setImageResource(resourceId)
 
+                // Set visibility of views displaying session data based upon user choices
                 when (displayableSession.useTiming) {
                     0 -> cardTime.visibility = View.GONE
                     1 -> cardTime.visibility = View.VISIBLE
@@ -95,8 +97,12 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
         }
 
         sharedViewModel.sessionData.observe(viewLifecycleOwner) { sessionList ->
-            if (::map.isInitialized) {
-                updateMap(sessionList)
+            if (sessionList.isEmpty()) {
+                binding.map.visibility = View.GONE
+            } else {
+                if (::map.isInitialized) {
+                    updateMap(sessionList)
+                }
             }
         }
     }
@@ -116,10 +122,13 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
 
                 // Fetch exercises for the current program:
                 sharedViewModel.flowExercisesForCurrentProgram()
+
                 // Observe the LiveData of program exercises
                 sharedViewModel.userProgramExercises.observe(viewLifecycleOwner, Observer { programExercises ->
+
                     // Fetch the list of all user exercises
                     val userExercises = sharedViewModel.userExercises.value
+
                     // Filter the user exercises that are in the program
                     val exercisesForProgram = userExercises.filter { userExercise ->
                         programExercises.any { programExercise ->
@@ -133,6 +142,7 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    // Initialize interface for buttons on the exercise-items in recyclerView
     private fun getExerciseClickListener(): ExerciseItemAdapter.ExerciseClickListener {
         return object : ExerciseItemAdapter.ExerciseClickListener {
             override fun onEditButtonClick(userExercise: UserExercise) {} // Not Visible in this fragment
