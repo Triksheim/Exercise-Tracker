@@ -181,7 +181,7 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
             val bounds = builder.build()
 
             // Move the camera to show all markers
-            val padding = 50 // offset from edges of the map in pixels
+            val padding = 100 // offset from edges of the map in pixels
             val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding)
             map.moveCamera(cameraUpdate)
         }
