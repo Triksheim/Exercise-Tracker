@@ -242,7 +242,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/margin_between_elements"
-                    android:text="@{@string/sessionHeight(viewModel.currentDisplayableSession.sessionAvgSpeed)}"
+                    android:text="@{@string/sessionSpeed(viewModel.currentDisplayableSession.sessionAvgSpeed)}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="snittfart" />
@@ -252,7 +252,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/margin_between_elements"
-                    android:text="@{@string/sessionHeight(viewModel.currentDisplayableSession.sessionAvgSpeed)}"
+                    android:text="@{@string/sessionSpeed(viewModel.currentDisplayableSession.sessionAvgSpeed)}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="maxfart" />
