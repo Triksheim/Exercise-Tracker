@@ -108,5 +108,6 @@
     <string name="canceled">Avbrutt</string>
     <string name="delete_program">Slett Program</string>
     <string name="confirmation_delete_program">Vil du slette programmet for godt?</string>
+    <string name="failed_to_load_exercises">Kunne ikke laste øvelser</string>
 
 </resources>
