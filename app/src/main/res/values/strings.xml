@@ -95,6 +95,7 @@
     <string name="totalDistance"> %skm</string>
     <string name="sessionProgramName"> %s</string>
     <string name="sessionHeight"> %sm</string>
+    <string name="sessionSpeed"> %s km/t</string>
     <string name="button_update_exercise">Oppdater Øvelse</string>
     <string name="button_update_program">Oppdater Program</string>
     <string name="home">Hjem</string>
