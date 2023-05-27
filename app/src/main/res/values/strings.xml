@@ -102,5 +102,11 @@
     <string name="time">Tid</string>
     <string name="height">Høyde</string>
     <string name="refresh_data">Oppdater data</string>
+    <string name="delete_exercise">Slett Øvelse</string>
+    <string name="confirmation_delete_exercise">Vil du slette øvelsen for godt?</string>
+    <string name="cancel">Avbryt</string>
+    <string name="canceled">Avbrutt</string>
+    <string name="delete_program">Slett Program</string>
+    <string name="confirmation_delete_program">Vil du slette programmet for godt?</string>
 
 </resources>
