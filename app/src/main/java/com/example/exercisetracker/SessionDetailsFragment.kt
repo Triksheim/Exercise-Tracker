@@ -5,8 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.example.exercisetracker.adapters.ExerciseItemAdapter
 import com.example.exercisetracker.databinding.FragmentSessionDetailsBinding
 import com.example.exercisetracker.db.DisplayableSession
@@ -22,6 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
+import kotlinx.coroutines.flow.collect
 
 const val SESSION_DETAILS = "sessionDetailsFragment"
 
@@ -48,7 +52,7 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
 
         sharedViewModel.setToolbarTitle(getString(R.string.title_session_details))
 
-        sharedViewModel.currentDisplayableSession.observe(viewLifecycleOwner) { displayableSession ->
+        sharedViewModel.currentDisplayableSession.observe(this.viewLifecycleOwner) { displayableSession ->
             binding.apply {
                 lifecycleOwner = viewLifecycleOwner
                 viewModel = sharedViewModel
@@ -98,18 +102,34 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
 
     private fun bindExerciseRecycler(displayableSession: DisplayableSession) {
         val adapter = ExerciseItemAdapter(getExerciseClickListener(), SESSION_DETAILS)
-        val recyclerView = binding.exerciseRecycler
-        recyclerView.adapter = adapter
-        // Set exercises "programExercises"  for the program in this session
-        sharedViewModel.userProgramExercises.observe(this.viewLifecycleOwner) { userProgramExercises ->
-            val programExercises = userProgramExercises.filter{ it.user_program_id == displayableSession.userProgramId}
-            sharedViewModel.setProgramExercises(programExercises)
+        binding.exerciseRecycler.adapter = adapter
+
+        // Set current program for this session
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            sharedViewModel.userPrograms.collect() {userPrograms ->
+                val sessionProgram = userPrograms.find{it.id == displayableSession.userProgramId}
+                if (sessionProgram != null) {sharedViewModel.setCurrentUserProgram(sessionProgram!!)
+                } else {
+                    Toast.makeText(requireContext(), getString(R.string.failed_to_load_exercises), Toast.LENGTH_SHORT).show()
+                }
+
+                // Fetch exercises for the current program:
+                sharedViewModel.flowExercisesForCurrentProgram()
+                // Observe the LiveData of program exercises
+                sharedViewModel.userProgramExercises.observe(viewLifecycleOwner, Observer { programExercises ->
+                    // Fetch the list of all user exercises
+                    val userExercises = sharedViewModel.userExercises.value
+                    // Filter the user exercises that are in the program
+                    val exercisesForProgram = userExercises.filter { userExercise ->
+                        programExercises.any { programExercise ->
+                            programExercise.user_exercise_id == userExercise.id
+                        }
+                    }
+                    // Submit the new list of exercises to the adapter
+                    adapter.submitList(exercisesForProgram)
+                })
+            }
         }
-        // Get "programExercises"  for the program in this session, send to adapter
-        sharedViewModel.programExercises.observe(this.viewLifecycleOwner) {programExercises ->
-            adapter.submitList(programExercises)
-        }
-        adapter.notifyDataSetChanged()
     }
 
     private fun getExerciseClickListener(): ExerciseItemAdapter.ExerciseClickListener {
