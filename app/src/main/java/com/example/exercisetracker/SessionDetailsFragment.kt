@@ -23,6 +23,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import kotlinx.coroutines.flow.collect
@@ -171,9 +172,18 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
             map.addMarker(MarkerOptions().position(coordinate))
         }
 
-        // Move the camera to the first position in the list, if it is not empty
+        // Calculate LatLngBounds
         if (coordinates.isNotEmpty()) {
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates[0], 15f))
+            val builder = LatLngBounds.Builder()
+            for (coordinate in coordinates) {
+                builder.include(coordinate)
+            }
+            val bounds = builder.build()
+
+            // Move the camera to show all markers
+            val padding = 50 // offset from edges of the map in pixels
+            val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding)
+            map.moveCamera(cameraUpdate)
         }
     }
 
