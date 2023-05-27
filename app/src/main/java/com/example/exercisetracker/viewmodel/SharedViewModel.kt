@@ -389,6 +389,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
     private suspend fun restart() {
         viewModelScope.launch {
+            testNetworkConnection()
             if (!isActiveUser()) {
                 val resultActiveUser = repository.getActiveUser()
                 if (resultActiveUser.isSuccess) {
@@ -399,10 +400,11 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                     }
                 }
             }
-            else if (isActiveUser()) {
+            else if (isActiveUser() && networkConnectionOk.value!!) {
                 getAllProgramTypes()
                 getAllUserPrograms()
                 getAllUserExercises()
+                getUserStats()
                 if (userPrograms.value.isNotEmpty()) {
                     for (userProgram in userPrograms.value) {
                         getAllUserExercisesForUserProgram(userProgram.id)
@@ -412,7 +414,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                         for (session in allSessions.value) {
                             getAllSessionDataForSessionId(session.id)
                         }
-                        getUserStats()
                     }
                 }
             }
@@ -421,17 +422,30 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
     }
 
+    private suspend fun testNetworkConnection() {
+        withContext(Dispatchers.IO) {
+            if (repository.getAppProgramTypesAPI().isSuccess) {
+                if (!networkConnectionOk.value!!) {
+                    Log.d("NETWORK", "RECONNECTED")
+                    _networkConnectionOk.postValue(true)
+                }
+            }
+            else {
+                Log.e("NETWORK", "DISCONNECTED")
+                _networkConnectionOk.postValue(false)
+            }
+
+        }
+    }
 
     private suspend fun getAllUsers() {
         withContext(Dispatchers.IO) {
             val resultUsers = repository.getUsersAPI()
             if (resultUsers.isSuccess) {
-                _networkConnectionOk.postValue(true)
                 Log.d("RESULT USERS API", "SUCCESS")
                 val users = resultUsers.getOrNull()
                 _users.postValue(users!!)
             } else {
-                _networkConnectionOk.postValue(false)
                 _users.postValue(emptyList())
                 Log.e("ERROR USERS API", "Unable to fetch")
             }
@@ -504,10 +518,12 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                     repository.insertUserProgramExercise(userProgramExercise.asEntity())
                 }
             } else {
+                /*
                 Log.e(
                     "ERROR USER PROGRAM EXERCISES",
                     "Unable to fetch (or no exercises for UserProgramID:$userProgramId)"
                 )
+                */
             }
         }
     }
@@ -522,10 +538,13 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                     repository.insertUserProgramSession(session.asEntity())
                 }
             } else {
+                /*
                 Log.e(
                     "ERROR USER PROGRAM SESSION API",
                     "Unable to fetch (or no session data for ProgramID:${userProgramId})"
                 )
+                */
+
             }
         }
     }
@@ -535,16 +554,18 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         withContext(Dispatchers.IO) {
             val result = repository.getALlUserProgramSessionDataAPI(sessionId)
             if (result.isSuccess) {
-                Log.d("RESULT USER PROGRAM SESSIONS DATA", "SUCCESS")
+                Log.d("RESULT USER PROGRAM SESSIONS DATA", "SUCCESS ID:${sessionId}")
                 val sessionData = result.getOrNull()
                 for (data in sessionData!!) {
                     repository.insertUserProgramSessionData(data.asEntity())
                 }
-            } else {
-                Log.e(
+            }
+            else {
+            /*
+                 Log.e(
                     "ERROR USER PROGRAM SESSION DATA API",
                     "Unable to fetch (or no session data for SessionID:${sessionId})"
-                )
+                ) */
             }
         }
     }
@@ -556,8 +577,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 _networkConnectionOk.postValue(true)
                 Log.d("RESULT USER STATS", "SUCCESS")
                 val stats = result.getOrNull()
-                repository.insertUserStats(stats!!.asEntity())
-                //_userStats.postValue(stats!!)
+                // defaults all stats to 0 if result is null
+                repository.insertUserStats(stats?.asEntity() ?: UserStatsJSON().asEntity())
             } else {
                 _networkConnectionOk.postValue(false)
                 Log.e("ERROR USER STATS API", "Unable to fetch")

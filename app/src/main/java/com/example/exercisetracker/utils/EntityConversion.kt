@@ -83,51 +83,52 @@ fun UserProgramSessionPhotoJSON.asEntity(): UserProgramSessionPhotoEntity {
     )
 }
 
-fun UserStatsJSON.asEntity(): UserStatsEntity {
+fun UserStatsJSON?.asEntity(): UserStatsEntity {
     return UserStatsEntity(
-        userId = this.id,
-        name = this.name,
-        last7DaysSessionCount = this.last7Days.sessionCount,
-        last7DaysTimeSpent = this.last7Days.timeSpent,
-        currentWeekSessionCount = this.currentWeek.sessionCount,
-        currentWeekTimeSpent = this.currentWeek.timeSpent,
-        currentMonthSessionCount = this.currentMonth.sessionCount,
-        currentMonthTimeSpent = this.currentMonth.timeSpent,
-        last30DaysSessionCount = this.last30days.sessionCount,
-        last30DaysTimeSpent = this.last30days.timeSpent,
-        currentYearSessionCount = this.currentYear.sessionCount,
-        currentYearTimeSpent = this.currentYear.timeSpent
+        userId = this?.id ?: "",
+        name = this?.name ?: "",
+        last7DaysSessionCount = this?.last7Days?.sessionCount ?: "0",
+        last7DaysTimeSpent = this?.last7Days?.timeSpent ?: "0",
+        currentWeekSessionCount = this?.currentWeek?.sessionCount ?: "0",
+        currentWeekTimeSpent = this?.currentWeek?.timeSpent ?: "0",
+        currentMonthSessionCount = this?.currentMonth?.sessionCount ?: "0",
+        currentMonthTimeSpent = this?.currentMonth?.timeSpent ?: "0",
+        last30DaysSessionCount = this?.last30days?.sessionCount ?: "0",
+        last30DaysTimeSpent = this?.last30days?.timeSpent ?: "0",
+        currentYearSessionCount = this?.currentYear?.sessionCount ?: "0",
+        currentYearTimeSpent = this?.currentYear?.timeSpent ?: "0"
     )
 }
 
-fun UserStatsEntity?.asDomainModel(): UserStats? {
-    return this?.let {
-        UserStats(
-            userId = it.userId,
-            name = it.name,
-            last7Days = Stats(
-                sessionCount = it.last7DaysSessionCount,
-                timeSpent = it.last7DaysTimeSpent
-            ),
-            currentWeek = Stats(
-                sessionCount = it.currentWeekSessionCount,
-                timeSpent = it.currentWeekTimeSpent
-            ),
-            currentMonth = Stats(
-                sessionCount = it.currentMonthSessionCount,
-                timeSpent = it.currentMonthTimeSpent
-            ),
-            last30Days = Stats(
-                sessionCount = it.last30DaysSessionCount,
-                timeSpent = it.last30DaysTimeSpent
-            ),
-            currentYear = Stats(
-                sessionCount = it.currentYearSessionCount,
-                timeSpent = it.currentYearTimeSpent
-            )
+
+fun UserStatsEntity?.asDomainModel(): UserStats {
+    return UserStats(
+        userId = this?.userId ?: "",
+        name = this?.name ?: "",
+        last7Days = Stats(
+            sessionCount = this?.last7DaysSessionCount ?: "0",
+            timeSpent = this?.last7DaysTimeSpent ?: "0"
+        ),
+        currentWeek = Stats(
+            sessionCount = this?.currentWeekSessionCount ?: "0",
+            timeSpent = this?.currentWeekTimeSpent ?: "0"
+        ),
+        currentMonth = Stats(
+            sessionCount = this?.currentMonthSessionCount ?: "0",
+            timeSpent = this?.currentMonthTimeSpent ?: "0"
+        ),
+        last30Days = Stats(
+            sessionCount = this?.last30DaysSessionCount ?: "0",
+            timeSpent = this?.last30DaysTimeSpent ?: "0"
+        ),
+        currentYear = Stats(
+            sessionCount = this?.currentYearSessionCount ?: "0",
+            timeSpent = this?.currentYearTimeSpent ?: "0"
         )
-    }
+    )
 }
+
+
 
 
 
