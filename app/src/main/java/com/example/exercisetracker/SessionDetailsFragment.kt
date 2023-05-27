@@ -96,8 +96,12 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
         }
 
         sharedViewModel.sessionData.observe(viewLifecycleOwner) { sessionList ->
-            if (::map.isInitialized) {
-                updateMap(sessionList)
+            if (sessionList.isEmpty()) {
+                binding.map.visibility = View.GONE
+            } else {
+                if (::map.isInitialized) {
+                    updateMap(sessionList)
+                }
             }
         }
     }
