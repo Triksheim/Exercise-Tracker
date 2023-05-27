@@ -106,13 +106,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private var _currentDisplayableSession = MutableLiveData<DisplayableSession>()
     val currentDisplayableSession: LiveData<DisplayableSession> = _currentDisplayableSession
 
-
     private var _userStats = MutableStateFlow<UserStats?>(null)
     val userStats: StateFlow<UserStats?> = _userStats
-
-    private var _sessionDistance = MutableLiveData<Float>()
-    val sessionDistance: LiveData<Float> = _sessionDistance
-
 
     private var _toolbarTitle = MutableLiveData<String>()
     val toolbarTitle: LiveData<String> = _toolbarTitle
@@ -131,33 +126,46 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     }
 
     fun setSessionDistanceAndHeight() {
-        var totalDistance = 0F
-        var totalHeight = 0F
-        val numOfDatapoints = sessionData.value!!.size
-        if (numOfDatapoints > 1) {
-            for (i in 0 until numOfDatapoints - 1) {
-                val distance = haversineDistance(
-                    sessionData.value!![i].floatData1.toDouble(), sessionData.value!![i].floatData2.toDouble(),
-                    sessionData.value!![i+1].floatData1.toDouble(), sessionData.value!![i+1].floatData2.toDouble()
-                )
-                val height = heightDifference(sessionData.value!![i].floatData3, sessionData.value!![i+1].floatData3)
-                totalDistance += distance
-                totalHeight += height
-            }
-            _currentDisplayableSession.value?.useGps = 1
-            _currentDisplayableSession.value?.sessionDistance = totalDistance
-            _currentDisplayableSession.value?.sessionHeight = totalHeight
-            setAverageSpeed()
+        viewModelScope.launch(Dispatchers.Default) {
+            var totalDistance = 0F
+            var totalHeight = 0F
+            val numOfDatapoints = sessionData.value!!.size
+            if (numOfDatapoints > 1) {
+                for (i in 0 until numOfDatapoints - 1) {
+                    val distance = haversineDistance(
+                        sessionData.value!![i].floatData1.toDouble(),
+                        sessionData.value!![i].floatData2.toDouble(),
+                        sessionData.value!![i + 1].floatData1.toDouble(),
+                        sessionData.value!![i + 1].floatData2.toDouble()
+                    )
+                    val height = heightDifference(
+                        sessionData.value!![i].floatData3,
+                        sessionData.value!![i + 1].floatData3
+                    )
+                    totalDistance += distance
+                    totalHeight += height
+                }
 
+                val averageSpeed = setAverageSpeed(totalDistance)
+
+                val currentSession = _currentDisplayableSession.value
+                if (currentSession != null) {
+                    val updatedDisplayableSession = currentSession.copy(
+                        useGps = 1,
+                        sessionDistance = String.format("%.2f", totalDistance).toFloat(),
+                        sessionHeight = String.format("%.2f", totalHeight).toFloat(),
+                        sessionAvgSpeed = String.format("%.2f", averageSpeed).toFloat()
+                    )
+                    _currentDisplayableSession.postValue(updatedDisplayableSession)
+                }
+            }
         }
     }
 
 
-    fun setAverageSpeed() {
+    fun setAverageSpeed(totalDistance: Float): Float {
         val timeInHours = currentDisplayableSession.value?.sessionTimeSpent?.toFloat()?.div(3600)
-        val distance = currentDisplayableSession.value?.sessionDistance
-        val speed = timeInHours?.let { distance?.div(it) }
-        _currentDisplayableSession.value?.sessionAvgSpeed = speed
+        return timeInHours?.let { totalDistance.div(it) } ?: 0f
     }
 
 
@@ -359,7 +367,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
     fun logout() {
         viewModelScope.launch {
-            _activeUser.postValue(null)
+            _activeUser.value = null
             _createUserStatus.value = Result.success(UserJSON(0,"0","0","0",0))
             clearDb()
             restart()
@@ -387,7 +395,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     }
 
     fun setToolbarTitle(title:String) {
-        _toolbarTitle.value =  title
+        _toolbarTitle.value = title
     }
 
     private suspend fun clearDb() {
@@ -409,26 +417,28 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private suspend fun restart() {
         viewModelScope.launch {
             testNetworkConnection()
+
             if (!isActiveUser()) {
                 val resultActiveUser = repository.getActiveUser()
                 if (resultActiveUser.isSuccess) {
                     val user = resultActiveUser.getOrNull()
                     if (user != null) {
-                        _activeUser.value = user!!
-                        restart()
+                        _activeUser.value = user
                     }
                 }
             }
-            else if (isActiveUser() && networkConnectionOk.value!!) {
+
+            if (isActiveUser() && networkConnectionOk.value!!) {
                 postOfflineSessions()
                 getAllProgramTypes()
                 getAllUserPrograms()
                 getAllUserExercises()
                 getUserStats()
+
                 if (userPrograms.value.isNotEmpty()) {
                     for (userProgram in userPrograms.value) {
-                        getAllUserExercisesForUserProgram(userProgram.id)
                         getAllSessionsForUserProgram(userProgram.id)
+                        getAllUserExercisesForUserProgram(userProgram.id)
                     }
                     if (allSessions.value.isNotEmpty()) {
                         for (session in allSessions.value) {
@@ -439,7 +449,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             }
             _startupDone.postValue(true)
         }
-
     }
 
     private suspend fun testNetworkConnection() {
@@ -618,11 +627,11 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 }
             }
             else {
-            /*
+
                  Log.e(
                     "ERROR USER PROGRAM SESSION DATA API",
                     "Unable to fetch (or no session data for SessionID:${sessionId})"
-                ) */
+                )
             }
         }
     }
