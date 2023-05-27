@@ -40,7 +40,6 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:layout_gravity="center"
-                    android:visibility="gone"
                     android:scaleType="fitXY"
                     android:adjustViewBounds="true"
                     android:src="@{viewModel.currentDisplayableSession.programTypeIcon}"
@@ -49,8 +48,10 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/sessionProgramName"
                     tools:src="@drawable/roing_img"/>
+
                 <!--Sission photo is never set-->
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/sessionPhoto"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
@@ -82,43 +83,41 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardTime"
-            android:layout_height="100dp"
             android:layout_width="0dp"
+            android:layout_height="100dp"
             android:layout_marginTop="@dimen/margin_between_elements"
             android:layout_marginEnd="@dimen/margin_between_elements"
-            android:layout_marginBottom="@dimen/margin_between_elements"
             android:padding="@dimen/margin_between_elements"
-            app:layout_constraintTop_toBottomOf="@id/cardHeader"
-            app:layout_constraintStart_toStartOf="parent"
+            app:cardElevation="0dp"
             app:layout_constraintEnd_toStartOf="@id/cardDistance"
-            app:strokeWidth="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardHeader"
             app:strokeColor="@color/border"
-            app:cardElevation="0dp">
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/timeHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/margin_between_elements"
-                android:text="@string/time"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-               />
+                <TextView
+                    android:id="@+id/timeHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_between_elements"
+                    android:text="@string/time"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/totalTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/margin_between_elements"
-                android:text="@{@string/trainingTime(viewModel.currentDisplayableSession.sessionTimeSpent)}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                tools:text="time" />
+                <TextView
+                    android:id="@+id/totalTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_between_elements"
+                    android:text="@{@string/trainingTime(viewModel.formatSeconds(viewModel.currentDisplayableSession.sessionTimeSpent.toString()))}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="time" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -213,7 +212,6 @@
             android:layout_height="100dp"
             android:layout_width="0dp"
             android:padding="@dimen/margin_between_elements"
-            android:layout_marginEnd="@dimen/margin_between_elements"
             android:layout_marginBottom="@dimen/margin_between_elements"
             android:layout_marginTop="@dimen/margin_between_elements"
             app:layout_constraintTop_toBottomOf="@id/cardDistance"

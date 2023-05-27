@@ -7,7 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.example.exercisetracker.adapters.ExerciseItemAdapter
 import com.example.exercisetracker.databinding.FragmentSessionDetailsBinding
+import com.example.exercisetracker.db.DisplayableSession
+import com.example.exercisetracker.db.UserExercise
 import com.example.exercisetracker.db.UserProgramSessionData
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
@@ -19,6 +24,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
+
+const val SESSION_DETAILS = "sessionDetailsFragment"
 
 class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
     private var _binding: FragmentSessionDetailsBinding? = null
@@ -72,6 +79,7 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
                     INDOORCOLOR -> {
                         exerciseRecycler.visibility = View.VISIBLE
                         map.visibility = View.GONE
+                        bindExerciseRecycler(displayableSession)
                     }
                 }
             }
@@ -81,6 +89,29 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
             if (::map.isInitialized) {
                 updateMap(sessionList)
             }
+        }
+
+
+    }
+
+    private fun bindExerciseRecycler(displayableSession: DisplayableSession) {
+        val adapter = ExerciseItemAdapter(getExerciseClickListener(), SESSION_DETAILS)
+        val recyclerView = binding.exerciseRecycler
+        recyclerView.adapter = adapter
+        sharedViewModel.userProgramExercises.observe(this.viewLifecycleOwner) { userProgramExercises ->
+            val programExercises = userProgramExercises.filter{ it.user_program_id == displayableSession.userProgramId}
+            sharedViewModel.setProgramExercises(programExercises)
+        }
+        sharedViewModel.programExercises.observe(this.viewLifecycleOwner) {programExercises ->
+            adapter.submitList(programExercises)
+        }
+    }
+
+    private fun getExerciseClickListener(): ExerciseItemAdapter.ExerciseClickListener {
+        return object : ExerciseItemAdapter.ExerciseClickListener {
+            override fun onEditButtonClick(userExercise: UserExercise) {} // Not Visible in this fragment
+            override fun onAddButtonClick(userExercise: UserExercise) {} // Not Visible in this fragment
+            override fun onRemoveButtonClick(userExercise: UserExercise) {} // Not Visible in this fragment
         }
     }
 
