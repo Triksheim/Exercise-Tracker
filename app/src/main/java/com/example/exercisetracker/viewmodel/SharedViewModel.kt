@@ -400,19 +400,19 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
     private suspend fun clearDb() {
         withContext(Dispatchers.IO) {
-            repository.removeActiveUser()
-            repository.deleteAllUsers()
-            repository.deleteProgramTypes()
-            repository.deleteUserExercises()
-            repository.deleteUserPrograms()
-            repository.deleteUserProgramSessions()
-            repository.deleteAllUserProgramSessionData()
-            repository.deleteUserStats()
-            repository.deleteAllUserProgramSessionsOffline()
             repository.deleteAllUserProgramSessionDataOffline()
-
+            repository.deleteAllUserProgramSessionsOffline()
+            repository.deleteAllUserProgramSessionData()
+            repository.deleteUserProgramSessions()
+            repository.deleteUserProgramExercises()
+            repository.deleteUserPrograms()
+            repository.deleteUserExercises()
+            repository.deleteUserStats()
+            repository.deleteProgramTypes()
+            repository.removeActiveUser()
         }
     }
+
 
     private suspend fun restart() {
         viewModelScope.launch {
