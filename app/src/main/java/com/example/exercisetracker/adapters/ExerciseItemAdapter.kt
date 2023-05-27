@@ -7,12 +7,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.exercisetracker.DETAIL_FRAGMENT_BOTTOM
-import com.example.exercisetracker.DETAIL_FRAGMENT_UPPER
-import com.example.exercisetracker.EXERCISES_FRAGMENT
-import com.example.exercisetracker.PROGRAM_SESSION_FRAGMENT
+import com.example.exercisetracker.*
 import com.example.exercisetracker.databinding.ExerciseItemBinding
-import com.example.exercisetracker.R
 import com.example.exercisetracker.db.UserExercise
 
 // This adapter is used in three recyclerViews. Visibility of views are dependent on what recyclerView is to be populated
@@ -76,6 +72,11 @@ class ExerciseItemAdapter(
                     }
                 }
                 PROGRAM_SESSION_FRAGMENT -> {
+                    binding.buttonAdd.visibility = View.INVISIBLE
+                    binding.buttonRemove.visibility = View.INVISIBLE
+                    binding.buttonEdit.visibility = View.INVISIBLE
+                }
+                SESSION_DETAILS -> {
                     binding.buttonAdd.visibility = View.INVISIBLE
                     binding.buttonRemove.visibility = View.INVISIBLE
                     binding.buttonEdit.visibility = View.INVISIBLE

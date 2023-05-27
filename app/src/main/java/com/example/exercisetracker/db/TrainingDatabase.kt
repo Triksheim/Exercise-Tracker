@@ -67,7 +67,7 @@ data class UserExerciseEntity(
 
 @Entity(tableName = "user_program_session")
 data class UserProgramSessionEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "user_program_id") val user_program_id: Int,
     @ColumnInfo(name = "description") var description: String,
     @ColumnInfo(name = "startTime") val startTime: String,
@@ -76,7 +76,7 @@ data class UserProgramSessionEntity(
 
 @Entity(tableName = "user_program_session_data")
 data class  UserProgramSessionDataEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "user_program_session_id") val user_program_session_id: Int,
     @ColumnInfo(name = "floatData1") val floatData1: Float,
     @ColumnInfo(name = "floatData2") val floatData2: Float,
@@ -86,7 +86,7 @@ data class  UserProgramSessionDataEntity(
 
 @Entity(tableName = "user_program_session_photo")
 data class UserProgramSessionPhotoEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "user_program_session_id") val user_program_session_id: Int,
     @ColumnInfo(name = "photo_url") val photo_url: String
 )
@@ -107,4 +107,28 @@ data class UserStatsEntity(
     @ColumnInfo(name = "current_year_time_spent") val currentYearTimeSpent: String
 )
 
+@Entity(tableName = "user_program_session_offline")
+data class UserProgramSessionEntityOffline(
+    @PrimaryKey(autoGenerate = true) var id: Int,
+    @ColumnInfo(name = "user_program_id") val user_program_id: Int,
+    @ColumnInfo(name = "description") var description: String,
+    @ColumnInfo(name = "startTime") val startTime: String,
+    @ColumnInfo(name = "time_spent") val time_spent: Int
+)
 
+@Entity(tableName = "user_program_session_data_offline")
+data class  UserProgramSessionDataEntityOffline(
+    @PrimaryKey(autoGenerate = true) var id: Int,
+    @ColumnInfo(name = "user_program_session_id") var user_program_session_id: Int,
+    @ColumnInfo(name = "floatData1") val floatData1: Float,
+    @ColumnInfo(name = "floatData2") val floatData2: Float,
+    @ColumnInfo(name = "floatData3") val floatData3: Float,
+    @ColumnInfo(name = "textData1") val textData1: String
+)
+
+@Entity(tableName = "user_program_session_photo_offline")
+data class UserProgramSessionPhotoEntityOffline(
+    @PrimaryKey(autoGenerate = true) val id: Int,
+    @ColumnInfo(name = "user_program_session_id") val user_program_session_id: Int,
+    @ColumnInfo(name = "photo_url") val photo_url: String
+)

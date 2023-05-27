@@ -67,16 +67,16 @@ data class UserProgramSessionPhotoJSON(
 )
 
 data class UserStatsJSON(
-    @Json(name = "id") val id: String,
-    @Json(name = "name") val name: String,
-    @Json(name = "last7Days") val last7Days: StatsJSON,
-    @Json(name = "currentWeek") val currentWeek: StatsJSON,
-    @Json(name = "currentMonth") val currentMonth: StatsJSON,
-    @Json(name = "last30days") val last30days: StatsJSON,
-    @Json(name = "currentYear") val currentYear: StatsJSON
+    @Json(name = "id") val id: String = "undefined",
+    @Json(name = "name") val name: String = "undefined",
+    @Json(name = "last7Days") val last7Days: StatsJSON = StatsJSON(),
+    @Json(name = "currentWeek") val currentWeek: StatsJSON = StatsJSON(),
+    @Json(name = "currentMonth") val currentMonth: StatsJSON = StatsJSON(),
+    @Json(name = "last30days") val last30days: StatsJSON = StatsJSON(),
+    @Json(name = "currentYear") val currentYear: StatsJSON = StatsJSON()
 )
 
 data class StatsJSON(
-    @Json(name = "sessionCount") val sessionCount: String,
-    @Json(name = "timeSpent") val timeSpent: String
+    @Json(name = "sessionCount") val sessionCount: String = "0",
+    @Json(name = "timeSpent") val timeSpent: String = "0",
 )

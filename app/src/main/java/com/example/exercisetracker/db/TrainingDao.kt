@@ -183,5 +183,52 @@ interface TrainingDao {
 
     @Query("DELETE FROM user_stats")
     suspend fun deleteUserStats()
+
+
+    // UserProgramSessionOffline
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertUserProgramSessionOffline(userProgramSessionEntityOffline: UserProgramSessionEntityOffline): Long
+
+    @Query("SELECT * FROM user_program_session_offline")
+    suspend fun getAllUserProgramSessionsOffline(): List<UserProgramSessionEntityOffline>
+
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun updateUserProgramSessionOffline(userProgramSessionEntityOffline: UserProgramSessionEntityOffline)
+
+    @Query("DELETE FROM user_program_session_offline")
+    suspend fun deleteAllUserProgramSessionsOffline()
+
+    @Delete
+    suspend fun deleteUserProgramSessionOffline(userProgramSessionEntity: UserProgramSessionEntityOffline)
+
+
+    // UserProgramSessionDataOffline
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertUserProgramSessionDataOffline(userProgramSessionDataEntityOffline: UserProgramSessionDataEntityOffline): Long
+
+    @Query("SELECT * FROM user_program_session_data_offline WHERE user_program_session_id = :id")
+    suspend fun getSessionDataOfflineForSessionIdOffline(id: Int): List<UserProgramSessionDataEntityOffline>
+
+    @Query("DELETE FROM user_program_session_data_offline")
+    suspend fun deleteAllUserProgramSessionDataOffline()
+
+
+
+    // UserProgramSessionPhotoOffline
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertUserProgramSessionPhotoOffline(userProgramSessionPhotoEntityOffline: UserProgramSessionPhotoEntityOffline): Long
+
+    @Query("SELECT * FROM user_program_session_photo_offline")
+    suspend fun getAllUserProgramSessionPhotosOffline(): List<UserProgramSessionPhotoEntityOffline>
+
+    @Query("DELETE FROM user_program_session_photo_offline")
+    suspend fun deleteAllUserProgramSessionPhotoOffline()
+
+
+
+
+
+
+
 }
 

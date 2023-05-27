@@ -11,6 +11,7 @@ import com.example.exercisetracker.network.UserJSON
 import com.example.exercisetracker.network.UserStatsJSON
 import com.example.exercisetracker.utils.asDomainModel
 import com.example.exercisetracker.utils.asEntity
+import com.example.exercisetracker.utils.asOfflineEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -286,6 +287,21 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         return result
     }
 
+    fun setProgramExercises(userProgramExercises: List<UserProgramExercise>) {
+        val userExercises = userExercises.value
+        val result = userExercises.filter {userExercise ->
+            userProgramExercises.any {userProgramExercise ->
+                userExercise.id == userProgramExercise.user_exercise_id
+            }
+        }
+        if (result == null) {
+            Log.d("PROGRAM EXERCISES", "NO EXERCISES RETERIVED FOR PROGRAM_SESSION")
+        }
+        // Temp message to see what is returned
+        Log.d("PROGRAM EXERCISES", "${result}")
+        _programExercises.value = result
+    }
+
     fun setProgramTypeByUserProgram(userProgram: UserProgram) {
         val programTypes = programTypes.value
         _currentProgramType.value = programTypes.find { it.id == userProgram.app_program_type_id }
@@ -384,11 +400,15 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             repository.deleteUserProgramSessions()
             repository.deleteAllUserProgramSessionData()
             repository.deleteUserStats()
+            repository.deleteAllUserProgramSessionsOffline()
+            repository.deleteAllUserProgramSessionDataOffline()
+
         }
     }
 
     private suspend fun restart() {
         viewModelScope.launch {
+            testNetworkConnection()
             if (!isActiveUser()) {
                 val resultActiveUser = repository.getActiveUser()
                 if (resultActiveUser.isSuccess) {
@@ -399,10 +419,12 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                     }
                 }
             }
-            else if (isActiveUser()) {
+            else if (isActiveUser() && networkConnectionOk.value!!) {
+                postOfflineSessions()
                 getAllProgramTypes()
                 getAllUserPrograms()
                 getAllUserExercises()
+                getUserStats()
                 if (userPrograms.value.isNotEmpty()) {
                     for (userProgram in userPrograms.value) {
                         getAllUserExercisesForUserProgram(userProgram.id)
@@ -412,7 +434,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                         for (session in allSessions.value) {
                             getAllSessionDataForSessionId(session.id)
                         }
-                        getUserStats()
                     }
                 }
             }
@@ -421,17 +442,67 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
 
     }
 
+    private suspend fun testNetworkConnection() {
+        withContext(Dispatchers.IO) {
+            if (repository.getAppProgramTypesAPI().isSuccess) {
+                if (!networkConnectionOk.value!!) {
+                    Log.d("NETWORK", "RECONNECTED")
+                    _networkConnectionOk.postValue(true)
+                }
+            }
+            else {
+                Log.e("NETWORK", "DISCONNECTED")
+                _networkConnectionOk.postValue(false)
+            }
+
+        }
+    }
+
+    private suspend fun postOfflineSessions() {
+        withContext(Dispatchers.IO) {
+            val offlineSessions = repository.getAllUserProgramSessionsOffline()
+            if (offlineSessions.isNotEmpty()) {
+                for (session in offlineSessions) {
+                    val sessionToPost = session
+                    sessionToPost.id = 0    // Set id to 0 before POST to API
+                    val result = repository.createUserProgramSessionAPI(sessionToPost.asDomainModel())
+                    if (result.isSuccess) {
+                        val sessionPosted = result.getOrNull()
+                        val oldSessionId = session.id
+                        val newSessionId = sessionPosted?.id
+                        postOfflineSessionData(oldSessionId, newSessionId)
+                        Log.d("POST OFFLINE SESSION", "POST to API successes")
+                    }
+                    else {
+                        Log.e("POST OFFLINE SESSION", "Post to API failed")
+                    }
+                }
+                repository.deleteAllUserProgramSessionsOffline()
+                repository.deleteAllUserProgramSessionDataOffline()
+            }
+        }
+    }
+
+    private suspend fun postOfflineSessionData(oldSessionId: Int, newSessionId: Int?) {
+        val offlineSessionsData = repository.getSessionDataForSessionIdOffline(oldSessionId)
+        if (offlineSessionsData.isNotEmpty()) {
+            for (sessionData in offlineSessionsData) {
+                sessionData.id = 0 // Set id to 0 before POST to API
+                sessionData.user_program_session_id = newSessionId!! // Replace old  session id with the new id generated by API
+                repository.createUserProgramSessionDataAPI(sessionData.asDomainModel())
+            }
+        }
+    }
+
 
     private suspend fun getAllUsers() {
         withContext(Dispatchers.IO) {
             val resultUsers = repository.getUsersAPI()
             if (resultUsers.isSuccess) {
-                _networkConnectionOk.postValue(true)
                 Log.d("RESULT USERS API", "SUCCESS")
                 val users = resultUsers.getOrNull()
                 _users.postValue(users!!)
             } else {
-                _networkConnectionOk.postValue(false)
                 _users.postValue(emptyList())
                 Log.e("ERROR USERS API", "Unable to fetch")
             }
@@ -504,10 +575,12 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                     repository.insertUserProgramExercise(userProgramExercise.asEntity())
                 }
             } else {
+                /*
                 Log.e(
                     "ERROR USER PROGRAM EXERCISES",
                     "Unable to fetch (or no exercises for UserProgramID:$userProgramId)"
                 )
+                */
             }
         }
     }
@@ -522,10 +595,13 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                     repository.insertUserProgramSession(session.asEntity())
                 }
             } else {
+                /*
                 Log.e(
                     "ERROR USER PROGRAM SESSION API",
                     "Unable to fetch (or no session data for ProgramID:${userProgramId})"
                 )
+                */
+
             }
         }
     }
@@ -535,16 +611,18 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         withContext(Dispatchers.IO) {
             val result = repository.getALlUserProgramSessionDataAPI(sessionId)
             if (result.isSuccess) {
-                Log.d("RESULT USER PROGRAM SESSIONS DATA", "SUCCESS")
+                Log.d("RESULT USER PROGRAM SESSIONS DATA", "SUCCESS ID:${sessionId}")
                 val sessionData = result.getOrNull()
                 for (data in sessionData!!) {
                     repository.insertUserProgramSessionData(data.asEntity())
                 }
-            } else {
-                Log.e(
+            }
+            else {
+            /*
+                 Log.e(
                     "ERROR USER PROGRAM SESSION DATA API",
                     "Unable to fetch (or no session data for SessionID:${sessionId})"
-                )
+                ) */
             }
         }
     }
@@ -556,8 +634,8 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 _networkConnectionOk.postValue(true)
                 Log.d("RESULT USER STATS", "SUCCESS")
                 val stats = result.getOrNull()
-                repository.insertUserStats(stats!!.asEntity())
-                //_userStats.postValue(stats!!)
+                // defaults all stats to 0 if result is null
+                repository.insertUserStats(stats?.asEntity() ?: UserStatsJSON().asEntity())
             } else {
                 _networkConnectionOk.postValue(false)
                 Log.e("ERROR USER STATS API", "Unable to fetch")
@@ -707,6 +785,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     // UserProgramSession
     suspend fun createUserProgramSession(userProgramSession: UserProgramSession): Int {
         return viewModelScope.async(Dispatchers.IO) {
+            testNetworkConnection()
             val result = repository.createUserProgramSessionAPI(userProgramSession)
             if (result.isSuccess) {
                 val newUserProgramSession = result.getOrNull()
@@ -715,6 +794,15 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                     Log.d("CREATE USER PROGRAM SESSION", "SUCCESS")
                     return@async it.id // Return the ID
                 }
+            }
+            else if(!networkConnectionOk.value!!) {
+                val sessionId = repository.insertUserProgramSession(userProgramSession.asEntity())
+                val offlineSession = userProgramSession
+                offlineSession.id = sessionId.toInt()   // set session id to same as autogenerated in main db table
+                repository.insertUserProgramSessionOffline(offlineSession.asOfflineEntity())
+                Log.d("CREATE USER PROGRAM SESSION", "SUCCESS OFFLINE MODE")
+
+                return@async sessionId.toInt()
             }
             throw Exception("Creating user program session failed") // Throw an exception if the ID cannot be retrieved
         }.await() // Wait for the coroutine to complete and return the result
@@ -766,6 +854,12 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                 newUserProgramSessionData?.let { repository.insertUserProgramSessionData(it.asEntity()) }
                 Log.d("CREATE USER PROGRAM SESSION DATA", "SUCCESS")
             }
+            else if(!networkConnectionOk.value!!) {
+                repository.insertUserProgramSessionData(userProgramSessionData.asEntity())
+                repository.insertUserProgramSessionDataOffline(userProgramSessionData.asOfflineEntity())
+                Log.d("CREATE USER PROGRAM SESSION DATA", "SUCCESS OFFLINE MODE")
+            }
+
             else {
                 Log.e("ERROR USER PROGRAM SESSION DATA", "Creating user program session data failed")
             }

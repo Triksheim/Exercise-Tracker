@@ -1,6 +1,7 @@
 package com.example.exercisetracker
 
 import android.content.ActivityNotFoundException
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -13,6 +14,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +25,7 @@ import com.example.exercisetracker.db.UserExercise
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
 class NewExerciseFragment: Fragment() {
@@ -114,6 +117,14 @@ class NewExerciseFragment: Fragment() {
     }
 
     private fun bindUserExercise(userExercise: UserExercise){
+        val positiveButtonClick = { dialog: DialogInterface, which: Int ->
+            sharedViewModel.deleteExercise(userExercise)
+            navigateToMyExercises()
+        }
+        val negativeButtonClick =  { dialog: DialogInterface, which: Int ->
+            Toast.makeText(requireContext(), getString(R.string.canceled), Toast.LENGTH_SHORT).show()
+        }
+
         binding.apply {
             imageView = imageviewExercise
 
@@ -137,8 +148,12 @@ class NewExerciseFragment: Fragment() {
             }
             buttonDelete.visibility = View.VISIBLE
             buttonDelete.setOnClickListener {
-                sharedViewModel.deleteExercise(userExercise)
-                navigateToMyExercises()
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(getString(R.string.delete_exercise))
+                    .setMessage(getString(R.string.confirmation_delete_exercise))
+                    .setPositiveButton(getString(R.string.delete_exercise), positiveButtonClick)
+                    .setNegativeButton(getString(R.string.cancel), negativeButtonClick)
+                    .show()
             }
         }
     }
