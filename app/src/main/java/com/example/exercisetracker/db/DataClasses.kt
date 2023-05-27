@@ -51,7 +51,7 @@ data class UserExercise(
 )
 
 data class UserProgramSession(
-    val id: Int,
+    var id: Int,
     val user_program_id: Int,
     var description: String,
     val startTime: String,

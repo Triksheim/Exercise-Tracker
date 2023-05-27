@@ -177,6 +177,60 @@ class LocalDataSource internal constructor (private val trainingDao: TrainingDao
         return trainingDao.deleteUserStats()
     }
 
+
+    // UserProgramSessionOffline
+    suspend fun insertUserProgramSessionOffline(userProgramSessionEntityOffline: UserProgramSessionEntityOffline): Long {
+        return trainingDao.insertUserProgramSessionOffline(userProgramSessionEntityOffline)
+    }
+
+    suspend fun getAllUserProgramSessionsOffline(): List<UserProgramSessionEntityOffline> {
+        return trainingDao.getAllUserProgramSessionsOffline()
+    }
+
+    suspend fun updateUserProgramSessionOffline(userProgramSessionEntityOffline: UserProgramSessionEntityOffline) {
+        return trainingDao.updateUserProgramSessionOffline(userProgramSessionEntityOffline)
+    }
+
+    suspend fun deleteAllUserProgramSessionsOffline() {
+        return trainingDao.deleteAllUserProgramSessionsOffline()
+    }
+
+    suspend fun deleteUserProgramSessionOffline(userProgramSessionEntityOffline: UserProgramSessionEntityOffline) {
+        return trainingDao.deleteUserProgramSessionOffline(userProgramSessionEntityOffline)
+    }
+
+
+    // UserProgramSessionDataOffline
+    suspend fun insertUserProgramSessionDataOffline(userProgramSessionDataEntityOffline: UserProgramSessionDataEntityOffline): Long {
+        return trainingDao.insertUserProgramSessionDataOffline(userProgramSessionDataEntityOffline)
+    }
+
+    suspend fun getSessionDataForSessionIdOffline(id:Int): List<UserProgramSessionDataEntityOffline> {
+        return trainingDao.getSessionDataOfflineForSessionIdOffline(id)
+    }
+
+    suspend fun deleteAllUserProgramSessionDataOffline() {
+        return trainingDao.deleteAllUserProgramSessionDataOffline()
+    }
+
+
+    // UserProgramSessionPhotoOffline
+    suspend fun insertUserProgramSessionPhotoOffline(userProgramSessionPhotoEntityOffline: UserProgramSessionPhotoEntityOffline): Long {
+        return trainingDao.insertUserProgramSessionPhotoOffline(userProgramSessionPhotoEntityOffline)
+    }
+
+    suspend fun getAllUserProgramSessionPhotosOffline(): List<UserProgramSessionPhotoEntityOffline> {
+        return trainingDao.getAllUserProgramSessionPhotosOffline()
+    }
+
+    suspend fun deleteAllUserProgramSessionPhotosOffline() {
+        return trainingDao.deleteAllUserProgramSessionPhotoOffline()
+    }
+
+
+
+
+
 }
 
 

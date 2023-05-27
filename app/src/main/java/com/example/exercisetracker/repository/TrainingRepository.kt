@@ -175,6 +175,55 @@ class TrainingRepository(private val localDataSource: LocalDataSource, // databa
         return localDataSource.deleteUserStats()
     }
 
+    // UserProgramSessionOffline
+    suspend fun insertUserProgramSessionOffline(userProgramSessionEntityOffline: UserProgramSessionEntityOffline): Long {
+        return localDataSource.insertUserProgramSessionOffline(userProgramSessionEntityOffline)
+    }
+
+    suspend fun getAllUserProgramSessionsOffline(): List<UserProgramSessionEntityOffline> {
+        return localDataSource.getAllUserProgramSessionsOffline()
+    }
+
+    suspend fun updateUserProgramSessionOffline(userProgramSessionEntityOffline: UserProgramSessionEntityOffline) {
+        return localDataSource.updateUserProgramSessionOffline(userProgramSessionEntityOffline)
+    }
+
+    suspend fun deleteAllUserProgramSessionsOffline() {
+        return localDataSource.deleteAllUserProgramSessionsOffline()
+    }
+
+    suspend fun deleteUserProgramSessionOffline(userProgramSessionEntityOffline: UserProgramSessionEntityOffline) {
+        return localDataSource.deleteUserProgramSessionOffline(userProgramSessionEntityOffline)
+    }
+
+
+    // UserProgramSessionDataOffline
+    suspend fun insertUserProgramSessionDataOffline(userProgramSessionDataEntityOffline: UserProgramSessionDataEntityOffline): Long {
+        return localDataSource.insertUserProgramSessionDataOffline(userProgramSessionDataEntityOffline)
+    }
+
+    suspend fun getSessionDataForSessionIdOffline(id: Int): List<UserProgramSessionDataEntityOffline> {
+        return localDataSource.getSessionDataForSessionIdOffline(id)
+    }
+
+    suspend fun deleteAllUserProgramSessionDataOffline() {
+        return localDataSource.deleteAllUserProgramSessionDataOffline()
+    }
+
+
+    // UserProgramSessionPhotoOffline
+    suspend fun insertUserProgramSessionPhotoOffline(userProgramSessionPhotoEntityOffline: UserProgramSessionPhotoEntityOffline): Long {
+        return localDataSource.insertUserProgramSessionPhotoOffline(userProgramSessionPhotoEntityOffline)
+    }
+
+    suspend fun getAllUserProgramSessionPhotosOffline(): List<UserProgramSessionPhotoEntityOffline> {
+        return localDataSource.getAllUserProgramSessionPhotosOffline()
+    }
+
+    suspend fun deleteAllUserProgramSessionPhotosOffline() {
+        return localDataSource.deleteAllUserProgramSessionPhotosOffline()
+    }
+
 
 
     // Remote data source methods ----------------------------------------------------------------

@@ -293,3 +293,61 @@ fun UserProgramSessionPhoto.asEntity(): UserProgramSessionPhotoEntity {
         photo_url = this.photo_url
     )
 }
+
+fun UserProgramSession.asOfflineEntity(): UserProgramSessionEntityOffline {
+    return UserProgramSessionEntityOffline(
+        id = this.id,
+        user_program_id = this.user_program_id,
+        description = this.description,
+        startTime = this.startTime,
+        time_spent = this.time_spent
+    )
+}
+
+fun UserProgramSessionData.asOfflineEntity(): UserProgramSessionDataEntityOffline {
+    return UserProgramSessionDataEntityOffline(
+        id = this.id,
+        user_program_session_id = this.user_program_session_id,
+        floatData1 = this.floatData1,
+        floatData2 = this.floatData2,
+        floatData3 = this.floatData3,
+        textData1 = this.textData1
+    )
+}
+
+fun UserProgramSessionPhoto.asOfflineEntity(): UserProgramSessionPhotoEntityOffline {
+    return UserProgramSessionPhotoEntityOffline(
+        id = this.id,
+        user_program_session_id = this.user_program_session_id,
+        photo_url = this.photo_url
+    )
+}
+
+fun UserProgramSessionEntityOffline.asDomainModel(): UserProgramSession {
+    return UserProgramSession(
+        id = this.id,
+        user_program_id = this.user_program_id,
+        description = this.description,
+        startTime = this.startTime,
+        time_spent = this.time_spent
+    )
+}
+
+fun UserProgramSessionDataEntityOffline.asDomainModel(): UserProgramSessionData {
+    return UserProgramSessionData(
+        id = this.id,
+        user_program_session_id = this.user_program_session_id,
+        floatData1 = this.floatData1,
+        floatData2 = this.floatData2,
+        floatData3 = this.floatData3,
+        textData1 = this.textData1
+    )
+}
+
+fun UserProgramSessionPhotoEntityOffline.asDomainModel(): UserProgramSessionPhoto {
+    return UserProgramSessionPhoto(
+        id = this.id,
+        user_program_session_id = this.user_program_session_id,
+        photo_url = this.photo_url
+    )
+}
