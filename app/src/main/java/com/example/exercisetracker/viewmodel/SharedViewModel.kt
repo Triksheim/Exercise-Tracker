@@ -286,6 +286,18 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         return result
     }
 
+    fun setProgramExercises(userProgramExercises: List<UserProgramExercise>) {
+        val userExercises = userExercises.value
+
+        val result = userExercises.filter {userExercise ->
+            userProgramExercises.any {userProgramExercise ->
+                userExercise.id == userProgramExercise.user_exercise_id
+            }
+        }
+        _programExercises.value = result
+
+    }
+
     fun setProgramTypeByUserProgram(userProgram: UserProgram) {
         val programTypes = programTypes.value
         _currentProgramType.value = programTypes.find { it.id == userProgram.app_program_type_id }
