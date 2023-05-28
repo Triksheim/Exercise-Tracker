@@ -77,6 +77,7 @@ class ProgramSessionFragment: Fragment() {
     private var locationCallback: LocationCallback? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
+
     private val userProgramSessionDataList = mutableListOf<UserProgramSessionData>()
 
     // Photo and camera variables
@@ -84,10 +85,38 @@ class ProgramSessionFragment: Fragment() {
     private val REQUEST_GALLERY = 2
     private lateinit var imageView: ImageView
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("useTiming", useTiming)
+        outState.putLong("timeSpent", timeSpent)
+        outState.putLong("startTime", startTime)
+        outState.putBoolean("isRunning", isRunning)
+        outState.putBoolean("isPaused", isPaused)
+        outState.putLong("pauseDuration", pauseDuration)
+        outState.putLong("pauseStartTime", pauseStartTime)
+        outState.putBoolean("useLocation", useLocation)
+    }
+
+
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        useTiming = savedInstanceState?.getInt("useTiming", 0) ?: 0
+        timeSpent = savedInstanceState?.getLong("timeSpent", 0L) ?: 0L
+        startTime = savedInstanceState?.getLong("startTime", 0L) ?: 0L
+        isRunning = savedInstanceState?.getBoolean("isRunning", false) ?: false
+        isPaused = savedInstanceState?.getBoolean("isPaused", false) ?: false
+        pauseDuration = savedInstanceState?.getLong("pauseDuration", 0L) ?: 0L
+        pauseStartTime = savedInstanceState?.getLong("pauseStartTime", 0L) ?: 0L
+        useLocation = savedInstanceState?.getBoolean("useLocation", false) ?: false
+
+
+
+
         _binding = FragmentProgramSessionBinding.inflate(inflater, container, false)
 
         // initialize RecyclerView and nested scroll
@@ -351,12 +380,18 @@ class ProgramSessionFragment: Fragment() {
     override fun onResume() {
         super.onResume()
         if (isRunning) {
+            timerHandler.postDelayed(timerRunnable, 0)
+        }
+        if (isRunning) {
             startLocationUpdates()
         }
     }
 
     override fun onPause() {
         super.onPause()
+        if (isRunning) {
+            timerHandler.removeCallbacks(timerRunnable)
+        }
         stopLocationUpdates()
     }
 
