@@ -11,9 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
-        android:text="TextView"
         app:layout_constraintStart_toEndOf="@+id/session_icon"
-        app:layout_constraintTop_toTopOf="@+id/session_icon" />
+        app:layout_constraintTop_toTopOf="@+id/session_icon"
+        tools:text="TextView"/>
 
     <ImageView
         android:id="@+id/session_icon"
