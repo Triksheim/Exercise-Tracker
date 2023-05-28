@@ -119,5 +119,6 @@
     <string name="edit">Rediger</string>
     <string name="startupLoading">Laster inn ...</string>
     <string name="completed_sessions">Gjennomførte økter</string>
+    <string name="update_program">Oppdater Program</string>
 
 </resources>

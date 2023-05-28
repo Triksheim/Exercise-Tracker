@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.exercisetracker.databinding.FragmentNewProgramBinding
 import com.example.exercisetracker.db.AppProgramType
+import com.example.exercisetracker.db.User
 import com.example.exercisetracker.db.UserProgram
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
@@ -59,33 +60,42 @@ class NewProgramFragment: Fragment() {
         // Bind current program to edit it
         val programId = navigationArgs.programId
         if (programId > 0) {
+            sharedViewModel.setToolbarTitle(getString(R.string.update_program))
             sharedViewModel.currentProgram.observe(this.viewLifecycleOwner) {selectedProgram ->
                 userProgram = selectedProgram
+                val resourceId = resources.getIdentifier(
+                    userProgram.icon,
+                    "drawable", requireContext().packageName
+                )
+                binding.programTypeImage.setImageResource(resourceId)
+                binding.tvCreateNewProgram.visibility = View.INVISIBLE
                 bindUserProgram(userProgram)
             }
-        }
-
-        sharedViewModel.currentProgramType.observe(this.viewLifecycleOwner){ programType ->
-            binding.apply {
-                // Bind variable programtype in layout to chosen programType
-                programtype = programType
-                timerOptions.setOnCheckedChangeListener{ group, _ ->
-                    useTimer = if (rbOptionYes.isChecked ) 1 else 0
-                }
-                binding.buttonDelete.visibility = View.GONE
-                buttonSaveProgram.setOnClickListener {
-                    if (sharedViewModel.isUserLoggedIn()) {
-                        addUserProgram(programType!!)
-                    }else {
-                        showNotLoggedInMessage()
+        } else {
+            // Else,user has navigated via create new program, and current programtype is set.
+            sharedViewModel.currentProgramType.observe(this.viewLifecycleOwner){ programType ->
+                binding.apply {
+                    // Bind variable programtype in layout to chosen programType
+                    programtype = programType
+                    timerOptions.setOnCheckedChangeListener{ group, _ ->
+                        useTimer = if (rbOptionYes.isChecked ) 1 else 0
+                    }
+                    binding.buttonDelete.visibility = View.GONE
+                    buttonSaveProgram.setOnClickListener {
+                        if (sharedViewModel.isUserLoggedIn()) {
+                            addUserProgram(programType!!)
+                        }else {
+                            showNotLoggedInMessage()
+                        }
                     }
                 }
             }
         }
-
     }
 
     private fun bindUserProgram(userProgram: UserProgram) {
+        // Creating dialog-interfaces to ask user for confirmation when the delete-button is clicked
+        // on a program.
         val positiveButtonClick = { dialog: DialogInterface, which: Int ->
             sharedViewModel.deleteProgram(userProgram)
             findNavController().navigate(R.id.action_newProgramFragment_to_myProgramsFragment)
@@ -120,16 +130,18 @@ class NewProgramFragment: Fragment() {
     private fun updateUserProgram(){
 
         if (isValidProgramEntry()) {
-            sharedViewModel.updateUserProgram(
-                UserProgram(
-                    userProgram.id,
-                    userProgram.user_id,
-                    userProgram.app_program_type_id,
-                    binding.programNameInput.text.toString(),
-                    binding.programDescriptInput.text.toString(),
-                    useTimer,
-                    userProgram.icon)
-            )
+            val updatedProgram = UserProgram(
+                userProgram.id,
+                userProgram.user_id,
+                userProgram.app_program_type_id,
+                binding.programNameInput.text.toString(),
+                binding.programDescriptInput.text.toString(),
+                useTimer,
+                userProgram.icon)
+
+            sharedViewModel.updateUserProgram(updatedProgram)
+            sharedViewModel.setCurrentUserProgram(updatedProgram)
+            sharedViewModel.setProgramTypeByUserProgram(updatedProgram)
         }
     }
 
