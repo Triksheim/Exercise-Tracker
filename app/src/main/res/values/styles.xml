@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="yellowText" parent="Theme.ExerciseTracker">
+        <item name="android:textColor">@color/orange_500</item>
+    </style>
+
+    <style name="yellowTextHeader" parent="Theme.ExerciseTracker">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/orange_500</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+
+    <style name="headerText" parent="Theme.ExerciseTracker">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="titleText" parent="Theme.ExerciseTracker">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+</resources>
