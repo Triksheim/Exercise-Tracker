@@ -150,7 +150,7 @@ class ProgramDetailsFragment: Fragment() {
                 otherExercisesAdapter.submitList(otherExercises)
 
                 // Handle visibility of "no exercise" message
-                binding.noExerciseMessage.isGone = convertedProgramExercises.isEmpty() && otherExercises.isEmpty()
+                binding.noExerciseMessage.isGone != convertedProgramExercises.isEmpty() && otherExercises.isEmpty()
             }
         }
         // Fetch the user program exercises for the current program
