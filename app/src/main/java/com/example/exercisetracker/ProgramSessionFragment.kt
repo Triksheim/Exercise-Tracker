@@ -111,6 +111,11 @@ class ProgramSessionFragment: Fragment() {
         userProgramName.text = sharedViewModel.currentProgram.value?.name
 
 
+        binding.apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewModel = sharedViewModel
+        }
+
         // Exercise items
         // Set the adapter for the RecyclerView
         // Buttons are invisible and will never be called in this fragment
@@ -181,11 +186,13 @@ class ProgramSessionFragment: Fragment() {
         val timerTextView: TextView = binding.timerText
         val gpsTextView: TextView = binding.tvUseGps
         val gpsRadioGroup: RadioGroup = binding.gpsOptions
+        val startButton: Button = binding.startPauseButton
         if (currentProgram != null) {
             if (useTiming == 0) {
                 timerTextView.visibility = View.GONE
                 gpsTextView.visibility = View.GONE
                 gpsRadioGroup.visibility = View.GONE
+                startButton.visibility = View.GONE
             } else {
                 timerTextView.visibility = View.VISIBLE
                 gpsTextView.visibility = View.VISIBLE

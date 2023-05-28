@@ -3,6 +3,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -15,6 +16,7 @@ import com.example.exercisetracker.db.UserExercise
 // The calling fragment is specified in recyclerLocation
 
 const val SET_COLOR_INDOOR_EXERCISE = R.color.purple_200
+const val NEW_COLOR = R.color.green_600
 class ExerciseItemAdapter(
     private val exerciseClickListener: ExerciseClickListener,
     private val recyclerLocation: String)
@@ -31,6 +33,7 @@ class ExerciseItemAdapter(
                              recyclerLocation: String)
         : RecyclerView.ViewHolder(binding.root){
         private lateinit var userExercise: UserExercise
+        val cardView: CardView = binding.root.findViewById(R.id.exerciseCardView)
 
         fun bind(userExercise: UserExercise) {
             this.userExercise = userExercise
@@ -101,8 +104,9 @@ class ExerciseItemAdapter(
         holder.bind(userExercise)
 
         // Set indoor-exercise backgoundcolor
-        val color = holder.itemView.context.getColor(SET_COLOR_INDOOR_EXERCISE)
-        holder.itemView.setBackgroundColor(color)
+        //val color = holder.itemView.context.getColor(SET_COLOR_INDOOR_EXERCISE)
+        val color = holder.itemView.context.getColor(NEW_COLOR)
+        holder.cardView.setCardBackgroundColor(color)
     }
 
     companion object DiffCallback: DiffUtil.ItemCallback<UserExercise>() {

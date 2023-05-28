@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ import com.example.exercisetracker.databinding.ProgramItemBinding
 import com.example.exercisetracker.db.AppProgramType
 import com.example.exercisetracker.db.UserProgram
 import com.example.exercisetracker.db.UserProgramEntity
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.color.MaterialColors.getColor
 
 const val SET_COLOR_OUTDOOR = R.color.green_100
@@ -38,6 +40,8 @@ class ProgramItemAdapter(
     inner class ProgramViewHolder(private val binding: ProgramItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        val cardView: CardView = binding.root.findViewById(R.id.programCardView)
+
         fun bind(userProgram: UserProgram) {
             binding.apply {
                 programTiming.text = if(userProgram.use_timing == 0) "Timing: No" else "Timing: Yes"
@@ -59,8 +63,8 @@ class ProgramItemAdapter(
                     programIcon.setImageResource(resourceId)
 
                     when(programType.back_color) {
-                        INDOORCOLOR -> itemView.setBackgroundColor(itemView.context.getColor(SET_COLOR_INDOOR))
-                        OUTDOORCOLOR -> itemView.setBackgroundColor(itemView.context.getColor(SET_COLOR_OUTDOOR))
+                        INDOORCOLOR -> cardView.setCardBackgroundColor(itemView.context.getColor(SET_COLOR_INDOOR))
+                        OUTDOORCOLOR -> cardView.setCardBackgroundColor(itemView.context.getColor(SET_COLOR_OUTDOOR))
                     }
                 }
             }
