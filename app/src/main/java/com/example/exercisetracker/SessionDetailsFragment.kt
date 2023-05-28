@@ -1,5 +1,6 @@
 package com.example.exercisetracker
 
+import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,11 +12,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.exercisetracker.adapters.ExerciseItemAdapter
 import com.example.exercisetracker.databinding.FragmentSessionDetailsBinding
 import com.example.exercisetracker.db.DisplayableSession
 import com.example.exercisetracker.db.UserExercise
+import com.example.exercisetracker.db.UserProgramSession
 import com.example.exercisetracker.db.UserProgramSessionData
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
@@ -28,7 +31,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 const val SESSION_DETAILS = "sessionDetailsFragment"
 
@@ -243,6 +248,24 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun deleteSession(displayableSession: DisplayableSession) {
+               val negativeButtonClick =  { dialog: DialogInterface, which: Int ->
+            Toast.makeText(requireContext(), getString(R.string.canceled), Toast.LENGTH_SHORT).show()
+        }
+
+        val positiveButtonClick = { dialog: DialogInterface, which: Int ->
+            // Delete UserProgramSession and UserProgramSessionData
+            sharedViewModel.deleteProgramSessionByDisplayedSession(displayableSession)
+
+            findNavController().navigate(R.id.action_sessionDetailsFragment_to_allSessionsFragment)
+        }
+
+        // Create dialog and display it to user
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Slett Treningsøkt")
+            .setMessage("Vil du slette denne treningsøkten for godt?/n All data slettes for godt")
+            .setPositiveButton("Slett treningsøkt", positiveButtonClick)
+            .setNegativeButton(getString(R.string.cancel), negativeButtonClick)
+            .show()
 
     }
 }

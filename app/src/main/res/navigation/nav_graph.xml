@@ -255,6 +255,9 @@
         <action
             android:id="@+id/action_sessionDetailsFragment_to_programSessionFragment"
             app:destination="@id/programSessionFragment" />
+        <action
+            android:id="@+id/action_sessionDetailsFragment_to_allSessionsFragment"
+            app:destination="@id/allSessionsFragment" />
 
     </fragment>
 
