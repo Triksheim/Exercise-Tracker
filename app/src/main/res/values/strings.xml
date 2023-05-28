@@ -78,6 +78,7 @@
     <string name="timeScale">Historikk tidshintervall</string>
     <string name="sessionCount">Total antall treningsøkter</string>
     <string name="trainingTime">%s</string>
+    <string name="trainingTimeText">Total treningstid (hh:mm:ss)</string>
     <string name="last30days">30 dager</string>
     <string name="time30days">%s</string>
     <string name="count30days">%s stykk</string>
