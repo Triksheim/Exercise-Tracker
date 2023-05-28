@@ -34,6 +34,10 @@ class LoginFragment : Fragment() {
         )
     }
 
+    private var name: String = ""
+    private var birthYear: Int = 0
+    private var email: String = ""
+    private var phone: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +58,14 @@ class LoginFragment : Fragment() {
             viewModel = sharedViewModel
             loginFragment = this@LoginFragment
 
+        }
+
+        // Restore saved instance state (if available)
+        savedInstanceState?.let {
+            name = it.getString("name", "")
+            birthYear = it.getInt("birthYear", 0)
+            email = it.getString("email", "")
+            phone = it.getString("phone", "")
         }
 
         sharedViewModel.createUserStatus.observe(viewLifecycleOwner) { result ->
@@ -103,9 +115,6 @@ class LoginFragment : Fragment() {
             }
         }
 
-
-
-
         binding?.buttonLogin?.setOnClickListener {
             val phoneLoginInput: TextInputEditText = view.findViewById(R.id.phone_login_input)
             val phoneLogin = phoneLoginInput.text.toString()
@@ -129,7 +138,13 @@ class LoginFragment : Fragment() {
         }
     }
 
-
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("name", name)
+        outState.putInt("birthYear", birthYear)
+        outState.putString("email", email)
+        outState.putString("phone", phone)
+    }
 
 
     override fun onDestroyView() {
