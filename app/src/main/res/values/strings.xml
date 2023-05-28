@@ -75,7 +75,7 @@
     <string name="last7days">7 dager</string>
     <string name="count7days">%s stykk</string>
     <string name="time7days">%s</string>
-    <string name="timeScale">Historikk tidshintervall</string>
+    <string name="timeScale">Historikk tidsintervall</string>
     <string name="sessionCount">Total antall treningsøkter</string>
     <string name="trainingTime">%s</string>
     <string name="trainingTimeText">Total treningstid (hh:mm:ss)</string>

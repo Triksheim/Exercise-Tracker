@@ -11,227 +11,254 @@
             type="com.example.exercisetracker.viewmodel.SharedViewModel" />
     </data>
 
-    <LinearLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_weight="1"
         tools:context=".MySessionsFragment">
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/sessions_table_card"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/side_margin"
+            app:cardBackgroundColor="@color/tridiac_800"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/welcomeMsg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="@{@string/welcomeMsg(viewModel.activeUser.name)}"
-                android:textSize="24sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <TableLayout
-                android:id="@+id/tableLayout"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/border"
-                android:stretchColumns="*"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/welcomeMsg"
-                app:layout_constraintTop_toBottomOf="@id/welcomeMsg">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/headerText"
+                    android:textColor="@color/white"
+                    android:id="@+id/welcomeMsg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@{@string/welcomeMsg(viewModel.activeUser.name)}"
+                    android:textSize="24sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Velkommen!"/>
 
 
-
-                <TableRow
+                <TableLayout
+                    android:id="@+id/tableLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/border">
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="@dimen/margin_between_elements"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/border"
+                    android:stretchColumns="*"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/welcomeMsg"
+                    app:layout_constraintTop_toBottomOf="@id/welcomeMsg">
 
-                    <TextView
-                        android:layout_width="0dp"
+
+
+                    <TableRow
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="4dp"
-                        android:text="@string/timeScale" />
+                        android:background="@drawable/border">
 
-                    <TextView
-                        android:layout_width="0dp"
+                        <TextView
+                            style="@style/tableTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="4dp"
+                            android:text="@string/timeScale" />
+
+                        <TextView
+                            style="@style/tableTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/sessionCount" />
+
+                        <TextView
+                            style="@style/tableTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/trainingTimeText" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/sessionCount" />
+                        android:background="@drawable/border">
 
-                    <TextView
-                        android:layout_width="0dp"
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="4dp"
+                            android:text="@string/last7days" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@{@string/count7days(viewModel.userStats.last7Days.sessionCount)}" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@{@string/time7days(viewModel.formatSeconds(viewModel.userStats.last7Days.timeSpent))}" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/trainingTimeText" />
-                </TableRow>
+                        android:background="@drawable/border">
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/border">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="4dp"
+                            android:text="@string/last30days" />
 
-                    <TextView
-                        android:layout_width="0dp"
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@{@string/count30days(viewModel.userStats.last30Days.sessionCount)}" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@{@string/time30days(viewModel.formatSeconds(viewModel.userStats.last30Days.timeSpent))}" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="4dp"
-                        android:text="@string/last7days" />
+                        android:background="@drawable/border">
 
-                    <TextView
-                        android:layout_width="0dp"
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="4dp"
+                            android:text="@string/lastWeek" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@{@string/countWeek(viewModel.userStats.currentWeek.sessionCount)}" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@{@string/timeWeek(viewModel.formatSeconds(viewModel.userStats.currentWeek.timeSpent))}" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@{@string/count7days(viewModel.userStats.last7Days.sessionCount)}" />
+                        android:background="@drawable/border">
 
-                    <TextView
-                        android:layout_width="0dp"
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="4dp"
+                            android:text="@string/lastMonth" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@{@string/countMonth(viewModel.userStats.currentMonth.sessionCount)}" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@{@string/timeMonth(viewModel.formatSeconds(viewModel.userStats.currentMonth.timeSpent))}" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@{@string/time7days(viewModel.formatSeconds(viewModel.userStats.last7Days.timeSpent))}" />
-                </TableRow>
+                        android:background="@drawable/border">
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/border">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="4dp"
+                            android:text="@string/lastYear" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="4dp"
-                        android:text="@string/last30days" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@{@string/countMonth(viewModel.userStats.currentYear.sessionCount)}" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@{@string/count30days(viewModel.userStats.last30Days.sessionCount)}" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@{@string/timeMonth(viewModel.formatSeconds(viewModel.userStats.currentYear.timeSpent))}" />
+                    </TableRow>
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@{@string/time30days(viewModel.formatSeconds(viewModel.userStats.last30Days.timeSpent))}" />
-                </TableRow>
+                </TableLayout>
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/border">
+            </LinearLayout>
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="4dp"
-                        android:text="@string/lastWeek" />
+        </androidx.cardview.widget.CardView>
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@{@string/countWeek(viewModel.userStats.currentWeek.sessionCount)}" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@{@string/timeWeek(viewModel.formatSeconds(viewModel.userStats.currentWeek.timeSpent))}" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/border">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="4dp"
-                        android:text="@string/lastMonth" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@{@string/countMonth(viewModel.userStats.currentMonth.sessionCount)}" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@{@string/timeMonth(viewModel.formatSeconds(viewModel.userStats.currentMonth.timeSpent))}" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/border">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="4dp"
-                        android:text="@string/lastYear" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@{@string/countMonth(viewModel.userStats.currentYear.sessionCount)}" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@{@string/timeMonth(viewModel.formatSeconds(viewModel.userStats.currentYear.timeSpent))}" />
-                </TableRow>
-
-            </TableLayout>
+        <Button
+            style="@style/Widget.MaterialComponents.Button"
+            android:id="@+id/newSessionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="@dimen/side_margin"
+            android:text="@string/newSessionButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sessions_table_card"
+            app:layout_constraintBottom_toTopOf="@id/lastSessions"/>
 
 
-            <TextView
-                android:id="@+id/lastSessions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/lastSessions"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            style="@style/titleText"
+            android:id="@+id/lastSessions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="@dimen/side_margin"
+            android:text="@string/lastSessions"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/newSessionButton"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <Button
-                android:id="@+id/newSessionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/newSessionButton"
-                app:layout_constraintBottom_toTopOf="@+id/lastSessions"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/sessions_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
-    </LinearLayout>
+            android:layout_weight="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lastSessions"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </layout>
