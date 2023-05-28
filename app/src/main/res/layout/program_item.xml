@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,62 +17,68 @@
             android:id="@+id/program_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_launcher_foreground" />
+            app:layout_constraintBottom_toBottomOf="@id/program_timing"
+            tools:src="@drawable/ski_img" />
 
         <TextView
+            style="@style/headerText"
             android:id="@+id/program_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Program Name"
-            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/program_icon"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/start_program_button" />
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Program Name"
+            />
 
         <TextView
             android:id="@+id/program_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Program Description"
             app:layout_constraintStart_toEndOf="@+id/program_icon"
             app:layout_constraintTop_toBottomOf="@+id/program_name"
-            app:layout_constraintEnd_toStartOf="@+id/start_program_button" />
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Program Description"/>
 
         <TextView
             android:id="@+id/program_timing"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Timing: Yes"
             app:layout_constraintStart_toEndOf="@+id/program_icon"
             app:layout_constraintTop_toBottomOf="@+id/program_description"
-            app:layout_constraintEnd_toStartOf="@+id/start_program_button"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <ImageButton
-            android:id="@+id/start_program_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/start_img"
-            app:layout_constraintEnd_toStartOf="@+id/edit_program_button"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <ImageButton
-            android:id="@+id/edit_program_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/edit_img"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            tools:text="Timing: Yes"/>
 
+
+        <Button
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:id="@+id/start_program_button"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="@string/start"
+            android:layout_marginTop="@dimen/margin_between_elements"
+            app:icon="@drawable/play_circle_outline_24"
+            app:layout_constraintTop_toBottomOf="@id/program_timing"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/edit_program_button"/>
+
+        <Button
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:id="@+id/edit_program_button"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_between_elements"
+            android:text="@string/edit"
+            app:icon="@drawable/edit_img"
+            app:layout_constraintStart_toEndOf="@id/start_program_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/program_timing"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
