@@ -96,7 +96,7 @@ class NewExerciseFragment: Fragment() {
                     name = exerciseName,
                     photo_url = "https://wfa-media.com/exercise23/img/exercise1.png", // Set a default value or get it from the UI
                     description = description,
-                    icon = "ic_launcher_foreground", // Set a default value or get it from the UI
+                    icon = "gym_plan_img", // Default icon. Change to programType icon when added to program??
                     infobox_color = INDOORCOLOR
                 )
 
