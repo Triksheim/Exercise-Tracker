@@ -8,12 +8,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.exercisetracker.INDOORCOLOR
+import com.example.exercisetracker.OUTDOORCOLOR
 import com.example.exercisetracker.R
 import com.example.exercisetracker.databinding.ProgramItemBinding
 import com.example.exercisetracker.db.AppProgramType
 import com.example.exercisetracker.db.UserProgram
 import com.example.exercisetracker.db.UserProgramEntity
+import com.google.android.material.color.MaterialColors.getColor
 
+const val SET_COLOR_OUTDOOR = R.color.green_100
+const val SET_COLOR_INDOOR = R.color.purple_100
 
 class ProgramItemAdapter(
     private val userProgramType: UserProgramType,
@@ -35,7 +40,7 @@ class ProgramItemAdapter(
 
         fun bind(userProgram: UserProgram) {
             binding.apply {
-                programTiming.text = if(userProgram.use_timing == 0) "Timing: no" else "Timing: yes"
+                programTiming.text = if(userProgram.use_timing == 0) "Timing: No" else "Timing: Yes"
                 programName.text = userProgram.name
                 programDescription.text = userProgram.description
                 root.setOnClickListener {
@@ -52,9 +57,11 @@ class ProgramItemAdapter(
                         "drawable",
                         itemView.context.packageName)
                     programIcon.setImageResource(resourceId)
-                    val color = Color.parseColor(programType.back_color)
-                    itemView.setBackgroundColor(color)
 
+                    when(programType.back_color) {
+                        INDOORCOLOR -> itemView.setBackgroundColor(itemView.context.getColor(SET_COLOR_INDOOR))
+                        OUTDOORCOLOR -> itemView.setBackgroundColor(itemView.context.getColor(SET_COLOR_OUTDOOR))
+                    }
                 }
             }
         }

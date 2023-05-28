@@ -17,7 +17,7 @@ import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 
 const val INDOORCOLOR = "#7fe5ab"
-const val OUTDOORCOLOR ="#ab7fe5"
+const val OUTDOORCOLOR = "#ab7fe5"
 class ProgramTypeFragment: Fragment() {
 
     private var _binding: FragmentProgramTypeBinding? = null

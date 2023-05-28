@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/side_margin"
+    android:layout_marginEnd="@dimen/side_margin"
     tools:context=".MyProgramsFragment">
 
     <TextView

@@ -6,5 +6,8 @@
     <dimen name="button_size_medium">225dp</dimen>
     <dimen name="button_size_small">60dp</dimen>
 
+    <dimen name="button_height">55dp</dimen>
+    <dimen name="button_width">200dp</dimen>
+
     <dimen name ="header_text">20sp</dimen>
 </resources>

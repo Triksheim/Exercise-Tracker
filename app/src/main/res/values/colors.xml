@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <color name="green_50">#FFecf3ee</color>
+    <color name="green_100">#FFd0e3d4</color>
+    <color name="green_200">#FFb4d1bb</color>
+    <color name="green_600">#FF6d9773</color>
+    <color name="green_800">#FF5b735e</color>
+    <color name="tridiac_900">#FF1d3236</color>
+    <color name="tridiac_800">#FF2d474c</color>
+
+
+    <color name="purple_100">#FFd2bdcf</color>
+    <color name="purple_200">#FFb593b0</color>
+    <color name="purple_700">#FF5d2e5e</color>
+
+    <color name="dark_green_900">#FF0c3b2e</color>
+    <color name="orange_500">#ffbb00</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="red">#FFFF0000</color>
+    <color name="red">#FFB00020</color>
+    <color name="light_red">#FFCF6679</color>
+
     <color name="recycler_border">#FF999999</color>
     <color name="border">#FF999999</color>
-
-    <!--Forslag.. kan endres. Abi: Lag tema!-->
-    <color name="bg_exercise">#FFE0ECDE</color>
-    <color name="bg_program">#FF6882A0</color>
     <color name="bg_statistics">#FFCDE0C9</color>
+
 </resources>

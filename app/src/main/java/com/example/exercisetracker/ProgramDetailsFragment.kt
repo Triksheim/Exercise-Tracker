@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -104,6 +105,13 @@ class ProgramDetailsFragment: Fragment() {
 
         sharedViewModel.currentProgramType.observe(viewLifecycleOwner, Observer {currentType ->
             binding.programType = currentType
+            val resourceId = resources.getIdentifier(
+                currentType.icon,
+                "drawable",
+                requireContext().packageName)
+            binding.programTypeImage.setImageResource(resourceId)
+
+
             when (currentType?.back_color) {
                 INDOORCOLOR -> binding.apply {
                     programExerciseRecycler.adapter = programExercisesAdapter
@@ -142,7 +150,7 @@ class ProgramDetailsFragment: Fragment() {
                 otherExercisesAdapter.submitList(otherExercises)
 
                 // Handle visibility of "no exercise" message
-                binding.noExerciseMessage.isVisible = convertedProgramExercises.isEmpty() && otherExercises.isEmpty()
+                binding.noExerciseMessage.isGone = convertedProgramExercises.isEmpty() && otherExercises.isEmpty()
             }
         }
         // Fetch the user program exercises for the current program

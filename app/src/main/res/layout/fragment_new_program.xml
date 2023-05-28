@@ -15,28 +15,50 @@
         android:layout_height="match_parent"
         tools:context=".NewProgramFragment">
 
-
-        <ImageView
-            android:id="@+id/program_type_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/side_margin"
-            android:src="@{programtype.icon}"
-            app:layout_constraintTop_toTopOf="parent"
+        <com.google.android.material.card.MaterialCardView
+            style="@style/cardHeader"
+            android:id="@+id/new_program_header"
+            android:layout_width="match_parent"
+            android:padding="@dimen/margin_between_elements"
+            android:layout_marginBottom="@dimen/margin_between_elements"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:src="@drawable/runner_img"/>
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_create_new_program"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/register_new_program"
-            android:layout_margin="@dimen/side_margin"
-            android:textSize="@dimen/header_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/program_type_image"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/program_type_image"
+                    android:visibility="visible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:adjustViewBounds="true"
+                    android:src="@{programtype.icon}"
+                    tools:src="@drawable/runner_img"/>
+
+                <TextView
+                    style="@style/headerText"
+                    android:id="@+id/tv_create_new_program"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/register_new_program"
+                    android:layout_margin="@dimen/side_margin" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+
+
+
+
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/program_name"
@@ -51,7 +73,7 @@
             app:counterEnabled="true"
             app:counterMaxLength="20"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_create_new_program">
+            app:layout_constraintTop_toBottomOf="@id/new_program_header">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/program_name_input"
@@ -125,14 +147,13 @@
 
 
         <Button
+            style="@style/Widget.MaterialComponents.Button"
             android:id="@+id/button_save_program"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
             android:text="@string/bt_save_program"
             android:layout_marginTop="@dimen/margin_between_elements"
             android:layout_marginBottom="@dimen/margin_between_elements"
-            android:layout_marginStart="@dimen/side_margin"
-            android:layout_marginEnd="@dimen/side_margin"
             app:layout_constraintBottom_toTopOf="@id/button_delete"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -141,15 +162,15 @@
 
         <!-- Delete button is set to visible when navigating via "edit-program" option in myPrograms-->
         <Button
+            style="@style/Widget.MaterialComponents.Button"
             android:id="@+id/button_delete"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
             android:text="@string/btn_delete_program"
             android:layout_marginTop="@dimen/margin_between_elements"
             android:layout_marginBottom="@dimen/margin_between_elements"
-            android:layout_marginStart="@dimen/side_margin"
-            android:layout_marginEnd="@dimen/side_margin"
             android:visibility="gone"
+            app:icon="@drawable/delete_bin_img"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

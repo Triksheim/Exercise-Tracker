@@ -46,7 +46,7 @@
     <string name="you_have_no_sessions">Du har ikke registrert noen treningsøkter enda. Kom i gang nå!</string>
     <string name="nav_my_sessions">Mine treningsøkter</string>
     <string name="tv_no_exercises">Du har ikke registrert noen øvelser enda. Opprett ny øvelse for å komme i gang,</string>
-    <string name="tc_choose_exercises">Velg øvelser du vil legge til i programmet:</string>
+    <string name="tc_choose_exercises">Legg til øvelser:</string>
     <string name="bt_save_program">Lagre Program</string>
     <string name="bt_my_programs">Mine treningsprogram</string>
     <string name="tv_bruke_gps">Bruke GPS?</string>
@@ -77,8 +77,8 @@
     <string name="time7days">%s</string>
     <string name="timeScale">Historikk tidshintervall</string>
     <string name="sessionCount">Total antall treningsøkter</string>
-    <string name="trainingTimeText">Total treningstid (hh:mm:ss)</string>
     <string name="trainingTime">%s</string>
+    <string name="trainingTimeText">Total treningstid (hh:mm:ss)</string>
     <string name="last30days">30 dager</string>
     <string name="time30days">%s</string>
     <string name="count30days">%s stykk</string>
@@ -95,8 +95,10 @@
     <string name="userStats">Treningshistorikk</string>
     <string name="totalDistance"> %skm</string>
     <string name="sessionProgramName"> %s</string>
-    <string name="sessionHeight"> %sm</string>
-    <string name="sessionSpeed"> %s km/t</string>
+    <string name="sessionHeight"> %s moh.</string>
+    <string name="sessionSpeed">%s km/t</string>
+    <string name="sessionSpeedMax">%s km/t</string>
+    <string name="sessionSpeedAvg">%s km/t</string>
     <string name="button_update_exercise">Oppdater Øvelse</string>
     <string name="button_update_program">Oppdater Program</string>
     <string name="home">Hjem</string>
@@ -111,6 +113,11 @@
     <string name="delete_program">Slett Program</string>
     <string name="confirmation_delete_program">Vil du slette programmet for godt?</string>
     <string name="failed_to_load_exercises">Kunne ikke laste øvelser</string>
+    <string name="average">Average</string>
+    <string name="max">Max</string>
+    <string name="start">Start</string>
+    <string name="edit">Rediger</string>
     <string name="startupLoading">Laster inn ...</string>
+    <string name="completed_sessions">Gjennomførte økter</string>
 
 </resources>
