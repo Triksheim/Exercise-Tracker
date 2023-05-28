@@ -834,24 +834,17 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-    fun deleteProgramSessionByDisplayedSession(displayableSession: DisplayableSession){
+    fun deleteProgramSessionByDisplayedSession(displayableSession: DisplayableSession) {
         val userProgramSession = UserProgramSession(
             id = displayableSession.sessionId!!,
             user_program_id = displayableSession.userProgramId!!,
-            description =  displayableSession.sessionDescription!!,
+            description = displayableSession.sessionDescription!!,
             startTime = displayableSession.sessionStartTime!!,
             time_spent = displayableSession.sessionTimeSpent!!
         )
-
-        val userProgramSessionData = _sessionData.value?.find{it.user_program_session_id == displayableSession.sessionId}
-        if (userProgramSessionData != null) {
-            viewModelScope.launch(Dispatchers.IO) {
-                deleteUserProgramSession(userProgramSession)
-                deleteUserProgramSessionData(userProgramSessionData)}
-        } else {
-                Log.e("ERROR USER_PROGRAM_SESSIONDATA", "Retreiving userProgramSessionData failed")
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteUserProgramSession(userProgramSession)
         }
-
     }
 
     suspend fun deleteUserProgramSession(userProgramSession: UserProgramSession) {

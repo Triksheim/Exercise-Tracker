@@ -110,7 +110,6 @@ class ProgramSessionFragment: Fragment() {
         appProgramTypeDescription.text = sharedViewModel.currentProgram.value?.description
         userProgramName.text = sharedViewModel.currentProgram.value?.name
 
-
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = sharedViewModel
@@ -187,16 +186,19 @@ class ProgramSessionFragment: Fragment() {
         val gpsTextView: TextView = binding.tvUseGps
         val gpsRadioGroup: RadioGroup = binding.gpsOptions
         val startButton: Button = binding.startPauseButton
+        val saveButton: Button = binding.saveWorkoutButton
         if (currentProgram != null) {
             if (useTiming == 0) {
                 timerTextView.visibility = View.GONE
                 gpsTextView.visibility = View.GONE
                 gpsRadioGroup.visibility = View.GONE
                 startButton.visibility = View.GONE
+                saveButton.visibility = View.VISIBLE
             } else {
                 timerTextView.visibility = View.VISIBLE
                 gpsTextView.visibility = View.VISIBLE
                 gpsRadioGroup.visibility = View.VISIBLE
+                saveButton.visibility = View.GONE
             }
         }
 
@@ -204,6 +206,7 @@ class ProgramSessionFragment: Fragment() {
         startPauseButton.setOnClickListener {
             if (isRunning) {
                 pauseOrContinueWorkoutSession(startPauseButton)
+                saveButton.visibility = View.VISIBLE
             } else {
                 startWorkoutSession(startPauseButton)
             }
