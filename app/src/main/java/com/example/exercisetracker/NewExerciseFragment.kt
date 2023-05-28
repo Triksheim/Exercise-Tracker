@@ -40,6 +40,10 @@ class NewExerciseFragment: Fragment() {
     private val REQUEST_GALLERY = 2
 
     private lateinit var imageView: ImageView
+    private var capturedImageBitmap: Bitmap? = null
+
+    private var name: String = ""
+    private var description: String = ""
 
     private val sharedViewModel: SharedViewModel by activityViewModels() {
         SharedViewModelFactory(
@@ -109,11 +113,25 @@ class NewExerciseFragment: Fragment() {
                 navigateToMyExercises()
             }
         }
+        // Restore saved instance state (if available)
+        savedInstanceState?.let {
+            name = it.getString("name", "")
+            description = it.getString("description", "")
+            capturedImageBitmap = it.getParcelable("capturedImage")
+            imageView.setImageBitmap(capturedImageBitmap)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("name", name)
+        outState.putString("description", description)
+        outState.putParcelable("capturedImage", capturedImageBitmap)
     }
 
     private fun bindUserExercise(userExercise: UserExercise){
