@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.exercisetracker.INDOORCOLOR
+import com.example.exercisetracker.OUTDOORCOLOR
 import com.example.exercisetracker.databinding.SessionItemBinding
 import com.example.exercisetracker.db.DisplayableSession
 
@@ -31,6 +33,7 @@ class SessionItemAdapter(
                     itemView.context.packageName
                 )
                 sessionIcon.setImageResource(resourceId)
+
             }
         }
     }
@@ -44,6 +47,12 @@ class SessionItemAdapter(
 
     override fun onBindViewHolder(holder: SessionViewHolder, position: Int) {
         val session = getItem(position)
+
+        when(session.programTypeBackColor) {
+            INDOORCOLOR -> holder.itemView.setBackgroundColor(holder.itemView.context.getColor(SET_COLOR_INDOOR))
+            OUTDOORCOLOR -> holder.itemView.setBackgroundColor(holder.itemView.context.getColor(SET_COLOR_OUTDOOR))
+        }
+
         holder.bind(session)
     }
 
