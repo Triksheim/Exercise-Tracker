@@ -156,7 +156,8 @@ class NewProgramFragment: Fragment() {
             sharedViewModel.setCurrentUserProgram(userProgram)
         }
         // Navigate to ProgramDetails for current program
-        navigateToProgramDetails()
+        //navigateToProgramDetails()
+        navigateToMyPrograms()
     }
 
     private fun isValidProgramEntry() = sharedViewModel.isValidProgramEntry(
@@ -180,6 +181,10 @@ class NewProgramFragment: Fragment() {
     private fun navigateToProgramDetails(){
         val action = NewProgramFragmentDirections.actionNewProgramFragmentToProgramDetailsFragment(userProgram.id)
         findNavController().navigate(action)
+    }
+
+    private fun navigateToMyPrograms() {
+        findNavController().navigate(R.id.action_newProgramFragment_to_myProgramsFragment)
     }
 
     private fun showNotLoggedInMessage(){
