@@ -13,6 +13,8 @@ import com.example.exercisetracker.db.UserExercise
 
 // This adapter is used in three recyclerViews. Visibility of views are dependent on what recyclerView is to be populated
 // The calling fragment is specified in recyclerLocation
+
+const val SET_COLOR_INDOOR_EXERCISE = R.color.purple_200
 class ExerciseItemAdapter(
     private val exerciseClickListener: ExerciseClickListener,
     private val recyclerLocation: String)
@@ -45,15 +47,15 @@ class ExerciseItemAdapter(
         init {
             when (recyclerLocation) {
                 EXERCISES_FRAGMENT -> {
-                    binding.buttonAdd.visibility = View.INVISIBLE
-                    binding.buttonRemove.visibility = View.INVISIBLE
+                    binding.buttonAdd.visibility = View.GONE
+                    binding.buttonRemove.visibility = View.GONE
                     binding.buttonEdit.visibility = View.VISIBLE
                     binding.buttonEdit.setOnClickListener {
                         exerciseClickListener.onEditButtonClick(binding.exercise!!)
                     }
                 }
                 DETAIL_FRAGMENT_BOTTOM -> {
-                    binding.buttonRemove.visibility = View.INVISIBLE
+                    binding.buttonRemove.visibility = View.GONE
                     binding.buttonAdd.visibility = View.VISIBLE
                     binding.buttonAdd.setOnClickListener {
                         exerciseClickListener.onAddButtonClick(binding.exercise!!)
@@ -64,22 +66,22 @@ class ExerciseItemAdapter(
                     }
                 }
                 DETAIL_FRAGMENT_UPPER -> {
-                    binding.buttonAdd.visibility = View.INVISIBLE
-                    binding.buttonEdit.visibility = View.INVISIBLE
+                    binding.buttonAdd.visibility = View.GONE
+                    binding.buttonEdit.visibility = View.GONE
                     binding.buttonRemove.visibility = View.VISIBLE
                     binding.buttonRemove.setOnClickListener {
                         exerciseClickListener.onRemoveButtonClick(binding.exercise!!)
                     }
                 }
                 PROGRAM_SESSION_FRAGMENT -> {
-                    binding.buttonAdd.visibility = View.INVISIBLE
-                    binding.buttonRemove.visibility = View.INVISIBLE
-                    binding.buttonEdit.visibility = View.INVISIBLE
+                    binding.buttonAdd.visibility = View.GONE
+                    binding.buttonRemove.visibility = View.GONE
+                    binding.buttonEdit.visibility = View.GONE
                 }
                 SESSION_DETAILS -> {
-                    binding.buttonAdd.visibility = View.INVISIBLE
-                    binding.buttonRemove.visibility = View.INVISIBLE
-                    binding.buttonEdit.visibility = View.INVISIBLE
+                    binding.buttonAdd.visibility = View.GONE
+                    binding.buttonRemove.visibility = View.GONE
+                    binding.buttonEdit.visibility = View.GONE
                 }
             }
         }
@@ -98,7 +100,8 @@ class ExerciseItemAdapter(
         val userExercise = getItem(position)
         holder.bind(userExercise)
 
-        val color = Color.parseColor(userExercise.infobox_color)
+        // Set indoor-exercise backgoundcolor
+        val color = holder.itemView.context.getColor(SET_COLOR_INDOOR_EXERCISE)
         holder.itemView.setBackgroundColor(color)
     }
 
