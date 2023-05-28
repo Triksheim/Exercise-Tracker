@@ -275,15 +275,15 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/exerciseRecycler"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:visibility="gone"
             android:clipToPadding="false"
-            android:padding="8dp"
+            android:layout_marginTop="@dimen/side_margin"
             android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardTime"
+            app:layout_constraintTop_toBottomOf="@id/cardHeight"
             app:layout_constraintBottom_toBottomOf="@id/map"
             tools:listitem="@layout/exercise_item"/>
 
@@ -294,14 +294,41 @@
             android:layout_height="0dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="32dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="@dimen/side_margin"
+            app:layout_constraintTop_toBottomOf="@id/cardHeight"
+            app:layout_constraintBottom_toTopOf="@id/delete_session_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.40"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintWidth_percent="0.95"
             tools:layout="@android:layout/list_content" />
         <!--tools:layout layout kun synlig her i layot editor-->
+
+        <Button
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:id="@+id/delete_session_button"
+            android:layout_width="140dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="@dimen/side_margin"
+            android:text="@string/delete"
+            app:icon="@drawable/delete_bin_img"
+            app:layout_constraintTop_toBottomOf="@id/map"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/replay_session_button"/>
+
+
+        <Button
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:id="@+id/replay_session_button"
+            android:layout_width="140dp"
+            android:layout_height="55dp"
+            android:text="@string/replay_Session"
+            android:layout_marginTop="@dimen/side_margin"
+            app:icon="@drawable/replay_img"
+            app:layout_constraintTop_toBottomOf="@id/map"
+            app:layout_constraintStart_toEndOf="@id/delete_session_button"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

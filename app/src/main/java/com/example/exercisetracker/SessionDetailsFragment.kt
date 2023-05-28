@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.exercisetracker.adapters.ExerciseItemAdapter
 import com.example.exercisetracker.databinding.FragmentSessionDetailsBinding
 import com.example.exercisetracker.db.DisplayableSession
@@ -56,10 +57,25 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
 
         // Observe currentDiaplayableSession, bind viewmodel and views
         sharedViewModel.currentDisplayableSession.observe(this.viewLifecycleOwner) { displayableSession ->
+            // Set current program for this session
+            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                sharedViewModel.userPrograms.collect() { userPrograms ->
+                    val sessionProgram =
+                        userPrograms.find { it.id == displayableSession.userProgramId }
+                    if (sessionProgram != null) {
+                        sharedViewModel.setCurrentUserProgram(sessionProgram)
+                    } else { Toast.makeText(
+                            requireContext(),
+                            getString(R.string.failed_to_load_exercises),
+                            Toast.LENGTH_SHORT)
+                            .show() }
+                }
+            }
+
             binding.apply {
                 lifecycleOwner = viewLifecycleOwner
                 viewModel = sharedViewModel
-
+                // Set program type icon
                 val resourceId = resources.getIdentifier(
                     displayableSession.programTypeIcon,
                     "drawable", requireContext().packageName
@@ -94,6 +110,9 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
                         bindExerciseRecycler(displayableSession)
                     }
                 }
+                // Bind delete button and replay button
+                replaySessionButton.setOnClickListener { replaySession() }
+                deleteSessionButton.setOnClickListener { deleteSession(displayableSession) }
             }
         }
 
@@ -212,12 +231,18 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-
-
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun replaySession(){
+       // current program is already set for this session
+       findNavController().navigate(R.id.action_sessionDetailsFragment_to_programSessionFragment)
+
+    }
+
+    private fun deleteSession(displayableSession: DisplayableSession) {
+
     }
 }

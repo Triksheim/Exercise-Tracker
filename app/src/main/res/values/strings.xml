@@ -121,5 +121,7 @@
     <string name="completed_sessions">Gjennomførte økter</string>
     <string name="update_program">Oppdater Program</string>
     <string name="fart">Fart</string>
+    <string name="delete">Slett</string>
+    <string name="replay_Session">Gjenta økt</string>
 
 </resources>
