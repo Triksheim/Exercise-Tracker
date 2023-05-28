@@ -124,5 +124,6 @@
     <string name="delete">Slett</string>
     <string name="replay_Session">Gjenta økt</string>
     <string name="exercises">Treningsøvelser</string>
+    <string name="trainning_statistics">Treningsstatistikk</string>
 
 </resources>

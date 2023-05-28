@@ -38,7 +38,7 @@ class MySessionsFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedViewModel.setToolbarTitle(getString(R.string.app_name))
+        sharedViewModel.setToolbarTitle(getString(R.string.trainning_statistics))
 
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
