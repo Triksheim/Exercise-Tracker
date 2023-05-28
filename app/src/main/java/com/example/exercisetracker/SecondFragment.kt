@@ -10,7 +10,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.exercisetracker.databinding.FragmentSecondBinding
 import com.example.exercisetracker.repository.TrainingApplication
-import com.example.exercisetracker.utils.Type
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
 

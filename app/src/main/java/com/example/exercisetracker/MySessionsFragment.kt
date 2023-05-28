@@ -1,6 +1,5 @@
 package com.example.exercisetracker
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,10 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.exercisetracker.adapters.SessionItemAdapter
 import com.example.exercisetracker.databinding.FragmentMySessionsBinding
-import com.example.exercisetracker.databinding.FragmentProgramTypeBinding
 import com.example.exercisetracker.db.UserProgramSession
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
@@ -61,7 +58,6 @@ class MySessionsFragment : Fragment() {
         layoutManager.reverseLayout = true
         layoutManager.stackFromEnd = true
         recyclerView.layoutManager = layoutManager
-        //recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
 

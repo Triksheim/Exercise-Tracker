@@ -181,7 +181,6 @@ class ProgramSessionFragment: Fragment() {
         val buttonGallery = binding.buttonGallery
         buttonGallery.setOnClickListener {
             dispatchGalleryIntent()
-
         }
 
         // GPS and location variables
@@ -279,7 +278,7 @@ class ProgramSessionFragment: Fragment() {
             id = 0,
             user_program_id = currentProgram.id,
             startTime = startTimeStr,
-            time_spent = timeSpent.toInt(),
+            time_spent = (timeSpent / 1000).toInt() ,
             description = binding.personalDescriptionEditText.text.toString()
         )
         sessionId = sharedViewModel.createUserProgramSession(userProgramSession)
