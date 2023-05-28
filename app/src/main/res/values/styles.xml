@@ -14,10 +14,22 @@
     <style name="headerText" parent="Theme.ExerciseTracker">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">20sp</item>
+        <item name="android:padding">4sp</item>
     </style>
 
     <style name="titleText" parent="Theme.ExerciseTracker">
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="cardHeader" parent="Theme.ExerciseTracker">
+        <item name="cardBackgroundColor">@color/green_100</item>
+        <item name="cardCornerRadius">8dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="android:layout_height">120dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:padding">4dp</item>
+
     </style>
 
 </resources>

@@ -10,6 +10,8 @@ import com.example.exercisetracker.R
 import com.example.exercisetracker.databinding.ProgramTypeItemBinding
 import com.example.exercisetracker.db.AppProgramType
 import android.content.Context
+import com.example.exercisetracker.INDOORCOLOR
+import com.example.exercisetracker.OUTDOORCOLOR
 
 class ProgramTypeAdapter(private val clickListener: (AppProgramType) -> Unit)
     : ListAdapter<AppProgramType, ProgramTypeAdapter.ProgramViewHolder>(DiffCallback) {
@@ -40,6 +42,11 @@ class ProgramTypeAdapter(private val clickListener: (AppProgramType) -> Unit)
 
     override fun onBindViewHolder(holder: ProgramViewHolder, position: Int) {
         val programType = getItem(position)
+
+        when(programType.back_color) {
+            INDOORCOLOR -> holder.itemView.setBackgroundColor(holder.itemView.context.getColor(SET_COLOR_INDOOR))
+            OUTDOORCOLOR -> holder.itemView.setBackgroundColor(holder.itemView.context.getColor(SET_COLOR_OUTDOOR))
+        }
 
         val color = Color.parseColor(programType.back_color)
         holder.itemView.setBackgroundColor(color)

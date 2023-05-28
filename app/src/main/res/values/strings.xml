@@ -118,5 +118,6 @@
     <string name="start">Start</string>
     <string name="edit">Rediger</string>
     <string name="startupLoading">Laster inn ...</string>
+    <string name="completed_sessions">Gjennomførte økter</string>
 
 </resources>
