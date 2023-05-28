@@ -8,6 +8,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -16,7 +17,6 @@ import com.example.exercisetracker.databinding.ActivityMainBinding
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
 import com.example.exercisetracker.viewmodel.SharedViewModelFactory
-
 
 class MainActivity : AppCompatActivity() {
     private val sharedViewModel: SharedViewModel by viewModels {
@@ -43,6 +43,15 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        sharedViewModel.networkConnectionOk.observe(this, Observer {
+            if (sharedViewModel.networkConnectionOk.value == false) {
+                Toast.makeText(
+                    this,
+                    "Ingen kontakt med server.\nSjekk internett forbindelsen.",
+                    Toast.LENGTH_LONG).show()
+                }
+        })
 
 
         sharedViewModel.currentProgram.observe(this, Observer {
