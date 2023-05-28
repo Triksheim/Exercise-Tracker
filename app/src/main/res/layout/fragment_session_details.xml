@@ -27,54 +27,66 @@
             app:layout_constraintTop_toTopOf="parent"
             app:cardElevation="4dp"
             app:strokeWidth="1dp"
-            app:strokeColor="@color/tridiac_800"
+            app:strokeColor="@color/tridiac_800">
 
-            >
-
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/sessionIcon"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
                     android:visibility="visible"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:scaleType="fitXY"
-                    android:adjustViewBounds="true"
-                    tools:src="@drawable/roing_img"/>
-
-                <!--Sission photo is never set-->
-                <ImageView
-                    android:visibility="gone"
-                    android:id="@+id/sessionPhoto"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:scaleType="fitXY"
-                    android:adjustViewBounds="true"
-                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/roing_img"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/sessionProgramName"
-                    tools:src="@drawable/img_outdoor_runner"/>
+                    app:layout_constraintEnd_toStartOf="@id/sessionProgramName"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
 
                 <TextView
-                    style="@style/headerText"
                     android:id="@+id/sessionProgramName"
+                    style="@style/headerText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@{@string/sessionProgramName(viewModel.currentDisplayableSession.userProgramName)}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="parent"
-                    tools:text="program name" />
+                    app:layout_constraintStart_toEndOf="@id/sessionIcon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/sessionIcon"
+                    tools:text="Padleprogram 1" />
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/sessionProgramType"
+                    style="@style/titleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/margin_between_elements"
+                    android:text="@{@string/sessionProgramName(viewModel.currentDisplayableSession.programTypeDescription)}"
+                    app:layout_constraintStart_toStartOf="@id/sessionProgramName"
+                    app:layout_constraintTop_toBottomOf="@id/sessionProgramName"
+                    tools:text="Padling" />
+
+                <TextView
+                    android:id="@+id/sessionSTartTime"
+                    style="@style/titleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/margin_between_elements"
+                    android:text="@{@string/sessionProgramName(viewModel.currentDisplayableSession.sessionStartTime)}"
+                    app:layout_constraintStart_toStartOf="@id/sessionProgramType"
+                    app:layout_constraintTop_toBottomOf="@id/sessionProgramType"
+                    tools:text="2023-05-27 17:41:57" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
 
@@ -226,23 +238,11 @@
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-
-                <TextView
-                    style="@style/yellowTextHeader"
-                    android:id="@+id/avgSpeed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/margin_between_elements"
-                    android:layout_margin="@dimen/margin_between_elements"
-                    android:text="@{@string/sessionSpeedMax(viewModel.currentDisplayableSession.sessionAvgSpeed)}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="9.6 km/h" />
 
                 <TextView
                     style="@style/yellowText"
@@ -250,9 +250,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/margin_between_elements"
-                    android:text="@string/average"
-                    app:layout_constraintStart_toEndOf="@id/avgSpeed"
-                    app:layout_constraintBottom_toBottomOf="@id/avgSpeed"/>
+                    android:text="@string/fart"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
                     style="@style/yellowTextHeader"
@@ -263,22 +263,12 @@
                     android:layout_margin="@dimen/margin_between_elements"
                     android:text="@{@string/sessionSpeedAvg(viewModel.currentDisplayableSession.sessionAvgSpeed)}"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/avgSpeed"
-                    app:layout_constraintBottom_toBottomOf="parent
-"
+                    app:layout_constraintTop_toBottomOf="@id/avgSpeedText"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     tools:text="14.2 km/h" />
 
-                <TextView
-                    style="@style/yellowText"
-                    android:id="@+id/maxSpeedText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/margin_between_elements"
-                    android:text="@string/max"
-                    app:layout_constraintStart_toEndOf="@id/maxSpeed"
-                    app:layout_constraintBottom_toBottomOf="@id/maxSpeed"/>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
 
