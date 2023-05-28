@@ -229,6 +229,9 @@ class ProgramSessionFragment: Fragment() {
         if (isRunning) {
             pauseWorkoutSession(binding.startPauseButton) // This will update timeSpent
         }
+        if (startTime == 0L){
+            startTime = System.currentTimeMillis()
+        }
 
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val startTimeStr = dateFormat.format(Date(startTime))
