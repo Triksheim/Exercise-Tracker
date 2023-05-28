@@ -34,7 +34,7 @@ class ProgramItemAdapter(
     inner class ProgramViewHolder(private val binding: ProgramItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        val cardView: CardView = binding.root.findViewById(R.id.programCardView)
+        private val cardView: CardView = binding.root.findViewById(R.id.programCardView)
 
         fun bind(userProgram: UserProgram) {
             binding.apply {

@@ -24,23 +24,24 @@
         android:id="@+id/indoor_image"
         android:layout_width="255dp"
         android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
         android:layout_marginBottom="@dimen/margin_between_elements"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/textview_indoor"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@id/outdoor_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textview_activity_type"
-        app:layout_constraintBottom_toTopOf="@id/outdoor_image"
         app:srcCompat="@mipmap/ic_indoor_foreground" />
 
     <TextView
         android:id="@+id/indoor_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="-32dp"
         android:text="@string/textview_indoor"
-        android:layout_marginTop="@dimen/margin_between_elements"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/indoor_image" />
 
     <ImageView
@@ -49,6 +50,7 @@
         android:layout_height="170dp"
         android:layout_marginTop="@dimen/margin_between_elements"
         android:adjustViewBounds="true"
+        android:contentDescription="@string/textview_outdoor"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

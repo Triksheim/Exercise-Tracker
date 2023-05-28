@@ -6,19 +6,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.exercisetracker.adapters.ExerciseItemAdapter
 import com.example.exercisetracker.databinding.FragmentSessionDetailsBinding
 import com.example.exercisetracker.db.DisplayableSession
 import com.example.exercisetracker.db.UserExercise
-import com.example.exercisetracker.db.UserProgramSession
 import com.example.exercisetracker.db.UserProgramSessionData
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
@@ -32,7 +31,6 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 const val SESSION_DETAILS = "sessionDetailsFragment"
@@ -63,17 +61,22 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
         // Observe currentDiaplayableSession, bind viewmodel and views
         sharedViewModel.currentDisplayableSession.observe(this.viewLifecycleOwner) { displayableSession ->
             // Set current program for this session
-            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                sharedViewModel.userPrograms.collect() { userPrograms ->
-                    val sessionProgram =
-                        userPrograms.find { it.id == displayableSession.userProgramId }
-                    if (sessionProgram != null) {
-                        sharedViewModel.setCurrentUserProgram(sessionProgram)
-                    } else { Toast.makeText(
-                            requireContext(),
-                            getString(R.string.failed_to_load_exercises),
-                            Toast.LENGTH_SHORT)
-                            .show() }
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    sharedViewModel.userPrograms.collect() { userPrograms ->
+                        val sessionProgram =
+                            userPrograms.find { it.id == displayableSession.userProgramId }
+                        if (sessionProgram != null) {
+                            sharedViewModel.setCurrentUserProgram(sessionProgram)
+                        } else {
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.failed_to_load_exercises),
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        }
+                    }
                 }
             }
 
@@ -137,32 +140,42 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
         binding.exerciseRecycler.adapter = adapter
 
         // Set current program for this session
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            sharedViewModel.userPrograms.collect() {userPrograms ->
-                val sessionProgram = userPrograms.find{it.id == displayableSession.userProgramId}
-                if (sessionProgram != null) {sharedViewModel.setCurrentUserProgram(sessionProgram!!)
-                } else {
-                    Toast.makeText(requireContext(), getString(R.string.failed_to_load_exercises), Toast.LENGTH_SHORT).show()
-                }
-
-                // Fetch exercises for the current program:
-                sharedViewModel.flowExercisesForCurrentProgram()
-
-                // Observe the LiveData of program exercises
-                sharedViewModel.userProgramExercises.observe(viewLifecycleOwner, Observer { programExercises ->
-
-                    // Fetch the list of all user exercises
-                    val userExercises = sharedViewModel.userExercises.value
-
-                    // Filter the user exercises that are in the program
-                    val exercisesForProgram = userExercises.filter { userExercise ->
-                        programExercises.any { programExercise ->
-                            programExercise.user_exercise_id == userExercise.id
-                        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                sharedViewModel.userPrograms.collect() { userPrograms ->
+                    val sessionProgram =
+                        userPrograms.find { it.id == displayableSession.userProgramId }
+                    if (sessionProgram != null) {
+                        sharedViewModel.setCurrentUserProgram(sessionProgram)
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.failed_to_load_exercises),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                    // Submit the new list of exercises to the adapter
-                    adapter.submitList(exercisesForProgram)
-                })
+
+                    // Fetch exercises for the current program:
+                    sharedViewModel.flowExercisesForCurrentProgram()
+
+                    // Observe the LiveData of program exercises
+                    sharedViewModel.userProgramExercises.observe(
+                        viewLifecycleOwner
+                    ) { programExercises ->
+
+                        // Fetch the list of all user exercises
+                        val userExercises = sharedViewModel.userExercises.value
+
+                        // Filter the user exercises that are in the program
+                        val exercisesForProgram = userExercises.filter { userExercise ->
+                            programExercises.any { programExercise ->
+                                programExercise.user_exercise_id == userExercise.id
+                            }
+                        }
+                        // Submit the new list of exercises to the adapter
+                        adapter.submitList(exercisesForProgram)
+                    }
+                }
             }
         }
     }

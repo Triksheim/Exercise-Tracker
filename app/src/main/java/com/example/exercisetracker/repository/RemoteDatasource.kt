@@ -16,7 +16,6 @@ import retrofit2.Response
 import retrofit2.http.*
 import java.lang.Exception
 
-enum class ApiStatus { LOADING, ERROR, DONE}
 
 private const val BASE_URL = "https://wfa-media.com/exercise23/v3/api.php/"
 private const val API_KEY = "004E06B1-E02"
@@ -281,5 +280,5 @@ class RemoteDataSource(private val apiService: ApiService) {
 
 
 
-val apiService = retrofit.create(ApiService::class.java)
+val apiService: ApiService = retrofit.create(ApiService::class.java)
 val remoteDataSource = RemoteDataSource(apiService)
