@@ -55,7 +55,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
     private val _allSessions = MutableStateFlow<List<UserProgramSession>>(emptyList())
     val allSessions: StateFlow<List<UserProgramSession>> = _allSessions
 
-
     private var _currentProgram = MutableLiveData<UserProgram>()
     val currentProgram: LiveData<UserProgram> = _currentProgram
 
@@ -193,7 +192,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             val hours = seconds / 3600
             val minutes = (seconds % 3600) / 60
             val remainingSeconds = seconds % 60
-
             return String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds)
         }
     }
@@ -255,9 +253,9 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         viewModelScope.launch {
             repository.getUserStats()
                 .flowOn(Dispatchers.IO)
-                .map { userStats ->  userStats?.asDomainModel() }
+                .map { userStats ->  userStats.asDomainModel() }
                 .collect { userStats ->
-                    userStats?.let {
+                    userStats.let {
                         _userStats.value = it
                     }
                 }
@@ -611,7 +609,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
                     "Unable to fetch (or no session data for ProgramID:${userProgramId})"
                 )
                 */
-
             }
         }
     }
@@ -638,7 +635,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
     }
 
-    suspend fun getUserStats() {
+    private suspend fun getUserStats() {
         withContext(Dispatchers.IO) {
             val result = repository.getUserStatsAPI(activeUser.value!!.id)
             if (result.isSuccess) {

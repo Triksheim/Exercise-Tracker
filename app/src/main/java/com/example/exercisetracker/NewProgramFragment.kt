@@ -15,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.exercisetracker.databinding.FragmentNewProgramBinding
 import com.example.exercisetracker.db.AppProgramType
-import com.example.exercisetracker.db.User
 import com.example.exercisetracker.db.UserProgram
 import com.example.exercisetracker.repository.TrainingApplication
 import com.example.exercisetracker.viewmodel.SharedViewModel
@@ -175,7 +174,7 @@ class NewProgramFragment: Fragment() {
         name = binding.programNameInput.text.toString(),
         description = binding.programDescriptInput.text.toString(),
         use_timing = useTimer,
-        icon = programType!!.icon)
+        icon = programType.icon)
     }
 
     private fun navigateToProgramDetails(){

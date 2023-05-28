@@ -59,7 +59,7 @@ class ProgramTypeFragment: Fragment() {
             }
         }
 
-        binding?.apply {
+        binding.apply {
             programRecycler.adapter = adapter
             adapter.notifyDataSetChanged()
         }
