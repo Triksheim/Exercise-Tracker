@@ -1,8 +1,22 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<?xml version="1.0" encoding="utf-8"?>
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.exercisetracker.viewmodel.SharedViewModel" />
+    </data>
+
+
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,6 +24,7 @@
         android:orientation="vertical">
 
         <!-- Top Section -->
+
         <LinearLayout
             android:id="@+id/top_section"
             android:layout_width="match_parent"
@@ -17,20 +32,44 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/user_program_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/user_program_name"
+                    android:textSize="34sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/app_program_type_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/app_program_type_description"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/user_program_name" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <TextView
                 android:id="@+id/timer_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00:00:00"
-                android:textSize="27sp"
-                android:layout_gravity="center_horizontal" />
-
-            <ImageView
-                android:id="@+id/user_program_icon"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_launcher_foreground" />
+                android:text="00:00:00"
+                android:textSize="40sp"
+                android:textStyle="bold|italic" />
+
         </LinearLayout>
 
         <!-- Middle Section -->
@@ -47,22 +86,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/app_program_type_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/app_program_type_description"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/user_program_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/user_program_name"
-                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tv_use_gps"
@@ -190,3 +213,5 @@
         </LinearLayout>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </layout>

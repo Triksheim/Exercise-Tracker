@@ -103,6 +103,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             }
         }
 
+
     private var _currentDisplayableSession = MutableLiveData<DisplayableSession>()
     val currentDisplayableSession: LiveData<DisplayableSession> = _currentDisplayableSession
 

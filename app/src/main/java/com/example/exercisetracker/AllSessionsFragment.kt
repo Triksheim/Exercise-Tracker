@@ -40,9 +40,8 @@ class AllSessionsFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = sharedViewModel
-
-
         }
+
         val adapter = SessionItemAdapter { session ->
             sharedViewModel.setCurrentSession(UserProgramSession(session.sessionId!!, session.userProgramId!!, session.sessionDescription!!, session.sessionStartTime!!, session.sessionTimeSpent!!))
             sharedViewModel.setCurrentDisplayableSession(session)
