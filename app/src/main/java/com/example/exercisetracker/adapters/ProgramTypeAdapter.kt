@@ -48,8 +48,6 @@ class ProgramTypeAdapter(private val clickListener: (AppProgramType) -> Unit)
             OUTDOORCOLOR -> holder.itemView.setBackgroundColor(holder.itemView.context.getColor(SET_COLOR_OUTDOOR))
         }
 
-        val color = Color.parseColor(programType.back_color)
-        holder.itemView.setBackgroundColor(color)
         holder.itemView.setOnClickListener {
             clickListener(programType)
         }
