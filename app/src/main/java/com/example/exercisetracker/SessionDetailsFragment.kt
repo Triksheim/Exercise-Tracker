@@ -262,7 +262,8 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
         // Create dialog and display it to user
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Slett Treningsøkt")
-            .setMessage("Vil du slette denne treningsøkten for godt?/n All data slettes for godt")
+            .setMessage("Vil du slette denne treningsøkten?" +
+                    " All data slettes for godt")
             .setPositiveButton("Slett treningsøkt", positiveButtonClick)
             .setNegativeButton(getString(R.string.cancel), negativeButtonClick)
             .show()

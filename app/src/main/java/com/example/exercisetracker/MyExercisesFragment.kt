@@ -39,7 +39,7 @@ class MyExercisesFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedViewModel.setToolbarTitle(getString(R.string.title_my_exercises))
+        sharedViewModel.setToolbarTitle(getString(R.string.exercises))
 
         val exerciseClickListener = object: ExerciseItemAdapter.ExerciseClickListener {
             override fun onEditButtonClick(userExercise: UserExercise) {

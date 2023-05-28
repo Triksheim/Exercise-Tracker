@@ -843,7 +843,7 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
             time_spent = displayableSession.sessionTimeSpent!!
         )
 
-        val userProgramSessionData = _sessionData.value?.find{it.user_program_session_id == displayableSession.userProgramId}
+        val userProgramSessionData = _sessionData.value?.find{it.user_program_session_id == displayableSession.sessionId}
         if (userProgramSessionData != null) {
             viewModelScope.launch(Dispatchers.IO) {
                 deleteUserProgramSession(userProgramSession)
@@ -853,10 +853,6 @@ class SharedViewModel(private val repository: TrainingRepository) : ViewModel() 
         }
 
     }
-
-
-
-
 
     suspend fun deleteUserProgramSession(userProgramSession: UserProgramSession) {
         viewModelScope.launch(Dispatchers.IO) {
