@@ -116,5 +116,6 @@
     <string name="max">Max</string>
     <string name="start">Start</string>
     <string name="edit">Rediger</string>
+    <string name="startupLoading">Laster inn ...</string>
 
 </resources>

@@ -75,8 +75,7 @@ class LoginFragment : Fragment() {
         sharedViewModel.activeUser.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 lifecycleScope.launch {
-                    delay(1500) // Small delay to get user data before navigating
-                    findNavController().navigate(R.id.action_LoginFragment_to_mySessionsFragment)
+                    findNavController().navigate(R.id.startupFragment)
                 }
             }
         })

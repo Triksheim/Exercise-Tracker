@@ -26,26 +26,12 @@ interface TrainingDao {
     @Query("SELECT * FROM app_program_type")
     fun getAppProgramTypes(): Flow<List<AppProgramTypeEntity>>
 
-
     @Query("SELECT * FROM app_program_type WHERE id = :id")
     fun getAppProgramTypeById(id: Int): Flow<AppProgramTypeEntity>
 
     @Query("DELETE FROM app_program_type")
     suspend fun deleteProgramTypes()
 
-
-    // User
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertUser(userEntity: UserEntity): Long
-
-    @Query("SELECT * FROM user")
-    fun getAllUsers(): Flow<List<UserEntity>>
-
-    @Query("SELECT * FROM user WHERE id = :id")
-    fun getUserById(id: Int): Flow<UserEntity>
-
-    @Query("DELETE FROM user")
-    suspend fun deleteAllUsers()
 
 
     // UserProgram

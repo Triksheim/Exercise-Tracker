@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -173,27 +174,44 @@ class SessionDetailsFragment : Fragment(), OnMapReadyCallback {
         }
 
         // Calculate LatLngBounds
+        val builder = LatLngBounds.Builder()
+        for (coordinate in coordinates) {
+            builder.include(coordinate)
+        }
+
+        // Check if there are coordinates to be displayed
         if (coordinates.isNotEmpty()) {
-            val builder = LatLngBounds.Builder()
-            for (coordinate in coordinates) {
-                builder.include(coordinate)
-            }
             val bounds = builder.build()
 
             // Move the camera to show all markers
-            val padding = 50 // offset from edges of the map in pixels
+            val padding = 100 // offset from edges of the map in pixels
             val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding)
-            map.moveCamera(cameraUpdate)
+
+            // Post a Runnable to the view's message queue to delay the camera update
+            binding.map.post {
+                try {
+                    map.moveCamera(cameraUpdate)
+                } catch (e: Exception) {
+                    // In case of an exception, print or handle the error as needed
+                    e.printStackTrace()
+                }
+            }
+        } else {
+            // There are no coordinates to be displayed
+            // Move the camera to Narvik by default
+            val narvik = LatLng(68.438498, 17.427261)
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(narvik, 10f)) // zoom level 10
         }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
-        sharedViewModel.sessionData.value?.let { sessionList ->
-            updateMap(sessionList)
+        sharedViewModel.sessionData.value?.let { sessionDataList ->
+            updateMap(sessionDataList)
         }
     }
+
 
 
 

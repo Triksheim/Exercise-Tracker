@@ -4,17 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 
 class LocalDataSource internal constructor (private val trainingDao: TrainingDao) {
-    // User
-    fun getAllUsers(): Flow<List<UserEntity>> {
-        return trainingDao.getAllUsers()
-    }
-    suspend fun insertUser(userEntity: UserEntity): Long {
-        return trainingDao.insertUser(userEntity)
-    }
-    suspend fun deleteAllUsers() {
-        return trainingDao.deleteAllUsers()
 
-    }
 
     // ActiveUser
     suspend fun addActiveUser(activeUserEntity: ActiveUserEntity) {

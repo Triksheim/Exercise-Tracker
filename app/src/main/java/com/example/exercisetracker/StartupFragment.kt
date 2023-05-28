@@ -56,7 +56,10 @@ class StartupFragment : Fragment() {
                     }
             }
                 else {
-                    findNavController().navigate(R.id.action_startupFragment_to_LoginFragment)
+                    lifecycleScope.launch {
+                        delay(1000)
+                        findNavController().navigate(R.id.action_startupFragment_to_LoginFragment)
+                    }
                 }
             }
         })
