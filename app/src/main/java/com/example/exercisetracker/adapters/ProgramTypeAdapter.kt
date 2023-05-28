@@ -1,6 +1,5 @@
 package com.example.exercisetracker.adapters
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.exercisetracker.R
 import com.example.exercisetracker.databinding.ProgramTypeItemBinding
 import com.example.exercisetracker.db.AppProgramType
-import android.content.Context
 import com.example.exercisetracker.INDOORCOLOR
 import com.example.exercisetracker.OUTDOORCOLOR
 
