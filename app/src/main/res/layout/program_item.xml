@@ -58,7 +58,7 @@
 
 
         <Button
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Widget.MaterialComponents.Button"
             android:id="@+id/start_program_button"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
             app:layout_constraintEnd_toStartOf="@id/edit_program_button"/>
 
         <Button
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Widget.MaterialComponents.Button"
             android:id="@+id/edit_program_button"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
