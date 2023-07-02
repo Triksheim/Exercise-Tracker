@@ -1,3 +1,19 @@
+
+<table>
+  
+  <tr>
+    <td><img src="sc/login.PNG" width=240 height=480></td>
+    <td><img src="sc/loading.PNG" width=240 height=480></td>
+    <td><img src="sc/home.PNG" width=240 height=480></td>
+  </tr>
+  <tr>
+    <td><img src="sc/programs.PNG" width=240 height=480></td>
+    <td><img src="sc/register session.PNG" width=240 height=480></td>
+    <td><img src="sc/session data.PNG" width=240 height=480></td>
+  </tr>
+ </table>
+
+
 Demo bruker med en del test data er tilgjengelig på telefonnummer: 44556677
 
 Om appen:
