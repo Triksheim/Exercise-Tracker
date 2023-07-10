@@ -14,6 +14,8 @@
  </table>
 
 
+Denne README er kun en forklaring av appens virkemåte, hvordan tilgjengelig API er brukt, utviklings designvalg, og er ment til sensor for retting av oppgaven.
+
 Demo bruker med en del test data er tilgjengelig på telefonnummer: 44556677
 
 Om appen:
